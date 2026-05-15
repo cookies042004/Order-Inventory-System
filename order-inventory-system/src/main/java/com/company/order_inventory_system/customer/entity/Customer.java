@@ -1,6 +1,10 @@
 package com.company.order_inventory_system.customer.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 /* Entity class for customers table */
 @Entity
@@ -21,6 +25,8 @@ public class Customer {
     private Integer customerId;
 
     /* Maps email_address column */
+    @NotBlank(message = "Customer email address cannot be empty")
+    @Email(message = "Please enter a valid customer email address")
     @Column(name = "email_address")
     private String emailAddress;
 
@@ -59,7 +65,10 @@ public class Customer {
     }
 
     /* Parameterized constructor */
-    public Customer(Integer customerId, String emailAddress, String fullName) {
+    public Customer(Integer customerId,
+                    String emailAddress,
+                    String fullName) {
+
         this.customerId = customerId;
         this.emailAddress = emailAddress;
         this.fullName = fullName;
