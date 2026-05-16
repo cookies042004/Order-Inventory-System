@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+
+import java.util.Objects;
 
 /* Entity class for customers table */
 @Entity
@@ -31,6 +32,7 @@ public class Customer {
     private String emailAddress;
 
     /* Maps full_name column */
+    @NotNull(message = "Customer name cannot be null")
     @Column(name = "full_name")
     private String fullName;
 
@@ -76,5 +78,30 @@ public class Customer {
 
     /* Default constructor */
     public Customer() {
+    }
+
+    /* Equals method for object comparison */
+    @Override
+    public boolean equals(Object object) {
+
+        if (this == object) {
+            return true;
+        }
+
+        if (object == null ||
+                getClass() != object.getClass()) {
+            return false;
+        }
+
+        Customer customer = (Customer) object;
+
+        return Objects.equals(customerId,
+                customer.customerId);
+    }
+
+    /* Hashcode method */
+    @Override
+    public int hashCode() {
+        return Objects.hash(customerId);
     }
 }

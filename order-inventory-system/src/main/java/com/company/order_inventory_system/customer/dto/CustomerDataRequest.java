@@ -13,7 +13,7 @@ public class CustomerDataRequest {
     private String emailAddress;
 
     /* Customer full name */
-    @NotNull(message = "Customer name cannot be empty")
+    @NotNull(message = "Customer name cannot be null")
     private String fullName;
 
     /* Getter for emailAddress */
@@ -38,7 +38,7 @@ public class CustomerDataRequest {
 
     /* Parameterized constructor */
     public CustomerDataRequest(String emailAddress,
-                       String fullName) {
+                               String fullName) {
 
         this.emailAddress = emailAddress;
         this.fullName = fullName;
