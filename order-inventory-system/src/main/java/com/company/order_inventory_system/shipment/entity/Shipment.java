@@ -1,5 +1,6 @@
 package com.company.order_inventory_system.shipment.entity;
 
+import com.company.order_inventory_system.shipment.converter.ShipmentStatusConverter;
 import com.company.order_inventory_system.shipment.enums.ShipmentStatus;
 import jakarta.persistence.*;
 
@@ -25,11 +26,13 @@ public class Shipment {
     @Column(name = "delivery_address", nullable = false)
     private String deliveryAddress;
 
-    @Enumerated(EnumType.STRING)
+
 
     @Column(name = "shipment_status",
             nullable = false,
             length = 20)
+
+    @Convert(converter = ShipmentStatusConverter.class)
 
     private ShipmentStatus shipmentStatus;
 
