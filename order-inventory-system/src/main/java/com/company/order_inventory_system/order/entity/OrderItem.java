@@ -2,6 +2,7 @@ package com.company.order_inventory_system.order.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 @Table(name = "order_items")
@@ -86,5 +87,20 @@ public class OrderItem {
     }
 
     public OrderItem() {
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        OrderItem orderItem = (OrderItem) o;
+
+        return Objects.equals(orderId, orderItem.orderId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderId);
     }
 }

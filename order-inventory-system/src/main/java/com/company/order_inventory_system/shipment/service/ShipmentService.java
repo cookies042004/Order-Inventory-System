@@ -1,4 +1,33 @@
 package com.company.order_inventory_system.shipment.service;
 
-public class ShipmentService {
+import com.company.order_inventory_system.shipment.dto.ShipmentRequest;
+import com.company.order_inventory_system.shipment.dto.ShipmentResponse;
+import com.company.order_inventory_system.shipment.enums.ShipmentStatus;
+
+import java.util.List;
+
+public interface ShipmentService {
+
+    ShipmentResponse createShipment(
+            ShipmentRequest request);
+
+    List<ShipmentResponse> getAllShipments();
+
+    ShipmentResponse getShipmentById(
+            Integer shipmentId);
+
+    ShipmentResponse updateShipment(
+            Integer shipmentId,
+            ShipmentRequest request);
+
+    void deleteShipment(Integer shipmentId);
+
+    List<ShipmentResponse> getShipmentsByCustomerId(
+            Integer customerId);
+
+    List<ShipmentResponse> getShipmentsByStoreId(
+            Integer storeId);
+
+    List<ShipmentResponse> getShipmentsByStatus(
+            ShipmentStatus shipmentStatus);
 }
