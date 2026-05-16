@@ -2,7 +2,7 @@ package com.company.order_inventory_system.order.entity;
 
 import com.company.order_inventory_system.order.enums.OrderStatus;
 import jakarta.persistence.*;
-
+import java.util.Objects;
 import java.time.LocalDateTime;
 
 @Entity
@@ -78,4 +78,20 @@ public class Order {
 
     public Order() {
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Order order = (Order) o;
+
+        return Objects.equals(orderId, order.orderId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderId);
+    }
+
 }
