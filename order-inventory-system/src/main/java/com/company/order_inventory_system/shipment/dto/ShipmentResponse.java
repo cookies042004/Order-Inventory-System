@@ -2,22 +2,25 @@ package com.company.order_inventory_system.shipment.dto;
 
 import com.company.order_inventory_system.shipment.enums.ShipmentStatus;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+public class ShipmentResponse {
 
-public class ShipmentRequest {
+    private Integer shipmentId;
 
-    @NotNull(message = "Store ID is required")
     private Integer storeId;
 
-    @NotNull(message = "Customer ID is required")
     private Integer customerId;
 
-    @NotBlank(message = "Delivery address is required")
     private String deliveryAddress;
 
-    @NotNull(message = "Shipment status is required")
     private ShipmentStatus shipmentStatus;
+
+    public Integer getShipmentId() {
+        return shipmentId;
+    }
+
+    public void setShipmentId(Integer shipmentId) {
+        this.shipmentId = shipmentId;
+    }
 
     public Integer getStoreId() {
         return storeId;
