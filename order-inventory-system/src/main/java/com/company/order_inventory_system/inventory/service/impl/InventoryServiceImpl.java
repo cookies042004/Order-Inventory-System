@@ -1,10 +1,9 @@
 package com.company.order_inventory_system.inventory.service.impl;
 
-
-import com.company.order_inventory_system.common.exception.InvalidDataException;
+import com.company.order_inventory_system.inventory.exception.DuplicateResourceException;
+import com.company.order_inventory_system.inventory.exception.InvalidDataException;
+import com.company.order_inventory_system.inventory.exception.ResourceNotFoundException;
 import com.company.order_inventory_system.store.dto.ApiResponseDTO;
-import com.company.order_inventory_system.common.exception.DuplicateResourceException;
-import com.company.order_inventory_system.common.exception.ResourceNotFoundException;
 import com.company.order_inventory_system.inventory.dto.InventoryRequestDTO;
 import com.company.order_inventory_system.inventory.dto.InventoryResponseDTO;
 import com.company.order_inventory_system.inventory.entity.Inventory;

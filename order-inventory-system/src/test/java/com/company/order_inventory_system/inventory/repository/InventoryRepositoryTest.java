@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,6 +45,11 @@ class InventoryRepositoryTest {
         Product product = new Product();
 
         product.setProductName("Laptop");
+        product.setBrand("Nike");
+        product.setColour("Black");
+        product.setSize("M");
+        product.setUnitPrice(2500.0);
+        product.setRating(4);
 
         Product savedProduct = productRepository.save(product);
 
@@ -76,6 +82,11 @@ class InventoryRepositoryTest {
         Product product = new Product();
 
         product.setProductName("Laptop");
+        product.setBrand("Nike");
+        product.setColour("Black");
+        product.setSize("M");
+        product.setUnitPrice(2500.0);
+        product.setRating(4);
 
         Product savedProduct = productRepository.save(product);
 
@@ -108,6 +119,11 @@ class InventoryRepositoryTest {
         Product product = new Product();
 
         product.setProductName("Laptop");
+        product.setBrand("Nike");
+        product.setColour("Black");
+        product.setSize("M");
+        product.setUnitPrice(2500.0);
+        product.setRating(4);
 
         Product savedProduct = productRepository.save(product);
 

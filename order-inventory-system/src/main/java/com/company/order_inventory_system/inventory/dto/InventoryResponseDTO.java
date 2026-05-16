@@ -2,31 +2,31 @@ package com.company.order_inventory_system.inventory.dto;
 
 public class InventoryResponseDTO {
 
-    private Long inventoryId;
+    private Integer inventoryId;
 
-    private Long storeId;
+    private Integer storeId;
 
     private String storeName;
 
-    private Long productId;
+    private Integer productId;
 
     private String productName;
 
     private Integer productInventory;
 
-    public Long getInventoryId() {
+    public Integer getInventoryId() {
         return inventoryId;
     }
 
-    public void setInventoryId(Long inventoryId) {
+    public void setInventoryId(Integer inventoryId) {
         this.inventoryId = inventoryId;
     }
 
-    public Long getStoreId() {
+    public Integer getStoreId() {
         return storeId;
     }
 
-    public void setStoreId(Long storeId) {
+    public void setStoreId(Integer storeId) {
         this.storeId = storeId;
     }
 
@@ -38,11 +38,11 @@ public class InventoryResponseDTO {
         this.storeName = storeName;
     }
 
-    public Long getProductId() {
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
 
