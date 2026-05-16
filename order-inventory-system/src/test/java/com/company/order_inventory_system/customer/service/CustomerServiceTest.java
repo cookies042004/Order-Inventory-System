@@ -1,124 +1,242 @@
 package com.company.order_inventory_system.customer.service;
 
-import com.company.order_inventory_system.customer.dto.CustomerDataRequest;
+import com.company.order_inventory_system.customer.dto.CustomerRequest;
+import com.company.order_inventory_system.customer.dto.CustomerResponse;
 import com.company.order_inventory_system.customer.entity.Customer;
+import com.company.order_inventory_system.customer.exception.CustomerNotFoundException;
+import com.company.order_inventory_system.customer.repository.CustomerRepository;
+
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-/* Loads complete Spring Boot application context */
-@SpringBootTest
+/* Enables Mockito testing support */
+@ExtendWith(MockitoExtension.class)
 
-/* Rolls back database changes after each test */
-@Transactional
+class CustomerServiceTest {
 
-public class CustomerServiceTest {
+    /* Creates mock object for repository layer */
+    @Mock
+    private CustomerRepository customerRepository;
 
-    /* Injects customer service dependency */
-    @Autowired
-    private CustomerService customerService;
+    /* Injects mocked repository into service layer */
+    @InjectMocks
+    private CustomerServiceImpl customerService;
 
-    /* Used to test customer creation operation */
+    /* Creates sample customer entity object */
+    private Customer createSampleCustomer() {
+
+        Customer customer = new Customer();
+
+        customer.setCustomerId(1);
+
+        customer.setEmailAddress(
+                "customer@gmail.com"
+        );
+
+        customer.setFullName(
+                "Test Customer"
+        );
+
+        return customer;
+    }
+
+    /* Creates sample customer request DTO object */
+    private CustomerRequest
+    createCustomerRequest() {
+
+        CustomerRequest request =
+                new CustomerRequest();
+
+        request.setEmailAddress(
+                "customer@gmail.com"
+        );
+
+        request.setFullName(
+                "Test Customer"
+        );
+
+        return request;
+    }
+
+    /* Tests customer creation operation */
     @Test
     void testCreateCustomer() {
 
-        /* Creates DTO object */
-        CustomerDataRequest customerDataRequest =
-                new CustomerDataRequest();
-
-        /* Sets customer email address */
-        customerDataRequest.setEmailAddress(
-                "service@gmail.com"
-        );
-
-        /* Sets customer full name */
-        customerDataRequest.setFullName(
-                "Service Customer"
-        );
-
-        /* Calls create customer service method */
         Customer customer =
+                createSampleCustomer();
+
+        when(customerRepository.save(
+                any(Customer.class)))
+
+                .thenReturn(customer);
+
+        CustomerResponse response =
                 customerService.createCustomer(
-                        customerDataRequest
+                        createCustomerRequest()
                 );
 
-        /* Checks whether customer ID is generated */
-        assertNotNull(customer.getCustomerId());
+        assertNotNull(response);
+
+        assertEquals(
+                1,
+                response.getCustomerId()
+        );
+
+        verify(customerRepository,
+                times(1))
+                .save(any(Customer.class));
     }
 
-    /* Used to test fetch customer using ID */
+    /* Tests fetch customer using customer ID */
     @Test
     void testGetCustomerById() {
 
-        /* Fetches customer using customer ID */
-        Customer customer =
-                customerService.getCustomerById(381);
+        when(customerRepository.findById(1))
 
-        /* Checks whether customer exists */
-        assertNotNull(customer);
+                .thenReturn(
+                        Optional.of(
+                                createSampleCustomer()
+                        )
+                );
+
+        CustomerResponse response =
+                customerService.getCustomerById(1);
+
+        assertNotNull(response);
+
+        assertEquals(
+                1,
+                response.getCustomerId()
+        );
+
+        verify(customerRepository,
+                times(1))
+                .findById(1);
     }
 
-    /* Used to test fetch all customers operation */
+    /* Tests customer not found exception */
+    @Test
+    void testGetCustomerByIdNotFound() {
+
+        when(customerRepository.findById(1))
+                .thenReturn(Optional.empty());
+
+        assertThrows(
+                CustomerNotFoundException.class,
+
+                () -> customerService
+                        .getCustomerById(1)
+        );
+
+        verify(customerRepository,
+                times(1))
+                .findById(1);
+    }
+
+    /* Tests fetch all customers operation */
     @Test
     void testGetAllCustomers() {
 
-        /* Fetches all customer records */
-        List<Customer> customers =
+        when(customerRepository.findAll())
+
+                .thenReturn(
+                        List.of(
+                                createSampleCustomer()
+                        )
+                );
+
+        List<CustomerResponse> responses =
                 customerService.getAllCustomers();
 
-        /* Checks whether customer list is not empty */
-        assertFalse(customers.isEmpty());
+        assertEquals(
+                1,
+                responses.size()
+        );
+
+        verify(customerRepository,
+                times(1))
+                .findAll();
     }
 
-    /* Used to test customer update operation */
+    /* Tests update customer operation */
     @Test
     void testUpdateCustomer() {
 
-        /* Creates DTO object */
-        CustomerDataRequest customerDataRequest =
-                new CustomerDataRequest();
+        Customer existingCustomer =
+                createSampleCustomer();
 
-        /* Sets updated email address */
-        customerDataRequest.setEmailAddress(
-                "updated@gmail.com"
-        );
+        Customer updatedCustomer =
+                createSampleCustomer();
 
-        /* Sets updated customer name */
-        customerDataRequest.setFullName(
+        updatedCustomer.setFullName(
                 "Updated Customer"
         );
 
-        /* Calls update customer service method */
-        Customer updatedCustomer =
-                customerService.updateCustomer(
-                        381,
-                        customerDataRequest
+        updatedCustomer.setEmailAddress(
+                "updated@gmail.com"
+        );
+
+        when(customerRepository.findById(1))
+
+                .thenReturn(
+                        Optional.of(existingCustomer)
                 );
 
-        /* Checks whether customer name is updated */
+        when(customerRepository.save(
+                any(Customer.class)))
+
+                .thenReturn(updatedCustomer);
+
+        CustomerResponse response =
+                customerService.updateCustomer(
+                        1,
+                        createCustomerRequest()
+                );
+
+        assertNotNull(response);
+
         assertEquals(
                 "Updated Customer",
-                updatedCustomer.getFullName()
+                response.getFullName()
         );
+
+        verify(customerRepository,
+                times(1))
+                .save(any(Customer.class));
     }
 
-    /* Used to test customer delete operation */
+    /* Tests delete customer operation */
     @Test
     void testDeleteCustomer() {
 
-        /* Calls delete customer service method */
-        String response =
-                customerService.deleteCustomer(381);
+        Customer customer =
+                createSampleCustomer();
 
-        /* Checks whether customer is deleted */
-        assertEquals(
-                "Customer details deleted successfully",
-                response
-        );
+        when(customerRepository.findById(1))
+
+                .thenReturn(
+                        Optional.of(customer)
+                );
+
+        doNothing().when(customerRepository)
+                .delete(customer);
+
+        customerService.deleteCustomer(1);
+
+        verify(customerRepository,
+                times(1))
+                .delete(customer);
     }
 }

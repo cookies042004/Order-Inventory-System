@@ -3,6 +3,7 @@ package com.company.order_inventory_system.common.exception;
 import com.company.order_inventory_system.order.exception.OrderItemNotFoundException;
 import com.company.order_inventory_system.order.exception.OrderNotFoundException;
 import com.company.order_inventory_system.shipment.exception.ShipmentNotFoundException;
+import com.company.order_inventory_system.customer.exception.CustomerNotFoundException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,6 +72,25 @@ public class GlobalExceptionHandler {
                         LocalDateTime.now(),
                         HttpStatus.NOT_FOUND.value(),
                         "Shipment Not Found",
+                        ex.getMessage()
+                );
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CustomerNotFoundException.class)
+
+    public ResponseEntity<ErrorResponse>
+    handleCustomerNotFoundException(
+            CustomerNotFoundException ex) {
+
+        ErrorResponse response =
+                new ErrorResponse(
+                        LocalDateTime.now(),
+                        HttpStatus.NOT_FOUND.value(),
+                        "Customer Not Found",
                         ex.getMessage()
                 );
 

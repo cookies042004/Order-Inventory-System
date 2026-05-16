@@ -1,122 +1,150 @@
 package com.company.order_inventory_system.customer.service;
 
-import com.company.order_inventory_system.customer.dto.CustomerDataRequest;
+import com.company.order_inventory_system.customer.dto.CustomerRequest;
+import com.company.order_inventory_system.customer.dto.CustomerResponse;
 import com.company.order_inventory_system.customer.entity.Customer;
 import com.company.order_inventory_system.customer.exception.CustomerNotFoundException;
 import com.company.order_inventory_system.customer.repository.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/* Marks this class as service layer for customer module */
+/* Marks this class as customer service layer */
 @Service
 
-/* Implements customer business operations */
 public class CustomerServiceImpl
         implements CustomerService {
 
-    /* Used to perform database operations */
-    @Autowired
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
 
-    /* Used to create and store new customer details */
+    public CustomerServiceImpl(
+            CustomerRepository customerRepository) {
+
+        this.customerRepository =
+                customerRepository;
+    }
+
+    /* Creates new customer */
     @Override
-    public Customer createCustomer(
-            CustomerDataRequest customerDataRequest) {
+    public CustomerResponse createCustomer(
+            CustomerRequest request) {
 
-        /* Creates customer entity object */
+        Customer customer =
+                mapToEntity(request);
+
+        Customer savedCustomer =
+                customerRepository.save(customer);
+
+        return mapToResponse(savedCustomer);
+    }
+
+    /* Fetches all customer records */
+    @Override
+    public List<CustomerResponse>
+    getAllCustomers() {
+
+        return customerRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    /* Fetches customer using customer ID */
+    @Override
+    public CustomerResponse getCustomerById(
+            Integer customerId) {
+
+        Customer customer =
+                customerRepository.findById(customerId)
+
+                        .orElseThrow(() ->
+                                new CustomerNotFoundException("Customer not found with ID: " + customerId));
+
+        return mapToResponse(customer);
+    }
+
+    /* Updates existing customer details */
+    @Override
+    public CustomerResponse updateCustomer(
+            Integer customerId,
+            CustomerRequest request) {
+
+        Customer existingCustomer =
+                customerRepository.findById(customerId)
+
+                        .orElseThrow(() ->
+                                new CustomerNotFoundException("Customer not found with ID: " + customerId));
+
+        existingCustomer.setEmailAddress(
+                request.getEmailAddress()
+        );
+
+        existingCustomer.setFullName(
+                request.getFullName()
+        );
+
+        Customer updatedCustomer =
+                customerRepository.save(
+                        existingCustomer
+                );
+
+        return mapToResponse(updatedCustomer);
+    }
+
+    /* Deletes customer using customer ID */
+    @Override
+    public void deleteCustomer(
+            Integer customerId) {
+
+        Customer existingCustomer =
+                customerRepository.findById(customerId)
+
+                        .orElseThrow(() ->
+                                new CustomerNotFoundException(
+                                        "Customer not found with ID: "
+                                                + customerId
+                                ));
+
+        customerRepository.delete(existingCustomer);
+    }
+
+    /* Converts request DTO into entity */
+    private Customer mapToEntity(
+            CustomerRequest request) {
+
         Customer customer = new Customer();
 
-        /* Sets customer email address */
         customer.setEmailAddress(
-                customerDataRequest.getEmailAddress()
+                request.getEmailAddress()
         );
 
-        /* Sets customer full name */
         customer.setFullName(
-                customerDataRequest.getFullName()
+                request.getFullName()
         );
 
-        /* Saves and returns newly created customer details */
-        return customerRepository.save(customer);
+        return customer;
     }
 
-    /* Used to fetch customer details using customer ID */
-    @Override
-    public Customer getCustomerById(
-            Integer customerId) {
+    /* Converts entity into response DTO */
+    private CustomerResponse mapToResponse(
+            Customer customer) {
 
-        /* Fetches customer using customer ID */
-        return customerRepository.findById(customerId)
+        CustomerResponse response =
+                new CustomerResponse();
 
-                /* Throws exception if customer with given ID does not exist */
-                .orElseThrow(() ->
-                        new CustomerNotFoundException(
-                                "Customer details not found for the given customer ID"
-                        )
-                );
-    }
-
-    /* Used to fetch all available customer records */
-    @Override
-    public List<Customer> getAllCustomers() {
-
-        /* Returns list of all customer records */
-        return customerRepository.findAll();
-    }
-
-    /* Used to update existing customer details */
-    @Override
-    public Customer updateCustomer(
-            Integer customerId,
-            CustomerDataRequest customerDataRequest) {
-
-        /* Fetches customer using customer ID */
-        Customer customer =
-                customerRepository.findById(customerId)
-
-                        /* Throws exception if customer with given ID does not exist */
-                        .orElseThrow(() ->
-                                new CustomerNotFoundException(
-                                        "Customer details not found for the given customer ID"
-                                )
-                        );
-
-        /* Updates customer email address */
-        customer.setEmailAddress(
-                customerDataRequest.getEmailAddress()
+        response.setCustomerId(
+                customer.getCustomerId()
         );
 
-        /* Updates customer full name */
-        customer.setFullName(
-                customerDataRequest.getFullName()
+        response.setEmailAddress(
+                customer.getEmailAddress()
         );
 
-        /* Saves and returns updated customer details */
-        return customerRepository.save(customer);
-    }
+        response.setFullName(
+                customer.getFullName()
+        );
 
-    /* Used to delete customer details using customer ID */
-    @Override
-    public String deleteCustomer(
-            Integer customerId) {
-
-        /* Fetches customer using customer ID */
-        Customer customer =
-                customerRepository.findById(customerId)
-
-                        /* Throws exception if customer with given ID does not exist */
-                        .orElseThrow(() ->
-                                new CustomerNotFoundException(
-                                        "Customer details not found for the given customer ID"
-                                )
-                        );
-
-        /* Deletes customer details from database */
-        customerRepository.delete(customer);
-
-        /* Returns successful deletion message */
-        return "Customer details deleted successfully";
+        return response;
     }
 }

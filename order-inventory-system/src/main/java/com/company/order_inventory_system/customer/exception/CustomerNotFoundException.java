@@ -5,8 +5,7 @@ public class CustomerNotFoundException
         extends RuntimeException {
 
     /* Passes exception message to parent class */
-    public CustomerNotFoundException(
-            String message) {
+    public CustomerNotFoundException(String message) {
 
         super(message);
     }

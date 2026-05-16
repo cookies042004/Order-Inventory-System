@@ -1,34 +1,34 @@
 package com.company.order_inventory_system.customer.service;
 
-import com.company.order_inventory_system.customer.dto.CustomerDataRequest;
-import com.company.order_inventory_system.customer.entity.Customer;
+import com.company.order_inventory_system.customer.dto.CustomerRequest;
+import com.company.order_inventory_system.customer.dto.CustomerResponse;
 
 import java.util.List;
 
-/* Provides customer-related business operations */
+/* Provides customer business operations */
 public interface CustomerService {
 
-    /* Used to create and store new customer details */
-    Customer createCustomer(
-            CustomerDataRequest customerDataRequest
+    /* Creates new customer */
+    CustomerResponse createCustomer(
+            CustomerRequest request
     );
 
-    /* Used to fetch customer details using customer ID */
-    Customer getCustomerById(
+    /* Fetches all customer records */
+    List<CustomerResponse> getAllCustomers();
+
+    /* Fetches customer using customer ID */
+    CustomerResponse getCustomerById(
             Integer customerId
     );
 
-    /* Used to fetch all available customer records */
-    List<Customer> getAllCustomers();
-
-    /* Used to modify existing customer details */
-    Customer updateCustomer(
+    /* Updates existing customer details */
+    CustomerResponse updateCustomer(
             Integer customerId,
-            CustomerDataRequest customerDataRequest
+            CustomerRequest request
     );
 
-    /* Used to remove customer details from database */
-    String deleteCustomer(
+    /* Deletes customer using customer ID */
+    void deleteCustomer(
             Integer customerId
     );
 }

@@ -1,9 +1,6 @@
 package com.company.order_inventory_system.customer.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
@@ -26,13 +23,10 @@ public class Customer {
     private Integer customerId;
 
     /* Maps email_address column */
-    @NotBlank(message = "Customer email address cannot be empty")
-    @Email(message = "Please enter a valid customer email address")
     @Column(name = "email_address")
     private String emailAddress;
 
     /* Maps full_name column */
-    @NotNull(message = "Customer name cannot be null")
     @Column(name = "full_name")
     private String fullName;
 
@@ -42,7 +36,9 @@ public class Customer {
     }
 
     /* Setter for customerId */
-    public void setCustomerId(Integer customerId) {
+    public void setCustomerId(
+            Integer customerId) {
+
         this.customerId = customerId;
     }
 
@@ -52,7 +48,9 @@ public class Customer {
     }
 
     /* Setter for emailAddress */
-    public void setEmailAddress(String emailAddress) {
+    public void setEmailAddress(
+            String emailAddress) {
+
         this.emailAddress = emailAddress;
     }
 
@@ -62,14 +60,17 @@ public class Customer {
     }
 
     /* Setter for fullName */
-    public void setFullName(String fullName) {
+    public void setFullName(
+            String fullName) {
+
         this.fullName = fullName;
     }
 
     /* Parameterized constructor */
-    public Customer(Integer customerId,
-                    String emailAddress,
-                    String fullName) {
+    public Customer(
+            Integer customerId,
+            String emailAddress,
+            String fullName) {
 
         this.customerId = customerId;
         this.emailAddress = emailAddress;
@@ -90,18 +91,23 @@ public class Customer {
 
         if (object == null ||
                 getClass() != object.getClass()) {
+
             return false;
         }
 
-        Customer customer = (Customer) object;
+        Customer customer =
+                (Customer) object;
 
-        return Objects.equals(customerId,
-                customer.customerId);
+        return Objects.equals(
+                customerId,
+                customer.customerId
+        );
     }
 
     /* Hashcode method */
     @Override
     public int hashCode() {
+
         return Objects.hash(customerId);
     }
 }
