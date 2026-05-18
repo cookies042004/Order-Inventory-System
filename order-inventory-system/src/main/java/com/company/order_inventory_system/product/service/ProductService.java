@@ -1,70 +1,37 @@
 package com.company.order_inventory_system.product.service;
 
-import com.company.order_inventory_system.product.entity.Product;
-import com.company.order_inventory_system.product.repository.ProductRepository;
-import org.springframework.stereotype.Service;
+import com.company.order_inventory_system.product.dto.ProductRequest;
+import com.company.order_inventory_system.product.dto.ProductResponse;
 
 import java.util.List;
-import java.util.Optional;
 
-@Service // Contains business logic
-public class ProductService {
+// Defines product business operations
+public interface ProductService {
 
-    private final ProductRepository productRepository;
+    // Creates new product
+    ProductResponse createProduct(ProductRequest productRequest);
 
-    // Constructor Injection
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    // Fetches all products
+    List<ProductResponse> getAllProducts();
 
-    // Save new product
-    public Product createProduct(Product product) {
-        return productRepository.save(product);
-    }
+    // Fetches product by ID
+    ProductResponse getProductById(Integer productId);
 
-    // Get all products
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
+    // Updates existing product
+    ProductResponse updateProduct(
+            Integer productId,
+            ProductRequest productRequest
+    );
 
-    // Get product by ID
-    public Optional<Product> getProductById(Integer productId) {
-        return productRepository.findById(productId);
-    }
+    // Deletes product by ID
+    void deleteProduct(Integer productId);
 
-    // Update existing product
-    public Product updateProduct(Integer productId, Product updatedProduct) {
+    // Fetches products by brand
+    List<ProductResponse> getProductsByBrand(String brand);
 
-        Product existingProduct = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+    // Fetches products by colour
+    List<ProductResponse> getProductsByColour(String colour);
 
-        existingProduct.setProductName(updatedProduct.getProductName());
-        existingProduct.setUnitPrice(updatedProduct.getUnitPrice());
-        existingProduct.setColour(updatedProduct.getColour());
-        existingProduct.setBrand(updatedProduct.getBrand());
-        existingProduct.setSize(updatedProduct.getSize());
-        existingProduct.setRating(updatedProduct.getRating());
-
-        return productRepository.save(existingProduct);
-    }
-
-    // Delete product
-    public void deleteProduct(Integer productId) {
-        productRepository.deleteById(productId);
-    }
-
-    // Find products by brand
-    public List<Product> getProductsByBrand(String brand) {
-        return productRepository.findByBrand(brand);
-    }
-
-    // Find products by colour
-    public List<Product> getProductsByColour(String colour) {
-        return productRepository.findByColour(colour);
-    }
-
-    // Find products by size
-    public List<Product> getProductsBySize(String size) {
-        return productRepository.findBySize(size);
-    }
+    // Fetches products by size
+    List<ProductResponse> getProductsBySize(String size);
 }
