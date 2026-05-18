@@ -88,16 +88,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     // Deletes product by ID
+    // Deletes product and returns deleted product details
     @Override
-    public void deleteProduct(Integer productId) {
+    public ProductResponse deleteProduct(Integer productId) {
 
+        // Fetch existing product
         Product product = productRepository.findById(productId)
                 .orElseThrow(() ->
                         new ProductNotFoundException(
                                 "Product not found with ID : " + productId
                         ));
 
+        // Convert entity to response DTO before deletion
+        ProductResponse response = mapToResponse(product);
+
+        // Delete product from database
         productRepository.delete(product);
+
+        // Return deleted product details
+        return response;
     }
 
 

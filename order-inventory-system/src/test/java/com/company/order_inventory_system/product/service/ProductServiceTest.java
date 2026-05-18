@@ -198,21 +198,79 @@ public class ProductServiceTest {
                 .delete(product);
     }
 
-    // Tests fetching products by brand
     @Test
-    void testGetProductsByBrand() {
+    void testGetProductById_ProductNotFound() {
 
-        // Mock repository method
-        when(productRepository.findByBrand("NIKE"))
-                .thenReturn(Arrays.asList(product));
+        // Mock empty response
+        when(productRepository.findById(999))
+                .thenReturn(Optional.empty());
 
-        List<ProductResponse> products =
-                productService.getProductsByBrand("NIKE");
+        // Validate exception
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                () -> productService.getProductById(999)
+        );
 
-        // Validate returned list
-        assertFalse(products.isEmpty());
+        assertEquals(
+                "Product not found with ID : 999",
+                exception.getMessage()
+        );
 
         verify(productRepository, times(1))
-                .findByBrand("NIKE");
+                .findById(999);
     }
+
+    @Test
+    void testUpdateProduct_ProductNotFound() {
+
+        ProductRequest request = new ProductRequest(
+                "Test Product",
+                2000.0,
+                "BLACK",
+                "PUMA",
+                "M",
+                4
+        );
+
+        // Mock empty product
+        when(productRepository.findById(999))
+                .thenReturn(Optional.empty());
+
+        // Validate exception
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                () -> productService.updateProduct(999, request)
+        );
+
+        assertEquals(
+                "Product not found with ID : 999",
+                exception.getMessage()
+        );
+
+        verify(productRepository, times(1))
+                .findById(999);
+    }
+
+    @Test
+    void testDeleteProduct_ProductNotFound() {
+
+        // Mock empty product
+        when(productRepository.findById(999))
+                .thenReturn(Optional.empty());
+
+        // Validate exception
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                () -> productService.deleteProduct(999)
+        );
+
+        assertEquals(
+                "Product not found with ID : 999",
+                exception.getMessage()
+        );
+
+        verify(productRepository, times(1))
+                .findById(999);
+    }
+
 }

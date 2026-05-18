@@ -24,6 +24,6 @@ public interface ProductService {
     );
 
     // Deletes product by ID
-    void deleteProduct(Integer productId);
+    ProductResponse deleteProduct(Integer productId);
 
 }
