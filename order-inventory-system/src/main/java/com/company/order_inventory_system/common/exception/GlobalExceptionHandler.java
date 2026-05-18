@@ -4,6 +4,7 @@ import com.company.order_inventory_system.order.exception.OrderItemNotFoundExcep
 import com.company.order_inventory_system.order.exception.OrderNotFoundException;
 import com.company.order_inventory_system.shipment.exception.ShipmentNotFoundException;
 import com.company.order_inventory_system.store.dto.ErrorResponseDTO;
+import com.company.order_inventory_system.product.exception.ProductNotFoundException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -130,7 +131,25 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // Handle Validation Exceptions
+    @ExceptionHandler(ProductNotFoundException.class)
+
+    public ResponseEntity<ErrorResponse>
+    handleProductNotFoundException(
+            ProductNotFoundException ex) {
+
+        ErrorResponse response =
+                new ErrorResponse(
+                        LocalDateTime.now(),
+                        HttpStatus.NOT_FOUND.value(),
+                        "Product Not Found",
+                        ex.getMessage()
+                );
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>>
     handleValidationExceptions(
