@@ -1,8 +1,5 @@
 package com.company.order_inventory_system.common.exception;
 
-import com.company.order_inventory_system.inventory.exception.DuplicateResourceException;
-import com.company.order_inventory_system.inventory.exception.InvalidDataException;
-import com.company.order_inventory_system.inventory.exception.ResourceNotFoundException;
 import com.company.order_inventory_system.order.exception.OrderItemNotFoundException;
 import com.company.order_inventory_system.order.exception.OrderNotFoundException;
 import com.company.order_inventory_system.shipment.exception.ShipmentNotFoundException;
@@ -26,8 +23,7 @@ public class GlobalExceptionHandler {
 
     // Handle Resource Not Found Exception
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO>
-    handleResourceNotFoundException(ResourceNotFoundException exception) {
+    public ResponseEntity<ErrorResponseDTO> handleResourceNotFoundException(ResourceNotFoundException exception) {
 
         ErrorResponseDTO errorResponse = new ErrorResponseDTO(
                         false,
