@@ -30,4 +30,7 @@ public interface ShipmentService {
 
     List<ShipmentResponse> getShipmentsByStatus(
             ShipmentStatus shipmentStatus);
+    ShipmentResponse updateShipmentStatus(
+            Integer shipmentId,
+            ShipmentStatus status);
 }

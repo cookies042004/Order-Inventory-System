@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -127,5 +128,36 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(
                 response,
                 HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @ExceptionHandler(
+            MethodArgumentTypeMismatchException.class)
+
+    public ResponseEntity<ErrorResponse>
+    handleMethodArgumentTypeMismatchException(
+            MethodArgumentTypeMismatchException ex) {
+
+        String message =
+                "Invalid value for parameter: "
+                        + ex.getName();
+
+        if (ex.getRequiredType() != null
+                && ex.getRequiredType()
+                .equals(LocalDateTime.class)) {
+
+            message =
+                    "Invalid date-time format. "
+                            + "Use format: yyyy-MM-dd'T'HH:mm:ss";
+        }
+
+        ErrorResponse response =
+                new ErrorResponse(
+                        LocalDateTime.now(),
+                        HttpStatus.BAD_REQUEST.value(),
+                        "Bad Request",
+                        message);
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.BAD_REQUEST);
     }
 }

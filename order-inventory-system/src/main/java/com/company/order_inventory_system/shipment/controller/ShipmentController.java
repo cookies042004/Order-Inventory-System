@@ -134,4 +134,19 @@ public class ShipmentController {
                         .getShipmentsByStatus(
                                 status));
     }
+    @PatchMapping("/{shipmentId}/status")
+
+    public ResponseEntity<ShipmentResponse>
+    updateShipmentStatus(
+
+            @PathVariable Integer shipmentId,
+
+            @RequestParam ShipmentStatus status) {
+
+        return ResponseEntity.ok(
+                shipmentService
+                        .updateShipmentStatus(
+                                shipmentId,
+                                status));
+    }
 }

@@ -171,4 +171,23 @@ public class OrderServiceImpl
 
         return response;
     }
+    @Override
+    public OrderResponse updateOrderStatus(
+            Integer orderId,
+            OrderStatus status) {
+
+        Order existingOrder =
+                orderRepository.findById(orderId)
+                        .orElseThrow(() ->
+                                new OrderNotFoundException(
+                                        "Order not found with ID: "
+                                                + orderId));
+
+        existingOrder.setOrderStatus(status);
+
+        Order updatedOrder =
+                orderRepository.save(existingOrder);
+
+        return mapToResponse(updatedOrder);
+    }
 }

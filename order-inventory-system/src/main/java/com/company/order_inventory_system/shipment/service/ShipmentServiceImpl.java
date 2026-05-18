@@ -184,4 +184,24 @@ public class ShipmentServiceImpl
 
         return response;
     }
+
+    @Override
+    public ShipmentResponse updateShipmentStatus(
+            Integer shipmentId,
+            ShipmentStatus status) {
+
+        Shipment shipment =
+                shipmentRepository.findById(shipmentId)
+                        .orElseThrow(() ->
+                                new ShipmentNotFoundException(
+                                        "Shipment not found with ID: "
+                                                + shipmentId));
+
+        shipment.setShipmentStatus(status);
+
+        Shipment updatedShipment =
+                shipmentRepository.save(shipment);
+
+        return mapToResponse(updatedShipment);
+    }
 }

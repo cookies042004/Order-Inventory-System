@@ -33,4 +33,7 @@ public interface OrderService {
     List<OrderResponse> getOrdersByDateRange(
             LocalDateTime from,
             LocalDateTime to);
+    OrderResponse updateOrderStatus(
+            Integer orderId,
+            OrderStatus status);
 }
