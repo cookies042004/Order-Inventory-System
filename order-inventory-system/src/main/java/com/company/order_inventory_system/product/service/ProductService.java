@@ -26,12 +26,4 @@ public interface ProductService {
     // Deletes product by ID
     void deleteProduct(Integer productId);
 
-    // Fetches products by brand
-    List<ProductResponse> getProductsByBrand(String brand);
-
-    // Fetches products by colour
-    List<ProductResponse> getProductsByColour(String colour);
-
-    // Fetches products by size
-    List<ProductResponse> getProductsBySize(String size);
 }

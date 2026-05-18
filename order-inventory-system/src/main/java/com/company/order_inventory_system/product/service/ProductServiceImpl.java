@@ -100,35 +100,6 @@ public class ProductServiceImpl implements ProductService {
         productRepository.delete(product);
     }
 
-    // Fetches products by brand
-    @Override
-    public List<ProductResponse> getProductsByBrand(String brand) {
-
-        return productRepository.findByBrand(brand)
-                .stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
-    }
-
-    // Fetches products by colour
-    @Override
-    public List<ProductResponse> getProductsByColour(String colour) {
-
-        return productRepository.findByColour(colour)
-                .stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
-    }
-
-    // Fetches products by size
-    @Override
-    public List<ProductResponse> getProductsBySize(String size) {
-
-        return productRepository.findBySize(size)
-                .stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
-    }
 
     // Converts request DTO to entity
     private Product mapToEntity(ProductRequest request) {
