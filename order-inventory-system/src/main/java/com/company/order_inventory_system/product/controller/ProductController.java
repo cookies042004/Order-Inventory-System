@@ -5,6 +5,10 @@ import com.company.order_inventory_system.product.dto.ProductResponse;
 
 import com.company.order_inventory_system.product.service.ProductService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -14,7 +18,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController // Marks this class as REST API controller
+@Tag(
+        name = "Product Controller",
+        description = "APIs for managing products"
+)
+
+@RestController // Marks this class as REST controller
 @RequestMapping("/api/products") // Base URL for product APIs
 public class ProductController {
 
@@ -25,7 +34,17 @@ public class ProductController {
         this.productService = productService;
     }
 
-    // Creates and saves new product
+    // Creates and saves a new product
+    @Operation(
+            summary = "Create product",
+            description = "Creates and saves a new product"
+    )
+
+    @ApiResponse(
+            responseCode = "201",
+            description = "Product created successfully"
+    )
+
     @PostMapping
     public ResponseEntity<ProductResponse> createProduct(
             @Valid @RequestBody ProductRequest productRequest) {
@@ -39,32 +58,74 @@ public class ProductController {
         );
     }
 
-    // Fetches all products
+    // Fetches all available products
+    @Operation(
+            summary = "Get all products",
+            description = "Returns list of all available products"
+    )
+
+    @ApiResponse(
+            responseCode = "200",
+            description = "Products fetched successfully"
+    )
+
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getAllProducts() {
 
-        List<ProductResponse> products =
+        List<ProductResponse> productResponses =
                 productService.getAllProducts();
 
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(productResponses);
     }
 
     // Fetches product using product ID
+    @Operation(
+            summary = "Get product by ID",
+            description = "Fetches product details using product ID"
+    )
+
+    @ApiResponse(
+            responseCode = "200",
+            description = "Product fetched successfully"
+    )
+
+    @ApiResponse(
+            responseCode = "404",
+            description = "Product not found"
+    )
+
     @GetMapping("/{productId}")
     public ResponseEntity<ProductResponse> getProductById(
             @PathVariable Integer productId) {
 
-        ProductResponse product =
+        ProductResponse productResponse =
                 productService.getProductById(productId);
 
-        return ResponseEntity.ok(product);
+        return ResponseEntity.ok(productResponse);
     }
 
     // Updates existing product details
+    @Operation(
+            summary = "Update product",
+            description = "Updates product using product ID"
+    )
+
+    @ApiResponse(
+            responseCode = "200",
+            description = "Product updated successfully"
+    )
+
+    @ApiResponse(
+            responseCode = "404",
+            description = "Product not found"
+    )
+
     @PutMapping("/{productId}")
     public ResponseEntity<ProductResponse> updateProduct(
             @PathVariable Integer productId,
-            @Valid @RequestBody ProductRequest productRequest) {
+
+            @Valid @RequestBody
+            ProductRequest productRequest) {
 
         ProductResponse updatedProduct =
                 productService.updateProduct(
@@ -76,6 +137,21 @@ public class ProductController {
     }
 
     // Deletes product using product ID
+    @Operation(
+            summary = "Delete product",
+            description = "Deletes product using product ID"
+    )
+
+    @ApiResponse(
+            responseCode = "200",
+            description = "Product deleted successfully"
+    )
+
+    @ApiResponse(
+            responseCode = "404",
+            description = "Product not found"
+    )
+
     @DeleteMapping("/{productId}")
     public ResponseEntity<String> deleteProduct(
             @PathVariable Integer productId) {
@@ -87,36 +163,69 @@ public class ProductController {
         );
     }
 
-    // Fetches products by brand
+    // Fetches products matching given brand
+    @Operation(
+            summary = "Get products by brand",
+            description = "Returns products matching given brand"
+    )
+
+    @ApiResponse(
+            responseCode = "200",
+            description = "Products fetched successfully"
+    )
+
     @GetMapping("/brand/{brand}")
     public ResponseEntity<List<ProductResponse>>
-    getProductsByBrand(@PathVariable String brand) {
+    getProductsByBrand(
+            @PathVariable String brand) {
 
-        List<ProductResponse> products =
+        List<ProductResponse> productResponses =
                 productService.getProductsByBrand(brand);
 
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(productResponses);
     }
 
-    // Fetches products by colour
+    // Fetches products matching given colour
+    @Operation(
+            summary = "Get products by colour",
+            description = "Returns products matching given colour"
+    )
+
+    @ApiResponse(
+            responseCode = "200",
+            description = "Products fetched successfully"
+    )
+
     @GetMapping("/colour/{colour}")
     public ResponseEntity<List<ProductResponse>>
-    getProductsByColour(@PathVariable String colour) {
+    getProductsByColour(
+            @PathVariable String colour) {
 
-        List<ProductResponse> products =
+        List<ProductResponse> productResponses =
                 productService.getProductsByColour(colour);
 
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(productResponses);
     }
 
-    // Fetches products by size
+    // Fetches products matching given size
+    @Operation(
+            summary = "Get products by size",
+            description = "Returns products matching given size"
+    )
+
+    @ApiResponse(
+            responseCode = "200",
+            description = "Products fetched successfully"
+    )
+
     @GetMapping("/size/{size}")
     public ResponseEntity<List<ProductResponse>>
-    getProductsBySize(@PathVariable String size) {
+    getProductsBySize(
+            @PathVariable String size) {
 
-        List<ProductResponse> products =
+        List<ProductResponse> productResponses =
                 productService.getProductsBySize(size);
 
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(productResponses);
     }
 }
