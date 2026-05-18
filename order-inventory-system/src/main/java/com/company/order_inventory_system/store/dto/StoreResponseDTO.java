@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 public class StoreResponseDTO {
 
-    private Long storeId;
+    private Integer storeId;
 
     private String storeName;
 
@@ -23,11 +23,11 @@ public class StoreResponseDTO {
 
     private LocalDate logoLastUpdated;
 
-    public Long getStoreId() {
+    public Integer getStoreId() {
         return storeId;
     }
 
-    public void setStoreId(Long storeId) {
+    public void setStoreId(Integer storeId) {
         this.storeId = storeId;
     }
 
