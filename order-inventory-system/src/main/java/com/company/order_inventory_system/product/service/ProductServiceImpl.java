@@ -1,81 +1,161 @@
 package com.company.order_inventory_system.product.service;
 
+import com.company.order_inventory_system.product.dto.ProductRequest;
+import com.company.order_inventory_system.product.dto.ProductResponse;
+
 import com.company.order_inventory_system.product.entity.Product;
-import com.company.order_inventory_system.product.repository.ProductRepository;
+
 import com.company.order_inventory_system.product.exception.ProductNotFoundException;
+
+import com.company.order_inventory_system.product.repository.ProductRepository;
 
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
-@Service // Contains business logic implementation
+@Service // Contains product business logic
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
-    // Constructor Injection
+    // Constructor injection
     public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    // Save new product
+    // Creates and saves new product
     @Override
-    public Product createProduct(Product product) {
-        return productRepository.save(product);
+    public ProductResponse createProduct(ProductRequest productRequest) {
+
+        // Converts request DTO to entity
+        Product product = mapToEntity(productRequest);
+
+        Product savedProduct = productRepository.save(product);
+
+        // Converts entity to response DTO
+        return mapToResponse(savedProduct);
     }
 
-    // Fetch all products
+    // Fetches all products
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponse> getAllProducts() {
+
+        return productRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
     }
 
-    // Fetch product by ID
+    // Fetches product by ID
     @Override
-    public Optional<Product> getProductById(Integer productId) {
-        return productRepository.findById(productId);
+    public ProductResponse getProductById(Integer productId) {
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() ->
+                        new ProductNotFoundException(
+                                "Product not found with ID : " + productId
+                        ));
+
+        return mapToResponse(product);
     }
 
-    // Update existing product
+    // Updates existing product
     @Override
-    public Product updateProduct(Integer productId, Product updatedProduct) {
+    public ProductResponse updateProduct(
+            Integer productId,
+            ProductRequest productRequest
+    ) {
 
         Product existingProduct = productRepository.findById(productId)
                 .orElseThrow(() ->
-                        new ProductNotFoundException("Product not found with ID : " + productId));
+                        new ProductNotFoundException(
+                                "Product not found with ID : " + productId
+                        ));
 
-        existingProduct.setProductName(updatedProduct.getProductName());
-        existingProduct.setUnitPrice(updatedProduct.getUnitPrice());
-        existingProduct.setColour(updatedProduct.getColour());
-        existingProduct.setBrand(updatedProduct.getBrand());
-        existingProduct.setSize(updatedProduct.getSize());
-        existingProduct.setRating(updatedProduct.getRating());
+        // Updates entity fields
+        existingProduct.setProductName(productRequest.getProductName());
+        existingProduct.setUnitPrice(productRequest.getUnitPrice());
+        existingProduct.setColour(productRequest.getColour());
+        existingProduct.setBrand(productRequest.getBrand());
+        existingProduct.setSize(productRequest.getSize());
+        existingProduct.setRating(productRequest.getRating());
 
-        return productRepository.save(existingProduct);
+        Product updatedProduct =
+                productRepository.save(existingProduct);
+
+        return mapToResponse(updatedProduct);
     }
 
-    // Delete product
+    // Deletes product by ID
     @Override
     public void deleteProduct(Integer productId) {
-        productRepository.deleteById(productId);
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() ->
+                        new ProductNotFoundException(
+                                "Product not found with ID : " + productId
+                        ));
+
+        productRepository.delete(product);
     }
 
-    // Fetch products by brand
+    // Fetches products by brand
     @Override
-    public List<Product> getProductsByBrand(String brand) {
-        return productRepository.findByBrand(brand);
+    public List<ProductResponse> getProductsByBrand(String brand) {
+
+        return productRepository.findByBrand(brand)
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
     }
 
-    // Fetch products by colour
+    // Fetches products by colour
     @Override
-    public List<Product> getProductsByColour(String colour) {
-        return productRepository.findByColour(colour);
+    public List<ProductResponse> getProductsByColour(String colour) {
+
+        return productRepository.findByColour(colour)
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
     }
 
-    // Fetch products by size
+    // Fetches products by size
     @Override
-    public List<Product> getProductsBySize(String size) {
-        return productRepository.findBySize(size);
+    public List<ProductResponse> getProductsBySize(String size) {
+
+        return productRepository.findBySize(size)
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    // Converts request DTO to entity
+    private Product mapToEntity(ProductRequest request) {
+
+        Product product = new Product();
+
+        product.setProductName(request.getProductName());
+        product.setUnitPrice(request.getUnitPrice());
+        product.setColour(request.getColour());
+        product.setBrand(request.getBrand());
+        product.setSize(request.getSize());
+        product.setRating(request.getRating());
+
+        return product;
+    }
+
+    // Converts entity to response DTO
+    private ProductResponse mapToResponse(Product product) {
+
+        return new ProductResponse(
+                product.getProductId(),
+                product.getProductName(),
+                product.getUnitPrice(),
+                product.getColour(),
+                product.getBrand(),
+                product.getSize(),
+                product.getRating()
+        );
     }
 }

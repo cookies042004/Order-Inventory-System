@@ -1,29 +1,37 @@
 package com.company.order_inventory_system.product.service;
 
-import com.company.order_inventory_system.product.entity.Product;
+import com.company.order_inventory_system.product.dto.ProductRequest;
+import com.company.order_inventory_system.product.dto.ProductResponse;
 
 import java.util.List;
-import java.util.Optional;
 
-// Defines product service operations
+// Defines product business operations
 public interface ProductService {
 
-    // Save new product
-    Product createProduct(Product product);
+    // Creates new product
+    ProductResponse createProduct(ProductRequest productRequest);
 
-    List<Product> getAllProducts();
+    // Fetches all products
+    List<ProductResponse> getAllProducts();
 
-    // Fetch product using ID
-    Optional<Product> getProductById(Integer productId);
+    // Fetches product by ID
+    ProductResponse getProductById(Integer productId);
 
-    Product updateProduct(Integer productId, Product updatedProduct);
+    // Updates existing product
+    ProductResponse updateProduct(
+            Integer productId,
+            ProductRequest productRequest
+    );
 
-    // Delete product by ID
+    // Deletes product by ID
     void deleteProduct(Integer productId);
 
-    List<Product> getProductsByBrand(String brand);
+    // Fetches products by brand
+    List<ProductResponse> getProductsByBrand(String brand);
 
-    List<Product> getProductsByColour(String colour);
+    // Fetches products by colour
+    List<ProductResponse> getProductsByColour(String colour);
 
-    List<Product> getProductsBySize(String size);
+    // Fetches products by size
+    List<ProductResponse> getProductsBySize(String size);
 }
