@@ -3,6 +3,8 @@ package com.company.order_inventory_system.product.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.util.Objects;
+
 @Entity // Marks this class as JPA entity
 @Table(name = "products") // Maps to products table
 public class Product {
@@ -116,5 +118,28 @@ public class Product {
 
     public void setRating(Integer rating) {
         this.rating = rating;
+    }
+
+    // Compares products using productId
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Product)) {
+            return false;
+        }
+
+        Product product = (Product) o;
+
+        return Objects.equals(productId, product.productId);
+    }
+
+    // Generates hash value using productId
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId);
     }
 }
