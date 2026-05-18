@@ -1,7 +1,8 @@
-package com.company.order_inventory_system.shipment.repository;
+package com.company.order_inventory_system.product.shipment.repository;
 
 import com.company.order_inventory_system.shipment.entity.Shipment;
 import com.company.order_inventory_system.shipment.enums.ShipmentStatus;
+import com.company.order_inventory_system.shipment.repository.ShipmentRepository;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;

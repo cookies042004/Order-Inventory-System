@@ -6,28 +6,28 @@ import jakarta.validation.constraints.NotNull;
 public class InventoryRequestDTO {
 
     @NotNull(message = "Store ID is required")
-    private Long storeId;
+    private Integer storeId;
 
     @NotNull(message = "Product ID is required")
-    private Long productId;
+    private Integer productId;
 
     @NotNull(message = "Product inventory quantity is required")
     @Min(value = 0, message = "Inventory quantity cannot be negative")
     private Integer productInventory;
 
-    public Long getStoreId() {
+    public Integer getStoreId() {
         return storeId;
     }
 
-    public void setStoreId(Long storeId) {
+    public void setStoreId(Integer storeId) {
         this.storeId = storeId;
     }
 
-    public Long getProductId() {
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
 
