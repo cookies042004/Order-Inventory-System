@@ -1,4 +1,4 @@
-package com.company.order_inventory_system.shipment.service;
+package com.company.order_inventory_system.product.shipment.service;
 
 import com.company.order_inventory_system.shipment.dto.ShipmentRequest;
 import com.company.order_inventory_system.shipment.dto.ShipmentResponse;
@@ -7,6 +7,7 @@ import com.company.order_inventory_system.shipment.enums.ShipmentStatus;
 import com.company.order_inventory_system.shipment.exception.ShipmentNotFoundException;
 import com.company.order_inventory_system.shipment.repository.ShipmentRepository;
 
+import com.company.order_inventory_system.shipment.service.ShipmentServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
