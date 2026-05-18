@@ -2,8 +2,11 @@ package com.company.order_inventory_system.customer.service;
 
 import com.company.order_inventory_system.customer.dto.CustomerRequest;
 import com.company.order_inventory_system.customer.dto.CustomerResponse;
+
 import com.company.order_inventory_system.customer.entity.Customer;
+
 import com.company.order_inventory_system.customer.exception.CustomerNotFoundException;
+
 import com.company.order_inventory_system.customer.repository.CustomerRepository;
 
 import org.springframework.stereotype.Service;
@@ -59,7 +62,30 @@ public class CustomerServiceImpl
                 customerRepository.findById(customerId)
 
                         .orElseThrow(() ->
-                                new CustomerNotFoundException("Customer not found with ID: " + customerId));
+                                new CustomerNotFoundException(
+                                        "Customer not found with ID: "
+                                                + customerId
+                                ));
+
+        return mapToResponse(customer);
+    }
+
+    /* Fetches customer using email address */
+    @Override
+    public CustomerResponse getCustomerByEmail(
+            String emailAddress) {
+
+        Customer customer =
+                customerRepository
+                        .findByEmailAddress(
+                                emailAddress
+                        )
+
+                        .orElseThrow(() ->
+                                new CustomerNotFoundException(
+                                        "Customer not found with email: "
+                                                + emailAddress
+                                ));
 
         return mapToResponse(customer);
     }
@@ -74,7 +100,10 @@ public class CustomerServiceImpl
                 customerRepository.findById(customerId)
 
                         .orElseThrow(() ->
-                                new CustomerNotFoundException("Customer not found with ID: " + customerId));
+                                new CustomerNotFoundException(
+                                        "Customer not found with ID: "
+                                                + customerId
+                                ));
 
         existingCustomer.setEmailAddress(
                 request.getEmailAddress()

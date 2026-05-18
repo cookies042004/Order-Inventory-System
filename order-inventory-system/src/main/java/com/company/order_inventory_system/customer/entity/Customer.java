@@ -23,11 +23,17 @@ public class Customer {
     private Integer customerId;
 
     /* Maps email_address column */
-    @Column(name = "email_address")
+    @Column(
+            name = "email_address"
+    )
+
     private String emailAddress;
 
     /* Maps full_name column */
-    @Column(name = "full_name")
+    @Column(
+            name = "full_name"
+    )
+
     private String fullName;
 
     /* Getter for customerId */

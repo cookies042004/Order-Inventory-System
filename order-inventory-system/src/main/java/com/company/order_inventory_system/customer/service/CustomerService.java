@@ -21,6 +21,11 @@ public interface CustomerService {
             Integer customerId
     );
 
+    /* Fetches customer using email address */
+    CustomerResponse getCustomerByEmail(
+            String emailAddress
+    );
+
     /* Updates existing customer details */
     CustomerResponse updateCustomer(
             Integer customerId,
