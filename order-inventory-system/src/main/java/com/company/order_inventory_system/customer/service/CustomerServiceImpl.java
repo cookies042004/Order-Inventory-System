@@ -123,7 +123,7 @@ public class CustomerServiceImpl
 
     /* Deletes customer using customer ID */
     @Override
-    public void deleteCustomer(
+    public CustomerResponse deleteCustomer(
             Integer customerId) {
 
         Customer existingCustomer =
@@ -135,7 +135,12 @@ public class CustomerServiceImpl
                                                 + customerId
                                 ));
 
+        CustomerResponse deletedCustomer =
+                mapToResponse(existingCustomer);
+
         customerRepository.delete(existingCustomer);
+
+        return deletedCustomer;
     }
 
     /* Converts request DTO into entity */

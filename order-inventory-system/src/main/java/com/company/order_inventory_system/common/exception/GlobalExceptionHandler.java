@@ -28,10 +28,10 @@ public class GlobalExceptionHandler {
             ResourceNotFoundException exception) {
 
         ErrorResponse errorResponse = new ErrorResponse(
-                        LocalDateTime.now(),
-                        HttpStatus.NOT_FOUND.value(),
-                        "Resource Not Found",
-                        exception.getMessage()
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                "Resource Not Found",
+                exception.getMessage()
         );
 
         return new ResponseEntity<>(
@@ -46,10 +46,10 @@ public class GlobalExceptionHandler {
             DuplicateResourceException exception) {
 
         ErrorResponse errorResponse = new ErrorResponse(
-                        LocalDateTime.now(),
-                        HttpStatus.CONFLICT.value(),
-                        "Duplicate Resource",
-                        exception.getMessage()
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                "Duplicate Resource",
+                exception.getMessage()
         );
 
         return new ResponseEntity<>(
@@ -64,10 +64,10 @@ public class GlobalExceptionHandler {
             InvalidDataException exception) {
 
         ErrorResponse errorResponse = new ErrorResponse(
-                        LocalDateTime.now(),
-                        HttpStatus.BAD_REQUEST.value(),
-                        "Invalid Data",
-                        exception.getMessage()
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Invalid Data",
+                exception.getMessage()
         );
 
         return new ResponseEntity<>(
