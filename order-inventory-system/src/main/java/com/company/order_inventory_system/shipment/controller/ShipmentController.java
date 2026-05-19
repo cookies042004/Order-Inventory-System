@@ -88,15 +88,13 @@ public class ShipmentController {
 
     @DeleteMapping("/{shipmentId}")
 
-    public ResponseEntity<String>
+    public ResponseEntity<ShipmentResponse>
     deleteShipment(
             @PathVariable Integer shipmentId) {
 
-        shipmentService
-                .deleteShipment(shipmentId);
-
         return ResponseEntity.ok(
-                "Shipment deleted successfully");
+                shipmentService
+                        .deleteShipment(shipmentId));
     }
 
     @GetMapping("/customer/{customerId}")

@@ -20,7 +20,8 @@ public interface ShipmentService {
             Integer shipmentId,
             ShipmentRequest request);
 
-    void deleteShipment(Integer shipmentId);
+    ShipmentResponse deleteShipment(
+            Integer shipmentId);
 
     List<ShipmentResponse> getShipmentsByCustomerId(
             Integer customerId);

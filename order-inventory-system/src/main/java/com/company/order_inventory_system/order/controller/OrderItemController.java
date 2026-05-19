@@ -87,14 +87,12 @@ public class OrderItemController {
 
     @DeleteMapping("/{orderId}")
 
-    public ResponseEntity<String>
+    public ResponseEntity<OrderItemResponse>
     deleteOrderItem(
             @PathVariable Integer orderId) {
 
-        orderItemService
-                .deleteOrderItem(orderId);
-
         return ResponseEntity.ok(
-                "Order item deleted successfully");
+                orderItemService
+                        .deleteOrderItem(orderId));
     }
 }

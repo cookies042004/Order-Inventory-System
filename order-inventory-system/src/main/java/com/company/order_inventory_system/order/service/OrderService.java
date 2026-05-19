@@ -19,7 +19,9 @@ public interface OrderService {
             Integer orderId,
             OrderRequest request);
 
-    void deleteOrder(Integer orderId);
+
+    OrderResponse deleteOrder(
+            Integer orderId);
 
     List<OrderResponse> getOrdersByCustomerId(
             Integer customerId);

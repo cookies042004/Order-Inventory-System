@@ -5,6 +5,7 @@ import com.company.order_inventory_system.order.exception.OrderItemNotFoundExcep
 import com.company.order_inventory_system.order.exception.OrderNotFoundException;
 import com.company.order_inventory_system.product.exception.ProductNotFoundException;
 import com.company.order_inventory_system.shipment.exception.ShipmentNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -250,6 +251,78 @@ public class GlobalExceptionHandler {
                         HttpStatus.BAD_REQUEST.value(),
                         "Bad Request",
                         message);
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(
+            DataIntegrityViolationException.class)
+
+    public ResponseEntity<ErrorResponse>
+    handleDataIntegrityViolationException(
+            DataIntegrityViolationException ex) {
+
+        String message =
+                "Database constraint violation.";
+
+        if (ex.getMostSpecificCause() != null) {
+
+            String rootMessage =
+                    ex.getMostSpecificCause()
+                            .getMessage();
+
+            if (rootMessage != null) {
+
+                if (rootMessage.contains(
+                        "foreign key constraint fails")) {
+
+                    message =
+                            "Referenced entity does not exist. "
+                                    + "Verify customer_id, store_id, product_id or shipment_id.";
+                }
+
+                else if (rootMessage.contains(
+                        "Duplicate entry")) {
+
+                    message =
+                            "Duplicate record detected.";
+                }
+
+                else if (rootMessage.contains(
+                        "cannot be null")) {
+
+                    message =
+                            "Required field cannot be null.";
+                }
+            }
+        }
+
+        ErrorResponse response =
+                new ErrorResponse(
+                        LocalDateTime.now(),
+                        HttpStatus.BAD_REQUEST.value(),
+                        "Bad Request",
+                        message);
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(
+            InvalidDateRangeException.class)
+
+    public ResponseEntity<ErrorResponse>
+    handleInvalidDateRangeException(
+            InvalidDateRangeException ex) {
+
+        ErrorResponse response =
+                new ErrorResponse(
+                        LocalDateTime.now(),
+                        HttpStatus.BAD_REQUEST.value(),
+                        "Bad Request",
+                        ex.getMessage());
 
         return new ResponseEntity<>(
                 response,

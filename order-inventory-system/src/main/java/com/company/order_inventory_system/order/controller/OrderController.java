@@ -84,14 +84,12 @@ public class OrderController {
 
     @DeleteMapping("/{orderId}")
 
-    public ResponseEntity<String>
+    public ResponseEntity<OrderResponse>
     deleteOrder(
             @PathVariable Integer orderId) {
 
-        orderService.deleteOrder(orderId);
-
         return ResponseEntity.ok(
-                "Order deleted successfully");
+                orderService.deleteOrder(orderId));
     }
 
     @GetMapping("/customer/{customerId}")

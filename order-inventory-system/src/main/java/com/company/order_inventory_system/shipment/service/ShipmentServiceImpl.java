@@ -92,7 +92,7 @@ public class ShipmentServiceImpl
     }
 
     @Override
-    public void deleteShipment(
+    public ShipmentResponse deleteShipment(
             Integer shipmentId) {
 
         Shipment existingShipment =
@@ -102,7 +102,12 @@ public class ShipmentServiceImpl
                                         "Shipment not found with ID: "
                                                 + shipmentId));
 
+        ShipmentResponse response =
+                mapToResponse(existingShipment);
+
         shipmentRepository.delete(existingShipment);
+
+        return response;
     }
 
     @Override
