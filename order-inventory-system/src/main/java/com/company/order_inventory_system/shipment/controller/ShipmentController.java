@@ -90,15 +90,16 @@ public class ShipmentController {
 
     @Operation(summary = "Delete shipment by ID")
     @DeleteMapping("/{shipmentId}")
-    public ResponseEntity<String>
+
+
+    public ResponseEntity<ShipmentResponse>
+
     deleteShipment(
             @PathVariable Integer shipmentId) {
 
-        shipmentService
-                .deleteShipment(shipmentId);
-
         return ResponseEntity.ok(
-                "Shipment deleted successfully");
+                shipmentService
+                        .deleteShipment(shipmentId));
     }
 
     @Operation(summary = "Get shipments by customer ID")
@@ -134,6 +135,21 @@ public class ShipmentController {
         return ResponseEntity.ok(
                 shipmentService
                         .getShipmentsByStatus(
+                                status));
+    }
+    @PatchMapping("/{shipmentId}/status")
+
+    public ResponseEntity<ShipmentResponse>
+    updateShipmentStatus(
+
+            @PathVariable Integer shipmentId,
+
+            @RequestParam ShipmentStatus status) {
+
+        return ResponseEntity.ok(
+                shipmentService
+                        .updateShipmentStatus(
+                                shipmentId,
                                 status));
     }
 }

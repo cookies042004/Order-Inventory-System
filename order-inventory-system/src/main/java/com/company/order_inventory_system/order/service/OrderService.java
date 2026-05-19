@@ -19,7 +19,9 @@ public interface OrderService {
             Integer orderId,
             OrderRequest request);
 
-    void deleteOrder(Integer orderId);
+
+    OrderResponse deleteOrder(
+            Integer orderId);
 
     List<OrderResponse> getOrdersByCustomerId(
             Integer customerId);
@@ -33,4 +35,7 @@ public interface OrderService {
     List<OrderResponse> getOrdersByDateRange(
             LocalDateTime from,
             LocalDateTime to);
+    OrderResponse updateOrderStatus(
+            Integer orderId,
+            OrderStatus status);
 }

@@ -5,6 +5,7 @@ import com.company.order_inventory_system.order.exception.OrderItemNotFoundExcep
 import com.company.order_inventory_system.order.exception.OrderNotFoundException;
 import com.company.order_inventory_system.product.exception.ProductNotFoundException;
 import com.company.order_inventory_system.shipment.exception.ShipmentNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -246,43 +247,100 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // Handle Constraint Violation Exception
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException ex) {
 
-        Map<String, String> errors = new HashMap<>();
+    @ExceptionHandler(
+            DataIntegrityViolationException.class)
 
-        ex.getConstraintViolations()
-                .forEach(error -> {
+    public ResponseEntity<ErrorResponse>
+    handleDataIntegrityViolationException(
+            DataIntegrityViolationException ex) {
 
-                    String field = error.getPropertyPath().toString();
+        String message =
+                "Database constraint violation.";
 
-                    String message = error.getMessage();
+        if (ex.getMostSpecificCause() != null) {
 
-                    errors.put(field, message);
-                });
+            String rootMessage =
+                    ex.getMostSpecificCause()
+                            .getMessage();
+
+            if (rootMessage != null) {
+
+                if (rootMessage.contains(
+                        "foreign key constraint fails")) {
+
+                    message =
+                            "Referenced entity does not exist. "
+                                    + "Verify customer_id, store_id, product_id or shipment_id.";
+                }
+
+                else if (rootMessage.contains(
+                        "Duplicate entry")) {
+
+                    message =
+                            "Duplicate record detected.";
+                }
+
+                else if (rootMessage.contains(
+                        "cannot be null")) {
+
+                    message =
+                            "Required field cannot be null.";
+                }
+            }
+        }
+
+        ErrorResponse response =
+                new ErrorResponse(
+                        LocalDateTime.now(),
+                        HttpStatus.BAD_REQUEST.value(),
+                        "Bad Request",
+                        message);
 
         return new ResponseEntity<>(
-                errors,
-                HttpStatus.BAD_REQUEST
-        );
+                response,
+                HttpStatus.BAD_REQUEST);
     }
 
-    // Handle Path Variable Type Mismatch Exception
-//    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ExceptionHandler(
+            InvalidDateRangeException.class)
+
+    public ResponseEntity<ErrorResponse>
+    handleInvalidDateRangeException(
+            InvalidDateRangeException ex) {
+
+        ErrorResponse response =
+                new ErrorResponse(
+                        LocalDateTime.now(),
+                        HttpStatus.BAD_REQUEST.value(),
+                        "Bad Request",
+                        ex.getMessage());
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.BAD_REQUEST);
+    }
+    // Handle Constraint Violation Exception
+//    @ExceptionHandler(ConstraintViolationException.class)
+//    public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException ex) {
 //
-//    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+//        Map<String, String> errors = new HashMap<>();
 //
-//        ErrorResponse response = new ErrorResponse(
-//                        LocalDateTime.now(),
-//                        HttpStatus.BAD_REQUEST.value(),
-//                        "Bad Request",
-//                        "Invalid value: " + ex.getValue()
-//        );
+//        ex.getConstraintViolations()
+//                .forEach(error -> {
+//
+//                    String field = error.getPropertyPath().toString();
+//
+//                    String message = error.getMessage();
+//
+//                    errors.put(field, message);
+//                });
 //
 //        return new ResponseEntity<>(
-//                response,
+//                errors,
 //                HttpStatus.BAD_REQUEST
 //        );
 //    }
+
+
 }
