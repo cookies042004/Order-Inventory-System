@@ -269,20 +269,20 @@ public class GlobalExceptionHandler {
     }
 
     // Handle Path Variable Type Mismatch Exception
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-
-    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
-
-        ErrorResponse response = new ErrorResponse(
-                        LocalDateTime.now(),
-                        HttpStatus.BAD_REQUEST.value(),
-                        "Bad Request",
-                        "Invalid value: " + ex.getValue()
-        );
-
-        return new ResponseEntity<>(
-                response,
-                HttpStatus.BAD_REQUEST
-        );
-    }
+//    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+//
+//    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+//
+//        ErrorResponse response = new ErrorResponse(
+//                        LocalDateTime.now(),
+//                        HttpStatus.BAD_REQUEST.value(),
+//                        "Bad Request",
+//                        "Invalid value: " + ex.getValue()
+//        );
+//
+//        return new ResponseEntity<>(
+//                response,
+//                HttpStatus.BAD_REQUEST
+//        );
+//    }
 }
