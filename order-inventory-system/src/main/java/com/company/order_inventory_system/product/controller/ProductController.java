@@ -2,18 +2,13 @@ package com.company.order_inventory_system.product.controller;
 
 import com.company.order_inventory_system.product.dto.ProductRequest;
 import com.company.order_inventory_system.product.dto.ProductResponse;
-
 import com.company.order_inventory_system.product.service.ProductService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import jakarta.validation.Valid;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,17 +40,20 @@ public class ProductController {
             description = "Product created successfully"
     )
 
+    // Creates and saves a new product
     @PostMapping
+
     public ResponseEntity<ProductResponse> createProduct(
             @Valid @RequestBody ProductRequest productRequest) {
 
-        ProductResponse savedProduct =
+        // Calls service layer to save product
+        ProductResponse createdProduct =
                 productService.createProduct(productRequest);
 
-        return new ResponseEntity<>(
-                savedProduct,
-                HttpStatus.CREATED
-        );
+        // Returns created product with HTTP 201
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(createdProduct);
     }
 
     // Fetches all available products
@@ -152,80 +150,15 @@ public class ProductController {
             description = "Product not found"
     )
 
+    // Deletes product by ID
     @DeleteMapping("/{productId}")
-    public ResponseEntity<String> deleteProduct(
+    public ResponseEntity<ProductResponse> deleteProduct(
             @PathVariable Integer productId) {
 
-        productService.deleteProduct(productId);
+        // Delete product and fetch deleted details
+        ProductResponse deletedProduct =
+                productService.deleteProduct(productId);
 
-        return ResponseEntity.ok(
-                "Product deleted successfully"
-        );
-    }
-
-    // Fetches products matching given brand
-    @Operation(
-            summary = "Get products by brand",
-            description = "Returns products matching given brand"
-    )
-
-    @ApiResponse(
-            responseCode = "200",
-            description = "Products fetched successfully"
-    )
-
-    @GetMapping("/brand/{brand}")
-    public ResponseEntity<List<ProductResponse>>
-    getProductsByBrand(
-            @PathVariable String brand) {
-
-        List<ProductResponse> productResponses =
-                productService.getProductsByBrand(brand);
-
-        return ResponseEntity.ok(productResponses);
-    }
-
-    // Fetches products matching given colour
-    @Operation(
-            summary = "Get products by colour",
-            description = "Returns products matching given colour"
-    )
-
-    @ApiResponse(
-            responseCode = "200",
-            description = "Products fetched successfully"
-    )
-
-    @GetMapping("/colour/{colour}")
-    public ResponseEntity<List<ProductResponse>>
-    getProductsByColour(
-            @PathVariable String colour) {
-
-        List<ProductResponse> productResponses =
-                productService.getProductsByColour(colour);
-
-        return ResponseEntity.ok(productResponses);
-    }
-
-    // Fetches products matching given size
-    @Operation(
-            summary = "Get products by size",
-            description = "Returns products matching given size"
-    )
-
-    @ApiResponse(
-            responseCode = "200",
-            description = "Products fetched successfully"
-    )
-
-    @GetMapping("/size/{size}")
-    public ResponseEntity<List<ProductResponse>>
-    getProductsBySize(
-            @PathVariable String size) {
-
-        List<ProductResponse> productResponses =
-                productService.getProductsBySize(size);
-
-        return ResponseEntity.ok(productResponses);
+        return ResponseEntity.ok(deletedProduct);
     }
 }

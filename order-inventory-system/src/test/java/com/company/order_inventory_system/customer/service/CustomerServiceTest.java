@@ -7,7 +7,6 @@ import com.company.order_inventory_system.customer.exception.CustomerNotFoundExc
 import com.company.order_inventory_system.customer.repository.CustomerRepository;
 
 import org.junit.jupiter.api.Test;
-
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.InjectMocks;
@@ -21,56 +20,59 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-/* Enables Mockito testing support */
 @ExtendWith(MockitoExtension.class)
 
 class CustomerServiceTest {
 
-    /* Creates mock object for repository layer */
     @Mock
     private CustomerRepository customerRepository;
 
-    /* Injects mocked repository into service layer */
     @InjectMocks
     private CustomerServiceImpl customerService;
 
-    /* Creates sample customer entity object */
+
+    /* =========================
+       SAMPLE TEST DATA
+       ========================= */
+
     private Customer createSampleCustomer() {
 
         Customer customer = new Customer();
 
         customer.setCustomerId(1);
 
-        customer.setEmailAddress(
-                "customer@gmail.com"
-        );
-
         customer.setFullName(
                 "Test Customer"
+        );
+
+        customer.setEmailAddress(
+                "customer@gmail.com"
         );
 
         return customer;
     }
 
-    /* Creates sample customer request DTO object */
-    private CustomerRequest
-    createCustomerRequest() {
+    private CustomerRequest createCustomerRequest() {
 
         CustomerRequest request =
                 new CustomerRequest();
-
-        request.setEmailAddress(
-                "customer@gmail.com"
-        );
 
         request.setFullName(
                 "Test Customer"
         );
 
+        request.setEmailAddress(
+                "customer@gmail.com"
+        );
+
         return request;
     }
 
-    /* Tests customer creation operation */
+
+    /* =========================
+       CREATE CUSTOMER TEST
+       ========================= */
+
     @Test
     void testCreateCustomer() {
 
@@ -99,7 +101,11 @@ class CustomerServiceTest {
                 .save(any(Customer.class));
     }
 
-    /* Tests fetch customer using customer ID */
+
+    /* =========================
+       GET CUSTOMER BY ID
+       ========================= */
+
     @Test
     void testGetCustomerById() {
 
@@ -126,7 +132,11 @@ class CustomerServiceTest {
                 .findById(1);
     }
 
-    /* Tests customer not found exception */
+
+    /* =========================
+       CUSTOMER NOT FOUND
+       ========================= */
+
     @Test
     void testGetCustomerByIdNotFound() {
 
@@ -145,7 +155,11 @@ class CustomerServiceTest {
                 .findById(1);
     }
 
-    /* Tests fetch all customers operation */
+
+    /* =========================
+       GET ALL CUSTOMERS
+       ========================= */
+
     @Test
     void testGetAllCustomers() {
 
@@ -170,7 +184,34 @@ class CustomerServiceTest {
                 .findAll();
     }
 
-    /* Tests update customer operation */
+
+    /* =========================
+       EMPTY CUSTOMER LIST
+       ========================= */
+
+    @Test
+    void testGetAllCustomersEmptyList() {
+
+        when(customerRepository.findAll())
+                .thenReturn(List.of());
+
+        List<CustomerResponse> responses =
+                customerService.getAllCustomers();
+
+        assertTrue(
+                responses.isEmpty()
+        );
+
+        verify(customerRepository,
+                times(1))
+                .findAll();
+    }
+
+
+    /* =========================
+       UPDATE CUSTOMER
+       ========================= */
+
     @Test
     void testUpdateCustomer() {
 
@@ -217,7 +258,66 @@ class CustomerServiceTest {
                 .save(any(Customer.class));
     }
 
-    /* Tests delete customer operation */
+
+    /* =========================
+       UPDATE CUSTOMER NOT FOUND
+       ========================= */
+
+    @Test
+    void testUpdateCustomerNotFound() {
+
+        when(customerRepository.findById(1))
+                .thenReturn(Optional.empty());
+
+        assertThrows(
+                CustomerNotFoundException.class,
+
+                () -> customerService.updateCustomer(
+                        1,
+                        createCustomerRequest()
+                )
+        );
+
+        verify(customerRepository,
+                times(1))
+                .findById(1);
+    }
+
+
+    /* =========================
+       VERIFY UPDATE SAVE CALL
+       ========================= */
+
+    @Test
+    void testUpdateCustomerRepositorySaveCalled() {
+
+        Customer existingCustomer =
+                createSampleCustomer();
+
+        when(customerRepository.findById(1))
+                .thenReturn(
+                        Optional.of(existingCustomer)
+                );
+
+        when(customerRepository.save(
+                any(Customer.class)))
+                .thenReturn(existingCustomer);
+
+        customerService.updateCustomer(
+                1,
+                createCustomerRequest()
+        );
+
+        verify(customerRepository,
+                times(1))
+                .save(any(Customer.class));
+    }
+
+
+    /* =========================
+       DELETE CUSTOMER
+       ========================= */
+
     @Test
     void testDeleteCustomer() {
 
@@ -238,5 +338,99 @@ class CustomerServiceTest {
         verify(customerRepository,
                 times(1))
                 .delete(customer);
+    }
+
+
+    /* =========================
+       DELETE CUSTOMER NOT FOUND
+       ========================= */
+
+    @Test
+    void testDeleteCustomerNotFound() {
+
+        when(customerRepository.findById(1))
+                .thenReturn(Optional.empty());
+
+        assertThrows(
+                CustomerNotFoundException.class,
+
+                () -> customerService.deleteCustomer(1)
+        );
+
+        verify(customerRepository,
+                times(1))
+                .findById(1);
+    }
+
+
+    /* =========================
+       VERIFY DELETE CALL
+       ========================= */
+
+    @Test
+    void testDeleteCustomerRepositoryDeleteCalled() {
+
+        Customer customer =
+                createSampleCustomer();
+
+        when(customerRepository.findById(1))
+                .thenReturn(
+                        Optional.of(customer)
+                );
+
+        doNothing().when(customerRepository)
+                .delete(customer);
+
+        customerService.deleteCustomer(1);
+
+        verify(customerRepository,
+                times(1))
+                .delete(customer);
+    }
+
+
+    /* =========================
+       VERIFY CREATE SAVE CALL
+       ========================= */
+
+    @Test
+    void testCreateCustomerRepositorySaveCalled() {
+
+        Customer customer =
+                createSampleCustomer();
+
+        when(customerRepository.save(
+                any(Customer.class)))
+                .thenReturn(customer);
+
+        customerService.createCustomer(
+                createCustomerRequest()
+        );
+
+        verify(customerRepository,
+                times(1))
+                .save(any(Customer.class));
+    }
+
+
+    /* =========================
+       VERIFY FIND ALL CALL
+       ========================= */
+
+    @Test
+    void testGetAllCustomersRepositoryFindAllCalled() {
+
+        when(customerRepository.findAll())
+                .thenReturn(
+                        List.of(
+                                createSampleCustomer()
+                        )
+                );
+
+        customerService.getAllCustomers();
+
+        verify(customerRepository,
+                times(1))
+                .findAll();
     }
 }

@@ -88,47 +88,27 @@ public class ProductServiceImpl implements ProductService {
     }
 
     // Deletes product by ID
+    // Deletes product and returns deleted product details
     @Override
-    public void deleteProduct(Integer productId) {
+    public ProductResponse deleteProduct(Integer productId) {
 
+        // Fetch existing product
         Product product = productRepository.findById(productId)
                 .orElseThrow(() ->
                         new ProductNotFoundException(
                                 "Product not found with ID : " + productId
                         ));
 
+        // Convert entity to response DTO before deletion
+        ProductResponse response = mapToResponse(product);
+
+        // Delete product from database
         productRepository.delete(product);
+
+        // Return deleted product details
+        return response;
     }
 
-    // Fetches products by brand
-    @Override
-    public List<ProductResponse> getProductsByBrand(String brand) {
-
-        return productRepository.findByBrand(brand)
-                .stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
-    }
-
-    // Fetches products by colour
-    @Override
-    public List<ProductResponse> getProductsByColour(String colour) {
-
-        return productRepository.findByColour(colour)
-                .stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
-    }
-
-    // Fetches products by size
-    @Override
-    public List<ProductResponse> getProductsBySize(String size) {
-
-        return productRepository.findBySize(size)
-                .stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
-    }
 
     // Converts request DTO to entity
     private Product mapToEntity(ProductRequest request) {
