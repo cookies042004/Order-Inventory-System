@@ -6,8 +6,8 @@ import com.company.order_inventory_system.store.dto.ApiResponseDTO;
 import com.company.order_inventory_system.store.dto.StoreRequestDTO;
 import com.company.order_inventory_system.store.dto.StoreResponseDTO;
 import com.company.order_inventory_system.store.entity.Store;
-import com.company.order_inventory_system.store.exception.DuplicateResourceException;
-import com.company.order_inventory_system.store.exception.ResourceNotFoundException;
+import com.company.order_inventory_system.common.exception.DuplicateResourceException;
+import com.company.order_inventory_system.common.exception.ResourceNotFoundException;
 import com.company.order_inventory_system.store.repository.StoreRepository;
 import com.company.order_inventory_system.store.service.impl.StoreServiceImpl;
 
