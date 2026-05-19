@@ -245,37 +245,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
-    @ExceptionHandler(
-            MethodArgumentTypeMismatchException.class)
 
-    public ResponseEntity<ErrorResponse>
-    handleMethodArgumentTypeMismatchException(
-            MethodArgumentTypeMismatchException ex) {
-
-        String message =
-                "Invalid value for parameter: "
-                        + ex.getName();
-
-        if (ex.getRequiredType() != null
-                && ex.getRequiredType()
-                .equals(LocalDateTime.class)) {
-
-            message =
-                    "Invalid date-time format. "
-                            + "Use format: yyyy-MM-dd'T'HH:mm:ss";
-        }
-
-        ErrorResponse response =
-                new ErrorResponse(
-                        LocalDateTime.now(),
-                        HttpStatus.BAD_REQUEST.value(),
-                        "Bad Request",
-                        message);
-
-        return new ResponseEntity<>(
-                response,
-                HttpStatus.BAD_REQUEST);
-    }
     @ExceptionHandler(
             DataIntegrityViolationException.class)
 
