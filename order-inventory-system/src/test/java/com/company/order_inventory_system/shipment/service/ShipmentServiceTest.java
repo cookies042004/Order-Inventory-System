@@ -1,4 +1,4 @@
-package com.company.order_inventory_system.product.shipment.service;
+package com.company.order_inventory_system.shipment.service;
 
 import com.company.order_inventory_system.shipment.dto.ShipmentRequest;
 import com.company.order_inventory_system.shipment.dto.ShipmentResponse;

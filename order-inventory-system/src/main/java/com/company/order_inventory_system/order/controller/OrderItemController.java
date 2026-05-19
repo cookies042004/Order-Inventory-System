@@ -4,6 +4,9 @@ import com.company.order_inventory_system.order.dto.OrderItemRequest;
 import com.company.order_inventory_system.order.dto.OrderItemResponse;
 import com.company.order_inventory_system.order.service.OrderItemService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -14,9 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-
 @RequestMapping("/api/order-items")
-
 public class OrderItemController {
 
     private final OrderItemService orderItemService;
@@ -28,8 +29,8 @@ public class OrderItemController {
                 orderItemService;
     }
 
+    @Operation(summary = "Create a new order item")
     @PostMapping
-
     public ResponseEntity<OrderItemResponse>
     createOrderItem(
 
@@ -46,8 +47,8 @@ public class OrderItemController {
                 HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Get all order items")
     @GetMapping
-
     public ResponseEntity<List<OrderItemResponse>>
     getAllOrderItems() {
 
@@ -56,8 +57,8 @@ public class OrderItemController {
                         .getAllOrderItems());
     }
 
+    @Operation(summary = "Get order item by ID")
     @GetMapping("/{orderId}")
-
     public ResponseEntity<OrderItemResponse>
     getOrderItemById(
             @PathVariable Integer orderId) {
@@ -67,8 +68,8 @@ public class OrderItemController {
                         .getOrderItemById(orderId));
     }
 
+    @Operation(summary = "Update order item details")
     @PutMapping("/{orderId}")
-
     public ResponseEntity<OrderItemResponse>
     updateOrderItem(
 
@@ -85,8 +86,8 @@ public class OrderItemController {
                                 request));
     }
 
+    @Operation(summary = "Delete order item by ID")
     @DeleteMapping("/{orderId}")
-
     public ResponseEntity<String>
     deleteOrderItem(
             @PathVariable Integer orderId) {

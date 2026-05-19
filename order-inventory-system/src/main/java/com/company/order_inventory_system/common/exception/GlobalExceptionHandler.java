@@ -6,6 +6,7 @@ import com.company.order_inventory_system.order.exception.OrderNotFoundException
 import com.company.order_inventory_system.product.exception.ProductNotFoundException;
 import com.company.order_inventory_system.shipment.exception.ShipmentNotFoundException;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -14,6 +15,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -221,6 +223,46 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(
                 errorResponse,
                 HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    // Handle Constraint Violation Exception
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException ex) {
+
+        Map<String, String> errors = new HashMap<>();
+
+        ex.getConstraintViolations()
+                .forEach(error -> {
+
+                    String field = error.getPropertyPath().toString();
+
+                    String message = error.getMessage();
+
+                    errors.put(field, message);
+                });
+
+        return new ResponseEntity<>(
+                errors,
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    // Handle Path Variable Type Mismatch Exception
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+
+    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+
+        ErrorResponse response = new ErrorResponse(
+                        LocalDateTime.now(),
+                        HttpStatus.BAD_REQUEST.value(),
+                        "Bad Request",
+                        "Invalid value: " + ex.getValue()
+        );
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.BAD_REQUEST
         );
     }
 }

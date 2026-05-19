@@ -1,15 +1,15 @@
 package com.company.order_inventory_system.inventory.service;
 
+import com.company.order_inventory_system.common.exception.DuplicateResourceException;
+import com.company.order_inventory_system.common.exception.ResourceNotFoundException;
+import com.company.order_inventory_system.inventory.dto.InventoryDeleteResponse;
 import com.company.order_inventory_system.inventory.dto.InventoryRequestDTO;
 import com.company.order_inventory_system.inventory.dto.InventoryResponseDTO;
 import com.company.order_inventory_system.inventory.entity.Inventory;
-import com.company.order_inventory_system.inventory.exception.DuplicateResourceException;
-import com.company.order_inventory_system.inventory.exception.ResourceNotFoundException;
 import com.company.order_inventory_system.inventory.repository.InventoryRepository;
 import com.company.order_inventory_system.inventory.service.impl.InventoryServiceImpl;
 import com.company.order_inventory_system.product.entity.Product;
 import com.company.order_inventory_system.product.repository.ProductRepository;
-import com.company.order_inventory_system.store.dto.ApiResponseDTO;
 import com.company.order_inventory_system.store.entity.Store;
 import com.company.order_inventory_system.store.repository.StoreRepository;
 
@@ -22,6 +22,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -171,7 +172,7 @@ class InventoryServiceImplTest {
 
         when(inventoryRepository.findById(1)).thenReturn(Optional.of(inventory));
 
-        ApiResponseDTO responseDTO = inventoryService.deleteInventory(1);
+        InventoryDeleteResponse responseDTO = inventoryService.deleteInventory(1);
 
         assertTrue(responseDTO.isSuccess());
 
@@ -179,5 +180,183 @@ class InventoryServiceImplTest {
         );
 
         verify(inventoryRepository, times(1)).delete(inventory);
+    }
+
+    @Test
+    @DisplayName("Test Update Inventory Successfully")
+    void testUpdateInventorySuccessfully() {
+
+        // Mocking repository response for existing inventory
+        when(inventoryRepository.findById(1)).thenReturn(Optional.of(inventory));
+
+        // Mocking repository response for existing store
+        when(storeRepository.findById(1)).thenReturn(Optional.of(store));
+
+        // Mocking repository response for existing product
+        when(productRepository.findById(1)).thenReturn(Optional.of(product));
+
+        // Mocking save operation after updating inventory
+        when(inventoryRepository.save(any(Inventory.class))).thenReturn(inventory);
+
+        // Calling service method to update inventory
+        InventoryResponseDTO responseDTO = inventoryService.updateInventory(
+                        1,
+                        requestDTO
+        );
+
+        // Verifying response object is not null
+        assertNotNull(responseDTO);
+
+        // Checking whether inventory quantity matches expected value
+        assertEquals(
+                100,
+                responseDTO.getProductInventory()
+        );
+
+        // Verifying save method is called exactly once
+        verify(inventoryRepository, times(1))
+                .save(any(Inventory.class));
+    }
+
+    @Test
+    @DisplayName("Test Update Inventory Not Found")
+    void testUpdateInventoryNotFound() {
+
+        // Mocking repository response when inventory is not found
+        when(inventoryRepository.findById(1)).thenReturn(Optional.empty());
+
+        // Verifying that ResourceNotFoundException is thrown
+        assertThrows(ResourceNotFoundException.class,
+                () -> inventoryService.updateInventory(
+                        1,
+                        requestDTO
+                )
+        );
+    }
+
+    @Test
+    @DisplayName("Test Get All Inventory")
+    void testGetAllInventory() {
+
+        // Mocking repository response with one inventory record
+        when(inventoryRepository.findAll()).thenReturn(List.of(inventory));
+
+        // Calling service method to fetch all inventory records
+        List<InventoryResponseDTO> inventoryList = inventoryService.getAllInventory();
+
+        // Verifying the number of inventory records returned
+        assertEquals(1, inventoryList.size());
+
+        // Verifying findAll method is called exactly once
+        verify(inventoryRepository, times(1)).findAll();
+    }
+
+    @Test
+    @DisplayName("Test Empty Inventory List")
+    void testEmptyInventoryList() {
+
+        // Mocking repository response with empty inventory list
+        when(inventoryRepository.findAll()).thenReturn(List.of());
+
+        // Calling service method to fetch all inventory records
+        List<InventoryResponseDTO> inventoryList = inventoryService.getAllInventory();
+
+        // Verifying returned inventory list is empty
+        assertTrue(inventoryList.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Test Delete Inventory Not Found")
+    void testDeleteInventoryNotFound() {
+
+        // Mocking repository response when inventory is not found
+        when(inventoryRepository.findById(1)).thenReturn(Optional.empty());
+
+        // Verifying that ResourceNotFoundException is thrown
+        assertThrows(ResourceNotFoundException.class,
+                () -> inventoryService.deleteInventory(1)
+        );
+    }
+
+    @Test
+    @DisplayName("Test Zero Inventory Quantity")
+    void testZeroInventoryQuantity() {
+
+        // Setting inventory quantity as zero
+        requestDTO.setProductInventory(0);
+
+        // Mocking repository response for existing store
+        when(storeRepository.findById(1))   .thenReturn(Optional.of(store));
+
+        // Mocking repository response for existing product
+        when(productRepository.findById(1)).thenReturn(Optional.of(product));
+
+        // Mocking repository response to check inventory uniqueness
+        when(inventoryRepository.existsByStoreStoreIdAndProductProductId(1, 1))
+                .thenReturn(false);
+
+        // Mocking save operation
+        when(inventoryRepository.save(any(Inventory.class))).thenReturn(inventory);
+
+        // Calling service method to create inventory
+        InventoryResponseDTO responseDTO = inventoryService.createInventory(requestDTO);
+
+        // Verifying response object is not null
+        assertNotNull(responseDTO);
+    }
+
+    @Test
+    @DisplayName("Test Negative Inventory Quantity")
+    void testNegativeInventoryQuantity() {
+
+        // Setting inventory quantity as negative
+        requestDTO.setProductInventory(-10);
+
+        // Verifying exception is thrown for invalid inventory quantity
+        assertThrows(RuntimeException.class,
+                () -> inventoryService.createInventory(requestDTO)
+        );
+    }
+
+    @Test
+    @DisplayName("Verify Save Method Invocation")
+    void testSaveInvocation() {
+
+        // Mocking repository response for existing store
+        when(storeRepository.findById(1)).thenReturn(Optional.of(store));
+
+        // Mocking repository response for existing product
+        when(productRepository.findById(1)).thenReturn(Optional.of(product));
+
+        // Mocking repository response to check inventory uniqueness
+        when(inventoryRepository.existsByStoreStoreIdAndProductProductId(1, 1))
+                .thenReturn(false);
+
+        // Mocking save operation
+        when(inventoryRepository.save(any(Inventory.class))).thenReturn(inventory);
+
+        // Calling service method to create inventory
+        inventoryService.createInventory(requestDTO);
+
+        // Verifying save method is called exactly once
+        verify(inventoryRepository,
+                times(1))
+                .save(any(Inventory.class));
+    }
+
+    @Test
+    @DisplayName("Verify Delete Method Invocation")
+    void testDeleteInvocation() {
+
+        // Mocking repository response for existing inventory
+        when(inventoryRepository.findById(1)).thenReturn(Optional.of(inventory));
+
+        // Calling service method to delete inventory
+        inventoryService.deleteInventory(1);
+
+        // Verifying delete method is called exactly once
+        verify(inventoryRepository,
+                times(1))
+                .delete(inventory);
     }
 }

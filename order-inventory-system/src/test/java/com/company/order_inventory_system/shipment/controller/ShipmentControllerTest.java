@@ -1,4 +1,4 @@
-package com.company.order_inventory_system.product.shipment.controller;
+package com.company.order_inventory_system.shipment.controller;
 
 public class ShipmentControllerTest {
 }
