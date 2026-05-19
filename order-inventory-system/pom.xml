@@ -36,6 +36,38 @@
         <java.version>17</java.version>
     </properties>
 
+    <dependencyManagement>
+
+        <dependencies>
+
+            <dependency>
+
+                <groupId>
+                    org.springframework.cloud
+                </groupId>
+
+                <artifactId>
+                    spring-cloud-dependencies
+                </artifactId>
+
+                <version>
+                    2023.0.1
+                </version>
+
+                <type>
+                    pom
+                </type>
+
+                <scope>
+                    import
+                </scope>
+
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+
     <!-- Project Dependencies -->
     <dependencies>
 
@@ -78,6 +110,26 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Security Dependency -->
+        <dependency>
+            <groupId>
+                org.springframework.boot
+            </groupId>
+
+            <artifactId>
+                spring-boot-starter-security
+            </artifactId>
+        </dependency>
+        <dependency>
+            <groupId>
+                org.springframework.cloud
+            </groupId>
+
+            <artifactId>
+                spring-cloud-starter-vault-config
+            </artifactId>
+        </dependency>
+
         <!-- Testing Dependency -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -92,8 +144,9 @@
 			<version>2.8.6</version>
 		</dependency>
 
-
     </dependencies>
+
+
 
     <!-- Build Plugins -->
     <build>

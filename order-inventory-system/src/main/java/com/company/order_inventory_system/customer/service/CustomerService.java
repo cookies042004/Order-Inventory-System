@@ -33,7 +33,7 @@ public interface CustomerService {
     );
 
     /* Deletes customer using customer ID */
-    void deleteCustomer(
+    CustomerResponse deleteCustomer(
             Integer customerId
     );
 }

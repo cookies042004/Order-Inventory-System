@@ -2,13 +2,20 @@ package com.company.order_inventory_system.customer.entity;
 
 import jakarta.persistence.*;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 import java.util.Objects;
 
 /* Entity class for customers table */
 @Entity
 
 /* Maps with customers table */
-@Table(name = "customers")
+@Table(
+        name = "customers"
+)
 
 public class Customer {
 
@@ -16,22 +23,65 @@ public class Customer {
     @Id
 
     /* Auto increments ID */
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
 
     /* Maps customer_id column */
-    @Column(name = "customer_id")
+    @Column(
+            name = "customer_id"
+    )
+
     private Integer customerId;
 
     /* Maps email_address column */
     @Column(
-            name = "email_address"
+            name = "email_address",
+            nullable = false,
+            unique = true,
+            length = 255
+    )
+
+    @NotBlank(
+            message =
+                    "Customer email address cannot be empty"
+    )
+
+    @Email(
+            message =
+                    "Please enter a valid customer email address"
+    )
+
+    @Size(
+            max = 255,
+            message =
+                    "Email address cannot exceed 255 characters"
     )
 
     private String emailAddress;
 
     /* Maps full_name column */
     @Column(
-            name = "full_name"
+            name = "full_name",
+            nullable = false,
+            length = 255
+    )
+
+    @NotBlank(
+            message =
+                    "Customer name cannot be empty"
+    )
+
+    @Pattern(
+            regexp = "^[A-Za-z '-]+$",
+            message =
+                    "Customer name must contain only alphabets"
+    )
+
+    @Size(
+            max = 255,
+            message =
+                    "Customer name cannot exceed 255 characters"
     )
 
     private String fullName;
@@ -89,7 +139,8 @@ public class Customer {
 
     /* Equals method for object comparison */
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(
+            Object object) {
 
         if (this == object) {
             return true;

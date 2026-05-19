@@ -5,40 +5,71 @@ import com.company.order_inventory_system.customer.dto.CustomerResponse;
 
 import com.company.order_inventory_system.customer.service.CustomerService;
 
+import com.company.order_inventory_system.order.entity.Order;
+import com.company.order_inventory_system.order.repository.OrderRepository;
+
+import com.company.order_inventory_system.shipment.entity.Shipment;
+import com.company.order_inventory_system.shipment.repository.ShipmentRepository;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.validation.annotation.Validated;
+
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Tag(
         name = "Customer Controller",
         description = "APIs for managing customers"
 )
 
-@RestController // Marks this class as REST controller
-@RequestMapping("/api/customers") // Base URL for customer APIs
+@RestController
+
+@RequestMapping("/api/customers")
+
+@Validated
 
 public class CustomerController {
 
+    /* Service layer for customer operations */
     private final CustomerService customerService;
 
-    // Constructor injection for service layer
+    /* Repository for linked order data */
+    private final OrderRepository orderRepository;
+
+    /* Repository for linked shipment data */
+    private final ShipmentRepository shipmentRepository;
+
+    /* Constructor injection */
     public CustomerController(
-            CustomerService customerService) {
+            CustomerService customerService,
+            OrderRepository orderRepository,
+            ShipmentRepository shipmentRepository) {
 
         this.customerService =
                 customerService;
+
+        this.orderRepository =
+                orderRepository;
+
+        this.shipmentRepository =
+                shipmentRepository;
     }
 
-    // Creates and saves new customer
+    /* Creates new customer */
     @Operation(
             summary = "Create customer",
             description = "Creates and saves new customer"
@@ -50,11 +81,14 @@ public class CustomerController {
     )
 
     @PostMapping
-    public ResponseEntity<CustomerResponse>
+
+    public ResponseEntity<Map<String, Object>>
     createCustomer(
 
             @Valid
+
             @RequestBody
+
             CustomerRequest customerRequest) {
 
         CustomerResponse savedCustomer =
@@ -62,60 +96,68 @@ public class CustomerController {
                         customerRequest
                 );
 
+        Map<String, Object> response =
+                new HashMap<>();
+
+        response.put(
+                "message",
+                "Customer created successfully"
+        );
+
+        response.put(
+                "data",
+                savedCustomer
+        );
+
         return new ResponseEntity<>(
-                savedCustomer,
+                response,
                 HttpStatus.CREATED
         );
     }
 
-    // Fetches all customers
+    /* Fetches all customers */
     @Operation(
             summary = "Get all customers",
             description = "Returns list of all customers"
     )
 
-    @ApiResponse(
-            responseCode = "200",
-            description = "Customers fetched successfully"
-    )
-
     @GetMapping
-    public ResponseEntity<
-            List<CustomerResponse>>
+
+    public ResponseEntity<Map<String, Object>>
     getAllCustomers() {
 
-        List<CustomerResponse>
-                customerResponses =
-
+        List<CustomerResponse> customerResponses =
                 customerService
                         .getAllCustomers();
 
-        return ResponseEntity.ok(
+        Map<String, Object> response =
+                new HashMap<>();
+
+        response.put(
+                "message",
+                "All customers fetched successfully"
+        );
+
+        response.put(
+                "data",
                 customerResponses
+        );
+
+        return ResponseEntity.ok(
+                response
         );
     }
 
-    // Fetches customer using customer ID
+    /* Fetches customer by ID */
     @Operation(
             summary = "Get customer by ID",
             description =
                     "Fetches customer using customer ID"
     )
 
-    @ApiResponse(
-            responseCode = "200",
-            description =
-                    "Customer fetched successfully"
-    )
-
-    @ApiResponse(
-            responseCode = "404",
-            description = "Customer not found"
-    )
-
     @GetMapping("/{customerId}")
 
-    public ResponseEntity<CustomerResponse>
+    public ResponseEntity<Map<String, Object>>
     getCustomerById(
 
             @PathVariable
@@ -126,39 +168,43 @@ public class CustomerController {
                         customerId
                 );
 
-        return ResponseEntity.ok(
+        Map<String, Object> response =
+                new HashMap<>();
+
+        response.put(
+                "message",
+                "Customer fetched successfully"
+        );
+
+        response.put(
+                "data",
                 customerResponse
+        );
+
+        return ResponseEntity.ok(
+                response
         );
     }
 
-    // Updates existing customer details
+    /* Updates customer details */
     @Operation(
             summary = "Update customer",
             description =
                     "Updates customer using customer ID"
     )
 
-    @ApiResponse(
-            responseCode = "200",
-            description =
-                    "Customer updated successfully"
-    )
-
-    @ApiResponse(
-            responseCode = "404",
-            description = "Customer not found"
-    )
-
     @PutMapping("/{customerId}")
 
-    public ResponseEntity<CustomerResponse>
+    public ResponseEntity<Map<String, Object>>
     updateCustomer(
 
             @PathVariable
             Integer customerId,
 
             @Valid
+
             @RequestBody
+
             CustomerRequest customerRequest) {
 
         CustomerResponse updatedCustomer =
@@ -167,70 +213,90 @@ public class CustomerController {
                         customerRequest
                 );
 
-        return ResponseEntity.ok(
+        Map<String, Object> response =
+                new HashMap<>();
+
+        response.put(
+                "message",
+                "Customer updated successfully"
+        );
+
+        response.put(
+                "data",
                 updatedCustomer
+        );
+
+        return ResponseEntity.ok(
+                response
         );
     }
 
-    // Deletes customer using customer ID
+    /* Deletes customer */
     @Operation(
             summary = "Delete customer",
             description =
                     "Deletes customer using customer ID"
     )
 
-    @ApiResponse(
-            responseCode = "200",
-            description =
-                    "Customer deleted successfully"
-    )
-
-    @ApiResponse(
-            responseCode = "404",
-            description = "Customer not found"
-    )
-
     @DeleteMapping("/{customerId}")
 
-    public ResponseEntity<String>
+    public ResponseEntity<Map<String, Object>>
     deleteCustomer(
 
             @PathVariable
             Integer customerId) {
 
-        customerService.deleteCustomer(
-                customerId
+        CustomerResponse deletedCustomer =
+                customerService.deleteCustomer(
+                        customerId
+                );
+
+        Map<String, Object> response =
+                new HashMap<>();
+
+        response.put(
+                "message",
+                "Customer deleted successfully"
+        );
+
+        response.put(
+                "data",
+                deletedCustomer
         );
 
         return ResponseEntity.ok(
-                "Customer deleted successfully"
+                response
         );
     }
 
-    // Fetches customer using email address
+    /* Fetches customer using email */
     @Operation(
             summary = "Get customer by email",
             description =
                     "Fetches customer using email address"
     )
 
-    @ApiResponse(
-            responseCode = "200",
-            description =
-                    "Customer fetched successfully"
-    )
-
-    @ApiResponse(
-            responseCode = "404",
-            description = "Customer not found"
-    )
-
     @GetMapping("/search")
 
-    public ResponseEntity<CustomerResponse>
+    public ResponseEntity<Map<String, Object>>
     getCustomerByEmail(
 
             @RequestParam
+
+            @NotBlank(
+                    message = "Email cannot be empty"
+            )
+
+            @Email(
+                    message = "Invalid email format"
+            )
+
+            @Size(
+                    max = 255,
+                    message =
+                            "Email cannot exceed 255 characters"
+            )
+
             String email) {
 
         CustomerResponse customerResponse =
@@ -239,62 +305,133 @@ public class CustomerController {
                                 email
                         );
 
-        return ResponseEntity.ok(
+        Map<String, Object> response =
+                new HashMap<>();
+
+        response.put(
+                "message",
+                "Customer fetched successfully using email"
+        );
+
+        response.put(
+                "data",
                 customerResponse
+        );
+
+        return ResponseEntity.ok(
+                response
         );
     }
 
-    // Fetches orders linked to customer
+    /* Fetches linked customer orders */
     @Operation(
             summary = "Get customer orders",
             description =
                     "Fetches orders linked to customer"
     )
 
-    @ApiResponse(
-            responseCode = "200",
-            description =
-                    "Customer orders fetched successfully"
-    )
-
     @GetMapping("/{customerId}/orders")
 
-    public ResponseEntity<String>
+    public ResponseEntity<Map<String, Object>>
     getCustomerOrders(
 
             @PathVariable
             Integer customerId) {
 
+        List<Order> orders =
+                orderRepository
+                        .findByCustomerId(
+                                customerId
+                        );
+
+        Map<String, Object> response =
+                new HashMap<>();
+
+        if (orders.isEmpty()) {
+
+            response.put(
+                    "message",
+                    "No orders linked to customer"
+            );
+
+            response.put(
+                    "customerId",
+                    customerId
+            );
+
+            return ResponseEntity.ok(
+                    response
+            );
+        }
+
+        response.put(
+                "message",
+                "Orders fetched successfully"
+        );
+
+        response.put(
+                "data",
+                orders
+        );
+
         return ResponseEntity.ok(
-                "Orders linked to customer ID: "
-                        + customerId
+                response
         );
     }
 
-    // Fetches shipments linked to customer
+    /* Fetches linked customer shipments */
     @Operation(
             summary = "Get customer shipments",
             description =
                     "Fetches shipments linked to customer"
     )
 
-    @ApiResponse(
-            responseCode = "200",
-            description =
-                    "Customer shipments fetched successfully"
-    )
-
     @GetMapping("/{customerId}/shipments")
 
-    public ResponseEntity<String>
+    public ResponseEntity<Map<String, Object>>
     getCustomerShipments(
 
             @PathVariable
             Integer customerId) {
 
+        List<Shipment> shipments =
+                shipmentRepository
+                        .findByCustomerId(
+                                customerId
+                        );
+
+        Map<String, Object> response =
+                new HashMap<>();
+
+        if (shipments.isEmpty()) {
+
+            response.put(
+                    "message",
+                    "No shipments linked to customer"
+            );
+
+            response.put(
+                    "customerId",
+                    customerId
+            );
+
+            return ResponseEntity.ok(
+                    response
+            );
+        }
+
+        response.put(
+                "message",
+                "Shipments fetched successfully"
+        );
+
+        response.put(
+                "data",
+                shipments
+        );
+
         return ResponseEntity.ok(
-                "Shipments linked to customer ID: "
-                        + customerId
+                response
         );
     }
 }
