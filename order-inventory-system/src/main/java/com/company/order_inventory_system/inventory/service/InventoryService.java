@@ -1,8 +1,8 @@
 package com.company.order_inventory_system.inventory.service;
 
+import com.company.order_inventory_system.inventory.dto.InventoryDeleteResponse;
 import com.company.order_inventory_system.inventory.dto.InventoryRequestDTO;
 import com.company.order_inventory_system.inventory.dto.InventoryResponseDTO;
-import com.company.order_inventory_system.store.dto.ApiResponseDTO;
 
 import java.util.List;
 
@@ -16,5 +16,9 @@ public interface InventoryService {
 
     InventoryResponseDTO updateInventory(Integer inventoryId, InventoryRequestDTO inventoryRequestDTO);
 
-    ApiResponseDTO deleteInventory(Integer inventoryId);
+    InventoryDeleteResponse deleteInventory(Integer inventoryId);
+
+    List<InventoryResponseDTO> getInventoryByStoreId(Integer storeId);
+
+    List<InventoryResponseDTO> getInventoryByProductId(Integer productId);
 }

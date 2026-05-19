@@ -1,11 +1,10 @@
 package com.company.order_inventory_system.store.service;
 
-
-
-import com.company.order_inventory_system.store.dto.ApiResponseDTO;
+import com.company.order_inventory_system.store.dto.StoreDeleteResponse;
 import com.company.order_inventory_system.store.dto.StoreRequestDTO;
 import com.company.order_inventory_system.store.dto.StoreResponseDTO;
 import com.company.order_inventory_system.store.entity.Store;
+
 import com.company.order_inventory_system.common.exception.DuplicateResourceException;
 import com.company.order_inventory_system.common.exception.ResourceNotFoundException;
 import com.company.order_inventory_system.store.repository.StoreRepository;
@@ -21,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -133,12 +133,13 @@ class StoreServiceImplTest {
     @Test
     @DisplayName("Test Delete Store")
     void testDeleteStore() {
+        Integer storeId = 1;
 
         // Mocking store exists
-        when(storeRepository.findById(1)).thenReturn(Optional.of(store));
+        when(storeRepository.findById(storeId)).thenReturn(Optional.of(store));
 
         // Calling delete method
-        ApiResponseDTO responseDTO = storeService.deleteStore(1);
+        StoreDeleteResponse responseDTO = storeService.deleteStore(1);
 
         // Checking response success
         assertTrue(responseDTO.isSuccess());
@@ -147,6 +148,175 @@ class StoreServiceImplTest {
         assertEquals("Store deleted successfully", responseDTO.getMessage());
 
         // Verify delete method called once
+        verify(storeRepository, times(1)).delete(store);
+    }
+
+    @Test
+    @DisplayName("Test Update Store Successfully")
+    void testUpdateStoreSuccessfully() {
+
+        // Mocking repository response for existing store
+        when(storeRepository.findById(1)).thenReturn(Optional.of(store));
+
+        // Mocking save method after updating store details
+        when(storeRepository.save(any(Store.class))).thenReturn(store);
+
+        // Calling service method to update store
+        StoreResponseDTO responseDTO = storeService.updateStore(1, requestDTO);
+
+        // Verifying response object is not null
+        assertNotNull(responseDTO);
+
+        // Checking whether updated store name matches expected value
+        assertEquals("Chennai Store", responseDTO.getStoreName());
+
+        // Verifying save method is called exactly once
+        verify(storeRepository, times(1)).save(any(Store.class));
+    }
+
+    @Test
+    @DisplayName("Test Update Store Not Found")
+    void testUpdateStoreNotFound() {
+
+        // Mocking repository response when store is not found
+        when(storeRepository.findById(1)).thenReturn(Optional.empty());
+
+        // Verifying that ResourceNotFoundException is thrown
+        assertThrows(ResourceNotFoundException.class, () -> storeService.updateStore(1, requestDTO));
+    }
+
+    @Test
+    @DisplayName("Test Get All Stores")
+    void testGetAllStores() {
+
+        // Mocking repository response with one store record
+        when(storeRepository.findAll()).thenReturn(List.of(store));
+
+        // Calling service method to fetch all stores
+        List<StoreResponseDTO> stores = storeService.getAllStores();
+
+        // Verifying the number of stores returned
+        assertEquals(1, stores.size());
+
+        // Verifying findAll method is called exactly once
+        verify(storeRepository, times(1)).findAll();
+    }
+
+    @Test
+    @DisplayName("Test Delete Store Not Found")
+    void testDeleteStoreNotFound() {
+
+        // Mocking repository response when store does not exist
+        when(storeRepository.findById(1)).thenReturn(Optional.empty());
+
+        // Verifying that ResourceNotFoundException is thrown
+        assertThrows(ResourceNotFoundException.class, () -> storeService.deleteStore(1));
+    }
+
+    @Test
+    @DisplayName("Test Store Address Validation")
+    void testStoreAddressValidation() {
+
+        // Setting both web and physical address as null
+        requestDTO.setWebAddress(null);
+        requestDTO.setPhysicalAddress(null);
+
+        // Mocking repository response for unique store name
+        when(storeRepository.existsByStoreName(requestDTO.getStoreName())).thenReturn(false);
+
+        // Verifying exception is thrown when both addresses are missing
+        assertThrows(RuntimeException.class, () -> storeService.createStore(requestDTO));
+    }
+
+    @Test
+    @DisplayName("Test Null Store Name")
+    void testNullStoreName() {
+
+        // Setting store name as null
+        requestDTO.setStoreName(null);
+
+        // Verifying exception is thrown for null store name
+        assertThrows(Exception.class, () -> storeService.createStore(requestDTO));
+    }
+
+    @Test
+    @DisplayName("Test Blank Store Name")
+    void testBlankStoreName() {
+
+        // Setting store name as blank
+        requestDTO.setStoreName("");
+
+        // Verifying exception is thrown for blank store name
+        assertThrows(Exception.class, () -> storeService.createStore(requestDTO));
+    }
+
+    @Test
+    @DisplayName("Test Create Store With Physical Address Only")
+    void testPhysicalAddressOnly() {
+
+        // Setting only physical address and keeping web address null
+        requestDTO.setWebAddress(null);
+
+        requestDTO.setPhysicalAddress("Chennai");
+
+        // Mocking repository response for unique store name
+        when(storeRepository.existsByStoreName(requestDTO.getStoreName())).thenReturn(false);
+
+        // Mocking save operation
+        when(storeRepository.save(any(Store.class))).thenReturn(store);
+
+        // Calling service method to create store
+        StoreResponseDTO responseDTO = storeService.createStore(requestDTO);
+
+        // Verifying response object is not null
+        assertNotNull(responseDTO);
+    }
+
+    @Test
+    @DisplayName("Test Create Store With Web Address Only")
+    void testWebAddressOnly() {
+
+        // Setting physical address as null
+        requestDTO.setPhysicalAddress(null);
+
+        // Mocking repository response for unique store name
+        when(storeRepository.existsByStoreName(requestDTO.getStoreName())).thenReturn(false);
+
+        // Mocking save operation
+        when(storeRepository.save(any(Store.class))).thenReturn(store);
+
+        // Calling service method to create store
+        StoreResponseDTO responseDTO = storeService.createStore(requestDTO);
+
+        // Verifying response object is not null
+        assertNotNull(responseDTO);
+    }
+
+    @Test
+    @DisplayName("Test Empty Store List")
+    void testEmptyStoreList() {
+
+        // Mocking repository response with empty store list
+        when(storeRepository.findAll()).thenReturn(List.of());
+
+        // Calling service method to fetch all stores
+        List<StoreResponseDTO> stores = storeService.getAllStores();
+
+        // Verifying returned store list is empty
+        assertTrue(stores.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Verify Delete Method Called Once")
+    void testDeleteInvocation() {
+
+        // Mocking repository response for existing store
+        when(storeRepository.findById(1)).thenReturn(Optional.of(store));
+
+        // Calling service method to delete store
+        storeService.deleteStore(1);
+
+        // Verifying delete method is called exactly once
         verify(storeRepository, times(1)).delete(store);
     }
 }

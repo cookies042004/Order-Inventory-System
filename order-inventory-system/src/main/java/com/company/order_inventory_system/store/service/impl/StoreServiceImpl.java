@@ -1,6 +1,19 @@
     package com.company.order_inventory_system.store.service.impl;
 
-    import com.company.order_inventory_system.store.dto.ApiResponseDTO;
+    import com.company.order_inventory_system.inventory.dto.InventoryResponseDTO;
+    import com.company.order_inventory_system.inventory.entity.Inventory;
+    import com.company.order_inventory_system.inventory.mapper.InventoryMapper;
+    import com.company.order_inventory_system.inventory.repository.InventoryRepository;
+    import com.company.order_inventory_system.order.dto.OrderResponse;
+    import com.company.order_inventory_system.order.entity.Order;
+    import com.company.order_inventory_system.order.repository.OrderRepository;
+    import com.company.order_inventory_system.order.service.OrderService;
+    import com.company.order_inventory_system.order.service.OrderServiceImpl;
+    import com.company.order_inventory_system.shipment.dto.ShipmentResponse;
+    import com.company.order_inventory_system.shipment.entity.Shipment;
+    import com.company.order_inventory_system.shipment.repository.ShipmentRepository;
+    import com.company.order_inventory_system.shipment.service.ShipmentService;
+    import com.company.order_inventory_system.store.dto.StoreDeleteResponse;
     import com.company.order_inventory_system.store.dto.StoreRequestDTO;
     import com.company.order_inventory_system.store.dto.StoreResponseDTO;
     import com.company.order_inventory_system.store.entity.Store;
@@ -17,10 +30,19 @@
 
     @Service
     public class StoreServiceImpl implements StoreService {
-        private StoreRepository storeRepository;
+        private final StoreRepository storeRepository;
+        private final InventoryRepository inventoryRepository;
 
-        public StoreServiceImpl(StoreRepository storeRepository){
+        private final OrderService orderService;
+
+        private final ShipmentService shipmentService;
+
+        public StoreServiceImpl(StoreRepository storeRepository, InventoryRepository inventoryRepository,
+                                OrderService orderService, ShipmentService shipmentService){
             this.storeRepository = storeRepository;
+            this.inventoryRepository = inventoryRepository;
+            this.orderService = orderService;
+            this.shipmentService = shipmentService;
         }
 
         @Override
@@ -89,18 +111,58 @@
         }
 
         @Override
-        public ApiResponseDTO deleteStore(Integer storeId){
+        public StoreDeleteResponse deleteStore(Integer storeId){
             Store store = storeRepository.findById(storeId)
                     .orElseThrow(() -> new ResourceNotFoundException("Store not found with id: " + storeId));
 
+            StoreResponseDTO deletedStore = StoreMapper.mapToResponseDTO(store);
+
             storeRepository.delete(store);
 
-            return new ApiResponseDTO(
+            return new StoreDeleteResponse(
                     true,
-                    "Store deleted successfully"
+                    "Store deleted successfully",
+                    deletedStore
             );
         }
 
+        @Override
+        public List<InventoryResponseDTO> getStoreInventory(Integer storeId) {
+
+            // validate store exists
+            storeRepository.findById(storeId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Store not found with id: " + storeId));
+
+            List<Inventory> inventoryList = inventoryRepository.findByStoreStoreId(storeId);
+
+            return inventoryList.stream()
+                    .map(InventoryMapper::mapToResponseDTO)
+                    .toList();
+        }
+
+        @Override
+        public List<OrderResponse> getStoreOrders(Integer storeId) {
+
+            // validate store exists
+            storeRepository.findById(storeId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Store not found with id: " + storeId
+                    ));
+
+            return orderService.getOrdersByStoreId(storeId);
+        }
+
+        @Override
+        public List<ShipmentResponse> getStoreShipments(Integer storeId) {
+
+            // validate store exists
+            storeRepository.findById(storeId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Store not found with id: " + storeId
+                    ));
+
+            return shipmentService.getShipmentsByStoreId(storeId);
+        }
+
+        // Helper Function
         private void validateStoreAddress(StoreRequestDTO storeRequestDTO){
             // at least one address should be there either web or physical
             if((storeRequestDTO.getWebAddress() == null || storeRequestDTO.getWebAddress().isBlank())

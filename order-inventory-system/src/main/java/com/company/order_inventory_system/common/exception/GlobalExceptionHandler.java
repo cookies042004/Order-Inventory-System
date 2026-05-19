@@ -7,6 +7,7 @@ import com.company.order_inventory_system.product.exception.ProductNotFoundExcep
 import com.company.order_inventory_system.shipment.exception.ShipmentNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -246,6 +247,7 @@ public class GlobalExceptionHandler {
         );
     }
 
+
     @ExceptionHandler(
             DataIntegrityViolationException.class)
 
@@ -318,4 +320,27 @@ public class GlobalExceptionHandler {
                 response,
                 HttpStatus.BAD_REQUEST);
     }
+    // Handle Constraint Violation Exception
+//    @ExceptionHandler(ConstraintViolationException.class)
+//    public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException ex) {
+//
+//        Map<String, String> errors = new HashMap<>();
+//
+//        ex.getConstraintViolations()
+//                .forEach(error -> {
+//
+//                    String field = error.getPropertyPath().toString();
+//
+//                    String message = error.getMessage();
+//
+//                    errors.put(field, message);
+//                });
+//
+//        return new ResponseEntity<>(
+//                errors,
+//                HttpStatus.BAD_REQUEST
+//        );
+//    }
+
+
 }

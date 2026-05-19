@@ -1,6 +1,9 @@
 package com.company.order_inventory_system.store.service;
 
-import com.company.order_inventory_system.store.dto.ApiResponseDTO;
+import com.company.order_inventory_system.inventory.dto.InventoryResponseDTO;
+import com.company.order_inventory_system.order.dto.OrderResponse;
+import com.company.order_inventory_system.shipment.dto.ShipmentResponse;
+import com.company.order_inventory_system.store.dto.StoreDeleteResponse;
 import com.company.order_inventory_system.store.dto.StoreRequestDTO;
 import com.company.order_inventory_system.store.dto.StoreResponseDTO;
 
@@ -15,5 +18,11 @@ public interface StoreService {
     StoreResponseDTO getStoreById(Integer storeId);
 
     StoreResponseDTO updateStore(Integer storeId, StoreRequestDTO storeRequestDTO);
-    ApiResponseDTO deleteStore(Integer storeId);
+    StoreDeleteResponse deleteStore(Integer storeId);
+
+    List<InventoryResponseDTO> getStoreInventory(Integer storeId);
+
+    List<OrderResponse> getStoreOrders(Integer storeId);
+
+    List<ShipmentResponse> getStoreShipments(Integer storeId);
 }

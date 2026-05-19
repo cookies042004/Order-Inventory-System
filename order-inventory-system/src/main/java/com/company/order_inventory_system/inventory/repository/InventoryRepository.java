@@ -15,4 +15,5 @@ public interface InventoryRepository extends JpaRepository<Inventory, Integer> {
 
     // Checks if inventory already exists for given store and product
     boolean existsByStoreStoreIdAndProductProductId(Integer storeId, Integer productId);
+
 }

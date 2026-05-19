@@ -6,6 +6,9 @@ import com.company.order_inventory_system.order.enums.OrderStatus;
 import com.company.order_inventory_system.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Parameter;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import jakarta.validation.Valid;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,9 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-
 @RequestMapping("/api/orders")
-
 public class OrderController {
 
     private final OrderService orderService;
@@ -32,8 +33,8 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    @Operation(summary = "Create a new order")
     @PostMapping
-
     public ResponseEntity<OrderResponse>
     createOrder(
             @Valid
@@ -48,8 +49,8 @@ public class OrderController {
                 HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Get all orders")
     @GetMapping
-
     public ResponseEntity<List<OrderResponse>>
     getAllOrders() {
 
@@ -57,8 +58,8 @@ public class OrderController {
                 orderService.getAllOrders());
     }
 
+    @Operation(summary = "Get order by order ID")
     @GetMapping("/{orderId}")
-
     public ResponseEntity<OrderResponse>
     getOrderById(
             @PathVariable Integer orderId) {
@@ -67,6 +68,7 @@ public class OrderController {
                 orderService.getOrderById(orderId));
     }
 
+    @Operation(summary = "Update order details")
     @PutMapping("/{orderId}")
     public ResponseEntity<OrderResponse>
     updateOrder(
@@ -82,9 +84,12 @@ public class OrderController {
                         request));
     }
 
+    @Operation(summary = "Delete order by ID")
     @DeleteMapping("/{orderId}")
 
+
     public ResponseEntity<OrderResponse>
+
     deleteOrder(
             @PathVariable Integer orderId) {
 
@@ -92,8 +97,8 @@ public class OrderController {
                 orderService.deleteOrder(orderId));
     }
 
+    @Operation(summary = "Get orders by customer ID")
     @GetMapping("/customer/{customerId}")
-
     public ResponseEntity<List<OrderResponse>>
     getOrdersByCustomerId(
             @PathVariable Integer customerId) {
@@ -104,8 +109,8 @@ public class OrderController {
                                 customerId));
     }
 
+    @Operation(summary = "Get orders by store ID")
     @GetMapping("/store/{storeId}")
-
     public ResponseEntity<List<OrderResponse>>
     getOrdersByStoreId(
             @PathVariable Integer storeId) {
@@ -116,8 +121,8 @@ public class OrderController {
                                 storeId));
     }
 
+    @Operation(summary = "Get orders by status")
     @GetMapping("/status/{status}")
-
     public ResponseEntity<List<OrderResponse>>
     getOrdersByStatus(
             @PathVariable OrderStatus status) {
@@ -142,8 +147,8 @@ public class OrderController {
                                 status));
     }
 
+    @Operation(summary = "Get orders between start and end date")
     @GetMapping("/daterange")
-
     public ResponseEntity<List<OrderResponse>>
     getOrdersByDateRange(
 
