@@ -3,6 +3,7 @@ package com.company.order_inventory_system.inventory.service.impl;
 import com.company.order_inventory_system.common.exception.DuplicateResourceException;
 import com.company.order_inventory_system.common.exception.InvalidDataException;
 import com.company.order_inventory_system.common.exception.ResourceNotFoundException;
+import com.company.order_inventory_system.inventory.dto.InventoryDeleteResponse;
 import com.company.order_inventory_system.store.dto.ApiResponseDTO;
 import com.company.order_inventory_system.inventory.dto.InventoryRequestDTO;
 import com.company.order_inventory_system.inventory.dto.InventoryResponseDTO;
@@ -130,21 +131,45 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public ApiResponseDTO deleteInventory(
+    public InventoryDeleteResponse deleteInventory(
             Integer inventoryId) {
 
         Inventory inventory = inventoryRepository.findById(inventoryId)
                         .orElseThrow(() -> new ResourceNotFoundException("Inventory not found with id: "
                                                 + inventoryId));
 
+        InventoryResponseDTO deletedInventory = InventoryMapper.mapToResponseDTO(inventory);
+
         inventoryRepository.delete(inventory);
 
-        return new ApiResponseDTO(
+        return new InventoryDeleteResponse(
                 true,
-                "Inventory deleted successfully"
+                "Inventory deleted successfully",
+                deletedInventory
         );
     }
 
+    @Override
+    public List<InventoryResponseDTO> getInventoryByStoreId(Integer storeId) {
+
+        List<Inventory> inventoryList = inventoryRepository.findByStoreStoreId(storeId);
+
+        return inventoryList.stream()
+                .map(InventoryMapper::mapToResponseDTO)
+                .toList();
+    }
+
+    @Override
+    public List<InventoryResponseDTO> getInventoryByProductId(Integer productId) {
+
+        List<Inventory> inventoryList = inventoryRepository.findByProductProductId(productId);
+
+        return inventoryList.stream()
+                .map(InventoryMapper::mapToResponseDTO)
+                .toList();
+    }
+
+    // Helper Function
     private void validateInventoryQuantity(Integer quantity) {
         if (quantity < 0) {
             throw new InvalidDataException("Inventory quantity cannot be negative");

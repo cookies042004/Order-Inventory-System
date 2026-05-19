@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
 @Configuration
 
@@ -94,22 +95,13 @@ public class SecurityConfig {
        ========================= */
 
     @Bean
-    public SecurityFilterChain securityFilterChain(
-            HttpSecurity http
-    ) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
 
-                /* Disable csrf */
-
                 .csrf(csrf -> csrf.disable())
 
-
-                /* Authorization */
-
                 .authorizeHttpRequests(auth -> auth
-
-                        /* Swagger */
 
                         .requestMatchers(
                                 "/swagger-ui/**",
@@ -119,77 +111,42 @@ public class SecurityConfig {
 
                         .permitAll()
 
-
-                        /* CUSTOMER MODULE */
-
-                        .requestMatchers(
-                                "/api/customers/**"
-                        )
-
+                        .requestMatchers("/api/customers/**")
                         .hasRole("CUSTOMER")
 
-
-                        /* PRODUCT MODULE */
-
-                        .requestMatchers(
-                                "/api/products/**"
-                        )
-
+                        .requestMatchers("/api/products/**")
                         .hasRole("PRODUCT")
 
-
-                        /* ORDER + ORDER ITEM MODULE */
-
-                        .requestMatchers(
-                                "/api/orders/**",
-                                "/api/order-items/**"
-                        )
-
+                        .requestMatchers("/api/orders/**",
+                                "/api/order-items/**")
                         .hasRole("ORDER")
 
-
-                        /* SHIPMENT MODULE */
-
-                        .requestMatchers(
-                                "/api/shipments/**"
-                        )
-
+                        .requestMatchers("/api/shipments/**")
                         .hasRole("SHIPMENT")
 
-
-                        /* INVENTORY MODULE */
-
-                        .requestMatchers(
-                                "/api/inventories/**"
-                        )
-
+                        .requestMatchers("/api/inventories/**")
                         .hasRole("INVENTORY")
 
-
-                        /* STORE MODULE */
-
-                        .requestMatchers(
-                                "/api/stores/**"
-                        )
-
+                        .requestMatchers("/api/stores/**")
                         .hasRole("STORE")
 
-
-                        /* Remaining endpoints */
-
                         .anyRequest()
-
                         .authenticated()
                 )
 
+                .httpBasic(Customizer.withDefaults())
 
-                /* Enable Basic Authentication */
-
-                .httpBasic(Customizer.withDefaults());
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(
+                                new BasicAuthenticationEntryPoint() {{
+                                    setRealmName("OrderInventorySystem");
+                                    afterPropertiesSet();
+                                }}
+                        )
+                );
 
         return http.build();
     }
-
 
     /* =========================
        USER DETAILS
