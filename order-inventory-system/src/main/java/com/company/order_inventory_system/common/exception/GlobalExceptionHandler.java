@@ -14,6 +14,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -200,6 +201,26 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(
                 errors,
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    // Handle Invalid Path Variable / Request Parameter
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse>
+    handleMethodArgumentTypeMismatchException(
+            MethodArgumentTypeMismatchException ex) {
+
+        ErrorResponse response =
+                new ErrorResponse(
+                        LocalDateTime.now(),
+                        HttpStatus.BAD_REQUEST.value(),
+                        "Invalid Request Parameter",
+                        "Invalid value for parameter: " + ex.getName()
+                );
+
+        return new ResponseEntity<>(
+                response,
                 HttpStatus.BAD_REQUEST
         );
     }

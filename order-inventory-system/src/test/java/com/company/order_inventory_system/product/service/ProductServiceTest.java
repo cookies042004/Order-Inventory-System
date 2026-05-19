@@ -273,4 +273,157 @@ public class ProductServiceTest {
                 .findById(999);
     }
 
+    // Tests update failure when product ID does not exist
+    @Test
+    void testUpdateProduct_ProductNotFound_SaveNotCalled() {
+
+        // Sample request object
+        ProductRequest request = new ProductRequest(
+                "Test",
+                1000.0,
+                "BLACK",
+                "PUMA",
+                "M",
+                4
+        );
+
+        // Mock empty repository response
+        when(productRepository.findById(999))
+                .thenReturn(Optional.empty());
+
+        // Verify exception is thrown
+        assertThrows(
+                RuntimeException.class,
+                () -> productService.updateProduct(999, request)
+        );
+
+        // Ensure save is never called
+        verify(productRepository, never())
+                .save(any(Product.class));
+    }
+
+    // Tests delete failure when product is not found
+    @Test
+    void testDeleteProduct_ProductNotFound_DeleteNeverCalled() {
+
+        // Mock empty repository response
+        when(productRepository.findById(999))
+                .thenReturn(Optional.empty());
+
+        // Verify exception is thrown
+        assertThrows(
+                RuntimeException.class,
+                () -> productService.deleteProduct(999)
+        );
+
+        // Ensure delete method is never called
+        verify(productRepository, never())
+                .delete(any(Product.class));
+    }
+
+    // Tests fetching products when database is empty
+    @Test
+    void testGetAllProducts_EmptyList() {
+
+        // Mock empty product list
+        when(productRepository.findAll())
+                .thenReturn(List.of());
+
+        // Call service method
+        List<ProductResponse> result =
+                productService.getAllProducts();
+
+        // Validate empty response
+        assertNotNull(result);
+
+        assertTrue(result.isEmpty());
+
+        // Verify repository interaction
+        verify(productRepository, times(1))
+                .findAll();
+    }
+
+    // Tests all fields after product creation
+    @Test
+    void testCreateProduct_AllFieldsValidation() {
+
+        // Mock save response
+        when(productRepository.save(any(Product.class)))
+                .thenReturn(product);
+
+        // Call service method
+        ProductResponse result =
+                productService.createProduct(productRequest);
+
+        // Validate all response fields
+        assertEquals("Nike Shoes", result.getProductName());
+
+        assertEquals("BLACK", result.getColour());
+
+        assertEquals("NIKE", result.getBrand());
+
+        assertEquals("M", result.getSize());
+
+        assertEquals(4999.0, result.getUnitPrice());
+
+        assertEquals(5, result.getRating());
+
+        // Verify save execution
+        verify(productRepository, times(1))
+                .save(any(Product.class));
+    }
+
+    // Tests updating all product fields successfully
+    @Test
+    void testUpdateProduct_AllFieldsUpdated() {
+
+        // Updated request DTO
+        ProductRequest updatedRequest =
+                new ProductRequest(
+                        "Adidas Shoes",
+                        6999.0,
+                        "WHITE",
+                        "ADIDAS",
+                        "XL",
+                        5
+                );
+
+        // Updated entity object
+        Product updatedProduct =
+                new Product(
+                        1,
+                        "Adidas Shoes",
+                        6999.0,
+                        "WHITE",
+                        "ADIDAS",
+                        "XL",
+                        5
+                );
+
+        // Mock existing product fetch
+        when(productRepository.findById(1))
+                .thenReturn(Optional.of(product));
+
+        // Mock updated save response
+        when(productRepository.save(any(Product.class)))
+                .thenReturn(updatedProduct);
+
+        // Call update service
+        ProductResponse result =
+                productService.updateProduct(1, updatedRequest);
+
+        // Validate updated values
+        assertEquals("Adidas Shoes", result.getProductName());
+
+        assertEquals("WHITE", result.getColour());
+
+        assertEquals("ADIDAS", result.getBrand());
+
+        assertEquals("XL", result.getSize());
+
+        assertEquals(6999.0, result.getUnitPrice());
+
+        assertEquals(5, result.getRating());
+    }
+
 }

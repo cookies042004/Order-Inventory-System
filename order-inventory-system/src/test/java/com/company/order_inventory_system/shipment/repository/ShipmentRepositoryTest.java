@@ -1,4 +1,4 @@
-package com.company.order_inventory_system.product.shipment.repository;
+package com.company.order_inventory_system.shipment.repository;
 
 import com.company.order_inventory_system.shipment.entity.Shipment;
 import com.company.order_inventory_system.shipment.enums.ShipmentStatus;
