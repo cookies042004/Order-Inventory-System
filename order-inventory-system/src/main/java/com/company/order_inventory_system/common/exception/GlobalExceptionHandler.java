@@ -206,6 +206,26 @@ public class GlobalExceptionHandler {
         );
     }
 
+    // Handle Invalid Path Variable / Request Parameter
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse>
+    handleMethodArgumentTypeMismatchException(
+            MethodArgumentTypeMismatchException ex) {
+
+        ErrorResponse response =
+                new ErrorResponse(
+                        LocalDateTime.now(),
+                        HttpStatus.BAD_REQUEST.value(),
+                        "Invalid Request Parameter",
+                        "Invalid value for parameter: " + ex.getName()
+                );
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
     // Handle Generic Exceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse>
