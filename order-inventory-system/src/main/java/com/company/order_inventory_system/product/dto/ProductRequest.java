@@ -6,6 +6,11 @@ import jakarta.validation.constraints.*;
 public class ProductRequest {
 
     @NotBlank(message = "Product name cannot be empty")
+    @Size(max = 50, message = "Product name cannot exceed 50 characters")
+    @Pattern(
+            regexp = "^[A-Za-z ]+$",
+            message = "Product name can contain only letters and spaces"
+    )
     private String productName;
 
     @NotNull(message = "Unit price cannot be null")
@@ -13,14 +18,29 @@ public class ProductRequest {
     private Double unitPrice;
 
     @NotBlank(message = "Colour cannot be empty")
+    @Size(max = 20, message = "Colour cannot exceed 20 characters")
+    @Pattern(
+            regexp = "^[A-Za-z ]+$",
+            message = "Colour can contain only letters and spaces"
+    )
     private String colour;
 
     @NotBlank(message = "Brand cannot be empty")
+    @Size(max = 30, message = "Brand cannot exceed 30 characters")
+    @Pattern(
+            regexp = "^[A-Za-z ]+$",
+            message = "Brand can contain only letters and spaces"
+    )
     private String brand;
 
     @NotBlank(message = "Size cannot be empty")
+    @Pattern(
+            regexp = "^(S|M|L|XL|XXL)$",
+            message = "Size must be S, M, L, XL or XXL"
+    )
     private String size;
 
+    @NotNull(message = "Rating cannot be null")
     @Min(value = 1, message = "Rating must be minimum 1")
     @Max(value = 5, message = "Rating must be maximum 5")
     private Integer rating;
