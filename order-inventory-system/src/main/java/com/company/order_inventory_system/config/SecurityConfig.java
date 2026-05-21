@@ -98,6 +98,16 @@ public class SecurityConfig {
     @Value("${report.password}")
     private String reportPassword;
 
+    /* =========================
+   ORDER ITEM CREDENTIALS
+   ========================= */
+
+    @Value("${orderitem.username}")
+    private String orderItemUsername;
+
+    @Value("${orderitem.password}")
+    private String orderItemPassword;
+
 
     /* =========================
        SECURITY FILTER CHAIN
@@ -125,11 +135,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/products/**")
                         .hasRole("PRODUCT")
 
-                        .requestMatchers(
-                                "/api/orders/**",
-                                "/api/order-items/**"
-                        )
+                        .requestMatchers("/api/orders/**")
                         .hasRole("ORDER")
+
+                        .requestMatchers("/api/order-items/**")
+                        .hasRole("ORDERITEM")
 
                         .requestMatchers("/api/shipments/**")
                         .hasRole("SHIPMENT")
@@ -294,6 +304,23 @@ public class SecurityConfig {
 
                         .build();
 
+        /* ORDER ITEM USER */
+
+        UserDetails orderItemUser =
+
+                User.builder()
+
+                        .username(orderItemUsername)
+
+                        .password(
+                                passwordEncoder()
+                                        .encode(orderItemPassword)
+                        )
+
+                        .roles("ORDERITEM")
+
+                        .build();
+
 
         return new InMemoryUserDetailsManager(
 
@@ -309,7 +336,9 @@ public class SecurityConfig {
 
                 storeUser,
 
-                reportUser
+                reportUser,
+
+                orderItemUser
         );
     }
 
