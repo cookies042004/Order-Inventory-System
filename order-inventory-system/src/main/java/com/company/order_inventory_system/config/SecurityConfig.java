@@ -105,7 +105,7 @@ public class SecurityConfig {
     @Value("${orderitem.username}")
     private String orderItemUsername;
 
-    @Value("${orderitem.password}")
+    @Value("${orderitem}")
     private String orderItemPassword;
 
 
