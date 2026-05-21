@@ -1,90 +1,99 @@
+/* ==========================================================================
+   SENIOR FRONTEND DEVELOPER ENDPOINT CARD SYSTEMS
+   ========================================================================== */
+
 .method {
-
     min-width: 80px;
-
     text-align: center;
-
-    padding: 8px 12px;
-
-    border-radius: 8px;
-
-    color: white;
-
-    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .get {
-
-    background: #16a34a;
+    background-color: var(--success-light);
+    color: var(--success-text);
+    border: 1px solid var(--success-border);
 }
 
 .post {
-
-    background: #2563eb;
+    background-color: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid var(--primary-ring);
 }
 
 .put {
-
-    background: #ea580c;
+    background-color: var(--warning-light);
+    color: var(--warning-text);
+    border: 1px solid var(--warning-border);
 }
 
 .delete {
-
-    background: #dc2626;
+    background-color: var(--danger-light);
+    color: var(--danger-text);
+    border: 1px solid var(--danger-border);
 }
 
 .endpoint-card-link {
-
     text-decoration: none;
-
     color: inherit;
+    display: block;
 }
 
 .endpoint-card {
-
     display: flex;
-
     align-items: center;
-
     gap: 20px;
-
-    background: white;
-
-    border-radius: 18px;
-
-    padding: 24px;
-
-    margin-bottom: 20px;
-
-    transition: 0.3s;
-
-    box-shadow:
-            0 4px 20px rgba(0,0,0,0.05);
+    background-color: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .endpoint-card:hover {
-
-    transform: translateY(-4px);
-
-    box-shadow:
-            0 8px 25px rgba(0,0,0,0.1);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--border-hover);
 }
 
 .endpoint-content {
-
     display: flex;
-
     flex-direction: column;
 }
 
 .endpoint-content h3 {
-
-    font-size: 20px;
-
-    margin-bottom: 6px;
+    font-size: 16px;
+    font-weight: 750;
+    color: var(--text-main);
+    margin-bottom: 2px;
+    letter-spacing: -0.01em;
 }
 
 .endpoint-content p {
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 400;
+}
 
-    color: #64748b;
+@media(max-width: 600px) {
+    .endpoint-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+    }
+    
+    .method {
+        width: 100%;
+    }
 }

@@ -321,26 +321,30 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST);
     }
     // Handle Constraint Violation Exception
-//    @ExceptionHandler(ConstraintViolationException.class)
-//    public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException ex) {
-//
-//        Map<String, String> errors = new HashMap<>();
-//
-//        ex.getConstraintViolations()
-//                .forEach(error -> {
-//
-//                    String field = error.getPropertyPath().toString();
-//
-//                    String message = error.getMessage();
-//
-//                    errors.put(field, message);
-//                });
-//
-//        return new ResponseEntity<>(
-//                errors,
-//                HttpStatus.BAD_REQUEST
-//        );
-//    }
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException(
+            ConstraintViolationException ex) {
+
+        StringBuilder sb = new StringBuilder();
+        ex.getConstraintViolations().forEach(violation -> {
+            if (sb.length() > 0) {
+                sb.append(", ");
+            }
+            sb.append(violation.getMessage());
+        });
+
+        ErrorResponse response = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad Request",
+                sb.toString()
+        );
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.BAD_REQUEST
+        );
+    }
 
 
 }

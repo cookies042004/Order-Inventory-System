@@ -15,6 +15,8 @@ public interface StoreService {
 
     List<StoreResponseDTO> getAllStores();
 
+    org.springframework.data.domain.Page<StoreResponseDTO> getAllStores(org.springframework.data.domain.Pageable pageable);
+
     StoreResponseDTO getStoreById(Integer storeId);
 
     StoreResponseDTO updateStore(Integer storeId, StoreRequestDTO storeRequestDTO);
@@ -25,4 +27,7 @@ public interface StoreService {
     List<OrderResponse> getStoreOrders(Integer storeId);
 
     List<ShipmentResponse> getStoreShipments(Integer storeId);
+
+    StoreResponseDTO uploadStoreLogo(Integer storeId, byte[] logoBytes, String filename, String mimeType);
+    byte[] getStoreLogo(Integer storeId);
 }

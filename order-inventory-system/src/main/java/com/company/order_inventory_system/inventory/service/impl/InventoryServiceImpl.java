@@ -91,6 +91,12 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
+    public org.springframework.data.domain.Page<InventoryResponseDTO> getAllInventory(org.springframework.data.domain.Pageable pageable) {
+        return inventoryRepository.findAll(pageable)
+                .map(InventoryMapper::mapToResponseDTO);
+    }
+
+    @Override
     public InventoryResponseDTO getInventoryById(Integer inventoryId) {
 
         Inventory inventory = inventoryRepository.findById(inventoryId)

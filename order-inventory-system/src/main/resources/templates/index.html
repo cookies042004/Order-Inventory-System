@@ -26,12 +26,20 @@
 
     <!-- HERO SECTION -->
 
-    <div class="hero-section">
+    <div class="hero-section" id="about-section">
 
         <h1 th:text="${projectTitle}"></h1>
 
-        <p th:text="${projectDescription}"></p>
+        <div class="hero-desc">
+            The <strong>Order Inventory System</strong> is a modern, enterprise-grade management platform built with Spring Boot and responsive Thymeleaf MVC. It seamlessly integrates seven dedicated core business domains—spanning stores, products, inventory, customers, order orchestration, shipment logistics, and rich reporting analytics—into a unified, premium administration experience designed to streamline commercial operations at scale.
+        </div>
 
+    </div>
+
+    <!-- TEAM SECTION HEADER -->
+    <div class="team-header" id="team-section" style="margin-top: 48px; margin-bottom: 24px;">
+        <h2 style="font-size: 24px; font-weight: 800; color: var(--text-main); letter-spacing: -0.02em;">Our Development Team</h2>
+        <p style="color: var(--text-muted); font-size: 14.5px; margin-top: 6px;">Click on a team member card below to launch their assigned resource module dashboards</p>
     </div>
 
     <!-- TEAM CARDS -->

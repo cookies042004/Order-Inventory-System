@@ -1,90 +1,71 @@
+/* ==========================================================================
+   SENIOR FRONTEND DEVELOPER ACCESS DENIED VIEW
+   ========================================================================== */
+
 .access-container {
-
     height: 100vh;
-
     display: flex;
-
     justify-content: center;
-
     align-items: center;
-
-    background:
-        linear-gradient(
-            135deg,
-            #fee2e2,
-            #fef2f2
-        );
+    background-color: var(--bg-page);
+    padding: 16px;
 }
 
 .access-card {
-
-    width: 500px;
-
-    background: white;
-
-    padding: 50px;
-
-    border-radius: 28px;
-
+    width: 100%;
+    max-width: 480px;
+    background-color: var(--bg-card);
+    padding: 50px 30px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
     text-align: center;
-
-    box-shadow:
-        0 12px 35px rgba(0,0,0,0.08);
 }
 
 .access-card h1 {
-
-    font-size: 96px;
-
-    color: #dc2626;
-
-    margin-bottom: 10px;
-
-    font-weight: 800;
+    font-size: 72px;
+    color: var(--danger-text);
+    margin-bottom: 8px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.04em;
 }
 
 .access-card h2 {
-
-    font-size: 32px;
-
-    color: #111827;
-
-    margin-bottom: 16px;
+    font-size: 24px;
+    color: var(--text-main);
+    margin-bottom: 14px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
 }
 
 .access-card p {
-
-    font-size: 18px;
-
-    color: #64748b;
-
-    margin-bottom: 32px;
-
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 30px;
     line-height: 1.6;
+    font-weight: 500;
 }
 
 .home-btn {
-
-    display: inline-block;
-
-    background: #dc2626;
-
-    color: white;
-
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--primary);
+    color: #ffffff;
     text-decoration: none;
-
-    padding: 14px 28px;
-
-    border-radius: 12px;
-
-    font-weight: 600;
-
-    transition: 0.3s ease;
+    padding: 12px 28px;
+    border-radius: var(--radius-sm);
+    font-weight: 750;
+    font-size: 14px;
+    border: 1px solid var(--primary);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.15);
 }
 
 .home-btn:hover {
-
-    background: #b91c1c;
-
-    transform: translateY(-2px);
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(79, 70, 229, 0.25);
 }

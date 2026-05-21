@@ -3,12 +3,22 @@ package com.company.order_inventory_system.customer.controller;
 import com.company.order_inventory_system.common.model.FormField;
 import com.company.order_inventory_system.common.ui.service.EndpointExecutionService;
 import com.company.order_inventory_system.customer.dto.CustomerRequest;
+import com.company.order_inventory_system.customer.dto.CustomerResponse;
+import com.company.order_inventory_system.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.validation.BindingResult;
+import jakarta.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Map;
@@ -17,6 +27,7 @@ import java.util.Map;
 public class CustomerPageController {
 
     private final EndpointExecutionService endpointExecutionService;
+    private final CustomerService customerService;
 
     @Value("${customer.username}")
     private String customerUsername;
@@ -24,14 +35,110 @@ public class CustomerPageController {
     @Value("${customer.password}")
     private String customerPassword;
 
-    public CustomerPageController(EndpointExecutionService endpointExecutionService) {
+    public CustomerPageController(EndpointExecutionService endpointExecutionService, CustomerService customerService) {
         this.endpointExecutionService = endpointExecutionService;
+        this.customerService = customerService;
     }
 
     // CUSTOMER DASHBOARD
     @GetMapping("/customer-module/dashboard")
     public String customerDashboardPage() {
         return "fragments/customer-module";
+    }
+
+    // TRADITIONAL CRUD VIEW
+    @GetMapping("/customer-module/customers")
+    public String listCustomersPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Model model
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CustomerResponse> customerPage = customerService.getAllCustomers(pageable);
+
+        model.addAttribute("customers", customerPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", customerPage.getTotalPages());
+        model.addAttribute("totalItems", customerPage.getTotalElements());
+
+        return "customer/list";
+    }
+
+    @GetMapping("/customer-module/customers/create")
+    public String createCustomerForm(Model model) {
+        model.addAttribute("customerForm", new CustomerRequest());
+        return "customer/create";
+    }
+
+    @PostMapping("/customer-module/customers/create")
+    public String processCreateCustomer(
+            @Valid @ModelAttribute("customerForm") CustomerRequest customerForm,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            return "customer/create";
+        }
+
+        try {
+            customerService.createCustomer(customerForm);
+            redirectAttributes.addFlashAttribute("successMessage", "Customer created successfully!");
+            return "redirect:/customer-module/customers";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "customer/create";
+        }
+    }
+
+    @GetMapping("/customer-module/customers/edit/{id}")
+    public String editCustomerForm(@PathVariable Integer id, Model model) {
+        CustomerResponse customer = customerService.getCustomerById(id);
+        CustomerRequest customerForm = new CustomerRequest();
+        customerForm.setEmailAddress(customer.getEmailAddress());
+        customerForm.setFullName(customer.getFullName());
+
+        model.addAttribute("customerForm", customerForm);
+        model.addAttribute("customerId", id);
+        return "customer/edit";
+    }
+
+    @PostMapping("/customer-module/customers/edit/{id}")
+    public String processUpdateCustomer(
+            @PathVariable Integer id,
+            @Valid @ModelAttribute("customerForm") CustomerRequest customerForm,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("customerId", id);
+            return "customer/edit";
+        }
+
+        try {
+            customerService.updateCustomer(id, customerForm);
+            redirectAttributes.addFlashAttribute("successMessage", "Customer updated successfully!");
+            return "redirect:/customer-module/customers";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("customerId", id);
+            return "customer/edit";
+        }
+    }
+
+    @GetMapping("/customer-module/customers/delete/{id}")
+    public String deleteCustomer(
+            @PathVariable Integer id,
+            RedirectAttributes redirectAttributes
+    ) {
+        try {
+            customerService.deleteCustomer(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Customer deleted successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
+        return "redirect:/customer-module/customers";
     }
 
     // GET ALL CUSTOMERS

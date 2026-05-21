@@ -160,6 +160,53 @@ public class EndpointExecutionService {
         return result;
     }
 
+    public Map<String, Object> executeMultipartPostRequest(
+            String url,
+            String paramName,
+            org.springframework.web.multipart.MultipartFile file,
+            String username,
+            String password
+    ) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBasicAuth(username, password);
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+            headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+            org.springframework.util.MultiValueMap<String, Object> body = new org.springframework.util.LinkedMultiValueMap<>();
+            
+            org.springframework.core.io.Resource resource = new org.springframework.core.io.ByteArrayResource(file.getBytes()) {
+                @Override
+                public String getFilename() {
+                    return file.getOriginalFilename();
+                }
+            };
+            
+            body.add(paramName, resource);
+
+            HttpEntity<org.springframework.util.MultiValueMap<String, Object>> entity = new HttpEntity<>(body, headers);
+
+            ResponseEntity<Object> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    entity,
+                    Object.class
+            );
+
+            result.put("success", true);
+            result.put("statusCode", response.getStatusCode().value());
+            processResponseBody(response.getBody(), result, response.getStatusCode().value());
+        }
+        catch (HttpStatusCodeException ex) {
+            handleException(ex, result);
+        }
+        catch (Exception ex) {
+            handleGenericException(ex, result);
+        }
+        return result;
+    }
+
     private void handleException(HttpStatusCodeException ex, Map<String, Object> result) {
         result.put("success", false);
         result.put("statusCode", ex.getStatusCode().value());
