@@ -1,0 +1,90 @@
+.access-container {
+
+    height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fee2e2,
+            #fef2f2
+        );
+}
+
+.access-card {
+
+    width: 500px;
+
+    background: white;
+
+    padding: 50px;
+
+    border-radius: 28px;
+
+    text-align: center;
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,0.08);
+}
+
+.access-card h1 {
+
+    font-size: 96px;
+
+    color: #dc2626;
+
+    margin-bottom: 10px;
+
+    font-weight: 800;
+}
+
+.access-card h2 {
+
+    font-size: 32px;
+
+    color: #111827;
+
+    margin-bottom: 16px;
+}
+
+.access-card p {
+
+    font-size: 18px;
+
+    color: #64748b;
+
+    margin-bottom: 32px;
+
+    line-height: 1.6;
+}
+
+.home-btn {
+
+    display: inline-block;
+
+    background: #dc2626;
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 14px 28px;
+
+    border-radius: 12px;
+
+    font-weight: 600;
+
+    transition: 0.3s ease;
+}
+
+.home-btn:hover {
+
+    background: #b91c1c;
+
+    transform: translateY(-2px);
+}

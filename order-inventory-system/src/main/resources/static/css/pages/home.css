@@ -1,0 +1,199 @@
+/* TEAM CONTAINER */
+
+.team-container {
+
+    display: grid;
+
+    grid-template-columns:
+            repeat(auto-fit,
+            minmax(280px, 1fr));
+
+    gap: 30px;
+}
+
+/* TEAM CARD */
+
+.team-card {
+
+    position: relative;
+
+    width: 300px;
+
+    height: 360px;
+
+    border-radius: 24px;
+
+    overflow: hidden;
+
+    background: rgba(255,255,255,0.88);
+
+    border:
+        1px solid rgba(255,255,255,0.8);
+
+    box-shadow:
+        0 10px 25px rgba(15,23,42,0.06);
+
+    transition: 0.25s ease;
+}
+
+.team-card:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 16px 32px rgba(15,23,42,0.10);
+}
+
+/* DEFAULT CARD CONTENT */
+
+.card-default {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    transition: 0.3s ease;
+}
+
+.card-default img {
+
+    width: 120px;
+
+    height: 120px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    border: 3px solid #8b5cf6;
+
+    margin-bottom: 24px;
+}
+
+.card-default h2 {
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+    text-align: center;
+
+    color: #0f172a;
+
+    padding: 0 20px;
+
+    line-height: 1.4;
+}
+
+/* HOVER OVERLAY */
+
+.card-hover {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(171, 234, 255, 1) 0%,
+            rgba(148, 187, 233, 1) 100%
+        );
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 30px;
+
+    opacity: 0;
+
+    transition: 0.3s ease;
+}
+
+.team-card:hover .card-hover {
+
+    opacity: 1;
+}
+
+/* HOVER TITLE */
+
+.card-hover h3 {
+
+    color: white;
+
+    font-size: 24px;
+
+    margin-bottom: 28px;
+
+    font-weight: 700;
+}
+
+/* MODULE LINKS */
+
+.module-links {
+
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 16px;
+}
+
+.module-link {
+
+    text-decoration: none;
+
+    background: rgba(255,255,255,0.15);
+
+    border: 1px solid rgba(255,255,255,0.18);
+
+    color: white;
+
+    padding: 14px;
+
+    border-radius: 12px;
+
+    text-align: center;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    transition: 0.2s ease;
+
+    backdrop-filter: blur(8px);
+}
+
+.module-link:hover {
+
+    background: white;
+
+    color: #7c3aed;
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 768px) {
+
+    .team-container {
+
+        flex-direction: column;
+
+        align-items: center;
+    }
+}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order Item Module</title>
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/common/endpoint.css}">
+    <link rel="stylesheet" th:href="@{/css/modules/store-module.css}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<!-- PAGE CONTAINER -->
+<div class="module-page-container">
+
+    <!-- MODULE HEADER -->
+    <div class="module-page-header">
+        <h1>Order Item Module</h1>
+        <p>Manage order line items, product prices, quantities, and associate shipments</p>
+    </div>
+
+    <!-- ENDPOINT SECTION -->
+    <div class="endpoint-section">
+
+        <div class="module-header">
+            <h2>Endpoints</h2>
+            <span class="endpoint-count">5 Endpoints</span>
+        </div>
+
+        <!-- GET ALL ORDER ITEMS -->
+        <a th:href="@{/orderItem-module/endpoints/get-all-order-items}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/order-items</h3>
+                    <p>Get all order item records</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET ORDER ITEM BY ID -->
+        <a th:href="@{/orderItem-module/endpoints/get-order-item-by-id}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/order-items/{orderId}</h3>
+                    <p>Get order item details by ID</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- CREATE ORDER ITEM -->
+        <a th:href="@{/orderItem-module/endpoints/create-order-item}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method post">POST</span>
+                <div class="endpoint-content">
+                    <h3>/api/order-items</h3>
+                    <p>Create a new order line item</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- UPDATE ORDER ITEM -->
+        <a th:href="@{/orderItem-module/endpoints/update-order-item}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method put">PUT</span>
+                <div class="endpoint-content">
+                    <h3>/api/order-items/{orderId}</h3>
+                    <p>Update order item details by ID</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- DELETE ORDER ITEM -->
+        <a th:href="@{/orderItem-module/endpoints/delete-order-item}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method delete">DELETE</span>
+                <div class="endpoint-content">
+                    <h3>/api/order-items/{orderId}</h3>
+                    <p>Delete an order item by ID</p>
+                </div>
+            </div>
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>

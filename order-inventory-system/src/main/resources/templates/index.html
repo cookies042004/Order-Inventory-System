@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Order Inventory System</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/common/common.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/common/navbar.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/pages/home.css}">
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="main-container">
+
+    <!-- HERO SECTION -->
+
+    <div class="hero-section">
+
+        <h1 th:text="${projectTitle}"></h1>
+
+        <p th:text="${projectDescription}"></p>
+
+    </div>
+
+    <!-- TEAM CARDS -->
+    <div class="team-container">
+
+        <div class="team-card"
+             th:each="member : ${teamMembers}">
+
+            <!-- DEFAULT CONTENT -->
+
+            <div class="card-default">
+
+                <img th:src="@{${member.image}}"
+                     alt="Profile Image">
+
+                <h2 th:text="${member.name}"></h2>
+
+            </div>
+
+            <!-- HOVER CONTENT -->
+
+            <div class="card-hover">
+
+                <h3>Modules</h3>
+
+                <div class="module-links">
+
+                    <a class="module-link"
+
+                       th:each="module : ${member.modules}"
+
+                       th:text="${module.moduleName}"
+
+                       th:href="@{${module.moduleUrl}}">
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>

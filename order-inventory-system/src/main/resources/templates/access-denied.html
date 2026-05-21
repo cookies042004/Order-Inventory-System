@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Access Denied</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/common/access-denied.css}">
+
+</head>
+
+<body>
+
+<div class="access-container">
+
+    <div class="access-card">
+
+        <h1>403</h1>
+
+        <h2>Access Denied</h2>
+
+        <p>
+            You are not authorized to access this module.
+        </p>
+
+        <a th:href="@{/}"
+           class="home-btn">
+
+            Back To Home
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

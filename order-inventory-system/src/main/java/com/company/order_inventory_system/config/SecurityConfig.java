@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 import org.springframework.security.core.userdetails.User;
@@ -18,10 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
 @Configuration
-
 public class SecurityConfig {
 
     /* =========================
@@ -34,7 +31,6 @@ public class SecurityConfig {
     @Value("${customer.password}")
     private String customerPassword;
 
-
     /* =========================
        PRODUCT CREDENTIALS
        ========================= */
@@ -44,7 +40,6 @@ public class SecurityConfig {
 
     @Value("${product.password}")
     private String productPassword;
-
 
     /* =========================
        ORDER CREDENTIALS
@@ -56,7 +51,6 @@ public class SecurityConfig {
     @Value("${order.password}")
     private String orderPassword;
 
-
     /* =========================
        SHIPMENT CREDENTIALS
        ========================= */
@@ -66,7 +60,6 @@ public class SecurityConfig {
 
     @Value("${shipment.password}")
     private String shipmentPassword;
-
 
     /* =========================
        INVENTORY CREDENTIALS
@@ -78,7 +71,6 @@ public class SecurityConfig {
     @Value("${inventory.password}")
     private String inventoryPassword;
 
-
     /* =========================
        STORE CREDENTIALS
        ========================= */
@@ -89,13 +81,13 @@ public class SecurityConfig {
     @Value("${store.password}")
     private String storePassword;
 
-
     /* =========================
        SECURITY FILTER CHAIN
        ========================= */
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http) throws Exception {
 
         http
 
@@ -103,46 +95,124 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
+                        /* PUBLIC */
+
                         .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui.html"
-                        )
 
-                        .permitAll()
+                                "/",
 
-                        .requestMatchers("/api/customers/**")
-                        .hasRole("CUSTOMER")
+                                "/login",
 
-                        .requestMatchers("/api/products/**")
-                        .hasRole("PRODUCT")
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/favicon.ico",
 
-                        .requestMatchers("/api/orders/**",
-                                "/api/order-items/**")
-                        .hasRole("ORDER")
+                                "/error"
 
-                        .requestMatchers("/api/shipments/**")
-                        .hasRole("SHIPMENT")
+                        ).permitAll()
 
-                        .requestMatchers("/api/inventories/**")
+                        /* MODULE PAGES */
+
+                        .requestMatchers(
+                                "/store-module",
+                                "/store-module/**"
+                        ).hasRole("STORE")
+
+                        .requestMatchers(
+                                "/inventory-module",
+                                "/inventory-module/**"
+                        ).hasRole("INVENTORY")
+
+                        .requestMatchers(
+                                "/customer-module",
+                                "/customer-module/**"
+                        ).hasRole("CUSTOMER")
+
+                        .requestMatchers(
+                                "/product-module",
+                                "/product-module/**"
+                        ).hasRole("PRODUCT")
+
+                        .requestMatchers(
+                                "/order-module",
+                                "/order-module/**",
+                                "/orderItem-module",
+                                "/orderItem-module/**"
+                        ).hasRole("ORDER")
+
+                        .requestMatchers(
+                                "/shipment-module",
+                                "/shipment-module/**"
+                        ).hasRole("SHIPMENT")
+
+                        .requestMatchers(
+                                "/report-module",
+                                "/report-module/**"
+                        ).hasRole("PRODUCT")
+
+                        /* API ENDPOINTS */
+
+                        .requestMatchers("/api/stores", "/api/stores/**")
+                        .hasRole("STORE")
+
+                        .requestMatchers("/api/inventory", "/api/inventory/**")
                         .hasRole("INVENTORY")
 
-                        .requestMatchers("/api/stores/**")
-                        .hasRole("STORE")
+                        .requestMatchers("/api/customers", "/api/customers/**")
+                        .hasRole("CUSTOMER")
+
+                        .requestMatchers("/api/products", "/api/products/**")
+                        .hasRole("PRODUCT")
+
+                        .requestMatchers(
+                                "/api/orders",
+                                "/api/orders/**",
+                                "/api/order-items",
+                                "/api/order-items/**"
+                        ).hasRole("ORDER")
+
+                        .requestMatchers("/api/shipments", "/api/shipments/**")
+                        .hasRole("SHIPMENT")
+
+                        .requestMatchers("/api/reports", "/api/reports/**")
+                        .hasRole("PRODUCT")
 
                         .anyRequest()
                         .authenticated()
                 )
 
-                .httpBasic(Customizer.withDefaults())
+                /* HTTP BASIC */
+
+                .httpBasic(httpBasic -> {})
+
+                /* FORM LOGIN */
+
+                .formLogin(form -> form
+
+                        .loginPage("/login")
+
+                        .defaultSuccessUrl("/", true)
+
+                        .permitAll()
+                )
+
+                /* LOGOUT */
+
+                .logout(logout -> logout
+
+                        .logoutUrl("/logout")
+
+                        .logoutSuccessUrl("/login?logout")
+
+                        .permitAll()
+                )
+
+                /* ACCESS DENIED */
 
                 .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint(
-                                new BasicAuthenticationEntryPoint() {{
-                                    setRealmName("OrderInventorySystem");
-                                    afterPropertiesSet();
-                                }}
-                        )
+
+                        .accessDeniedPage("/access-denied")
                 );
 
         return http.build();
@@ -172,7 +242,6 @@ public class SecurityConfig {
 
                         .build();
 
-
         /* PRODUCT USER */
 
         UserDetails productUser =
@@ -189,7 +258,6 @@ public class SecurityConfig {
                         .roles("PRODUCT")
 
                         .build();
-
 
         /* ORDER USER */
 
@@ -208,7 +276,6 @@ public class SecurityConfig {
 
                         .build();
 
-
         /* SHIPMENT USER */
 
         UserDetails shipmentUser =
@@ -225,7 +292,6 @@ public class SecurityConfig {
                         .roles("SHIPMENT")
 
                         .build();
-
 
         /* INVENTORY USER */
 
@@ -244,7 +310,6 @@ public class SecurityConfig {
 
                         .build();
 
-
         /* STORE USER */
 
         UserDetails storeUser =
@@ -262,7 +327,6 @@ public class SecurityConfig {
 
                         .build();
 
-
         return new InMemoryUserDetailsManager(
 
                 customerUser,
@@ -278,7 +342,6 @@ public class SecurityConfig {
                 storeUser
         );
     }
-
 
     /* =========================
        PASSWORD ENCODER
