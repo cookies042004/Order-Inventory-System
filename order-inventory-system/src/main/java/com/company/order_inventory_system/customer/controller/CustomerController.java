@@ -16,9 +16,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -282,28 +279,38 @@ public class CustomerController {
     getCustomerByEmail(
 
             @RequestParam
-
-            @NotBlank(
-                    message = "Email cannot be empty"
-            )
-
-            @Email(
-                    message = "Invalid email format"
-            )
-
-            @Size(
-                    max = 255,
-                    message =
-                            "Email cannot exceed 255 characters"
-            )
-
             String email) {
+
+        if (!email.matches(
+                "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+
+            Map<String, Object> error =
+                    new HashMap<>();
+
+            error.put(
+                    "status",
+                    400
+            );
+
+            error.put(
+                    "error",
+                    "Bad Request"
+            );
+
+            error.put(
+                    "message",
+                    "Invalid email format. Please provide a valid email address."
+            );
+
+            return new ResponseEntity<>(
+                    error,
+                    HttpStatus.BAD_REQUEST
+            );
+        }
 
         CustomerResponse customerResponse =
                 customerService
-                        .getCustomerByEmail(
-                                email
-                        );
+                        .getCustomerByEmail(email);
 
         Map<String, Object> response =
                 new HashMap<>();
@@ -318,9 +325,7 @@ public class CustomerController {
                 customerResponse
         );
 
-        return ResponseEntity.ok(
-                response
-        );
+        return ResponseEntity.ok(response);
     }
 
     /* Fetches linked customer orders */
