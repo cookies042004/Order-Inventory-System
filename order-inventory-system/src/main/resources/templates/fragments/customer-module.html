@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Customer Module</title>
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/common/endpoint.css}">
+    <link rel="stylesheet" th:href="@{/css/modules/store-module.css}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<!-- PAGE CONTAINER -->
+<div class="module-page-container">
+
+    <!-- MODULE HEADER -->
+    <div class="module-page-header">
+        <h1>Customer Module</h1>
+        <p>Manage customer profiles, search by email, and view linked orders or shipments</p>
+    </div>
+
+    <!-- ENDPOINT SECTION -->
+    <div class="endpoint-section">
+
+        <div class="module-header">
+            <h2>Endpoints</h2>
+            <span class="endpoint-count">8 Endpoints</span>
+        </div>
+
+        <!-- GET ALL CUSTOMERS -->
+        <a th:href="@{/customer-module/endpoints/get-all-customers}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/customers</h3>
+                    <p>Get all customer records</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET CUSTOMER BY ID -->
+        <a th:href="@{/customer-module/endpoints/get-customer-by-id}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/customers/{customerId}</h3>
+                    <p>Get customer profile by ID</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- CREATE CUSTOMER -->
+        <a th:href="@{/customer-module/endpoints/create-customer}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method post">POST</span>
+                <div class="endpoint-content">
+                    <h3>/api/customers</h3>
+                    <p>Create a new customer profile</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- UPDATE CUSTOMER -->
+        <a th:href="@{/customer-module/endpoints/update-customer}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method put">PUT</span>
+                <div class="endpoint-content">
+                    <h3>/api/customers/{customerId}</h3>
+                    <p>Update an existing customer profile</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- DELETE CUSTOMER -->
+        <a th:href="@{/customer-module/endpoints/delete-customer}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method delete">DELETE</span>
+                <div class="endpoint-content">
+                    <h3>/api/customers/{customerId}</h3>
+                    <p>Delete customer profile by ID</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET CUSTOMER BY EMAIL -->
+        <a th:href="@{/customer-module/endpoints/get-customer-by-email}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/customers/search</h3>
+                    <p>Search customer profile by email address</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET CUSTOMER ORDERS -->
+        <a th:href="@{/customer-module/endpoints/get-customer-orders}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/customers/{customerId}/orders</h3>
+                    <p>Get all orders placed by customer</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET CUSTOMER SHIPMENTS -->
+        <a th:href="@{/customer-module/endpoints/get-customer-shipments}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/customers/{customerId}/shipments</h3>
+                    <p>Get all shipments routed to customer</p>
+                </div>
+            </div>
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>

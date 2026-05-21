@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<body>
+
+<nav class="navbar"
+     th:fragment="navbar">
+
+    <div class="logo-section">
+
+        <div class="logo-box">
+
+            <img th:src="@{/images/logo.webp}" alt="logo">
+
+        </div>
+
+        <h2>Order Inventory System</h2>
+
+    </div>
+
+    <div class="nav-links">
+
+        <a th:href="@{/}">
+            Home
+        </a>
+
+        <a href="#">
+            About Project
+        </a>
+
+        <!-- SHOW ONLY BEFORE LOGIN -->
+
+        <a th:href="@{/login}"
+
+           sec:authorize="!isAuthenticated()">
+
+            Login
+
+        </a>
+
+        <!-- SHOW ONLY AFTER LOGIN -->
+
+        <div class="user-session-badge" sec:authorize="isAuthenticated()">
+            <div class="user-avatar" th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">U</div>
+            <div class="user-info">
+                <span class="user-name" sec:authentication="name">User</span>
+                <span class="user-role-label" th:text="${#strings.replace(#authentication.authorities[0].authority, 'ROLE_', '')}">Role</span>
+            </div>
+        </div>
+
+        <form th:action="@{/logout}"
+              method="post"
+
+              sec:authorize="isAuthenticated()">
+
+            <button type="submit"
+                    class="logout-btn">
+
+                Logout
+
+            </button>
+
+        </form>
+
+    </div>
+
+</nav>
+
+</body>
+
+</html>

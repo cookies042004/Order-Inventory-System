@@ -1,0 +1,90 @@
+.method {
+
+    min-width: 80px;
+
+    text-align: center;
+
+    padding: 8px 12px;
+
+    border-radius: 8px;
+
+    color: white;
+
+    font-weight: bold;
+}
+
+.get {
+
+    background: #16a34a;
+}
+
+.post {
+
+    background: #2563eb;
+}
+
+.put {
+
+    background: #ea580c;
+}
+
+.delete {
+
+    background: #dc2626;
+}
+
+.endpoint-card-link {
+
+    text-decoration: none;
+
+    color: inherit;
+}
+
+.endpoint-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 24px;
+
+    margin-bottom: 20px;
+
+    transition: 0.3s;
+
+    box-shadow:
+            0 4px 20px rgba(0,0,0,0.05);
+}
+
+.endpoint-card:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow:
+            0 8px 25px rgba(0,0,0,0.1);
+}
+
+.endpoint-content {
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.endpoint-content h3 {
+
+    font-size: 20px;
+
+    margin-bottom: 6px;
+}
+
+.endpoint-content p {
+
+    color: #64748b;
+}
