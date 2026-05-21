@@ -50,6 +50,8 @@
 
         <!-- USER SESSION -->
 
+        <!-- USER SESSION -->
+
         <div class="user-session-badge"
              sec:authorize="isAuthenticated()">
 
@@ -58,8 +60,8 @@
             <div class="user-avatar"
 
                  th:text="${#authentication != null ?
-                 #strings.substring(#authentication.name,0,1).toUpperCase()
-                 : 'G'}">
+         #strings.substring(#authentication.name,0,1).toUpperCase()
+         : 'G'}">
 
                 U
 
@@ -74,23 +76,19 @@
                 <span class="user-name"
                       sec:authentication="name">
 
-                    User
+            User
 
-                </span>
+        </span>
 
                 <!-- ROLE -->
 
                 <span class="user-role-label"
 
-                      th:text="${#strings.replace(
-                      #authentication.authorities[0].authority,
-                      'ROLE_',
-                      ''
-                      )}">
+                      sec:authentication="authorities">
 
-                    Role
+            ROLE
 
-                </span>
+        </span>
 
             </div>
 
