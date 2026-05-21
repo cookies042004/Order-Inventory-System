@@ -92,7 +92,7 @@ public class ShipmentServiceImpl
     }
 
     @Override
-    public void deleteShipment(
+    public ShipmentResponse deleteShipment(
             Integer shipmentId) {
 
         Shipment existingShipment =
@@ -102,7 +102,12 @@ public class ShipmentServiceImpl
                                         "Shipment not found with ID: "
                                                 + shipmentId));
 
+        ShipmentResponse response =
+                mapToResponse(existingShipment);
+
         shipmentRepository.delete(existingShipment);
+
+        return response;
     }
 
     @Override
@@ -183,5 +188,25 @@ public class ShipmentServiceImpl
                 shipment.getShipmentStatus());
 
         return response;
+    }
+
+    @Override
+    public ShipmentResponse updateShipmentStatus(
+            Integer shipmentId,
+            ShipmentStatus status) {
+
+        Shipment shipment =
+                shipmentRepository.findById(shipmentId)
+                        .orElseThrow(() ->
+                                new ShipmentNotFoundException(
+                                        "Shipment not found with ID: "
+                                                + shipmentId));
+
+        shipment.setShipmentStatus(status);
+
+        Shipment updatedShipment =
+                shipmentRepository.save(shipment);
+
+        return mapToResponse(updatedShipment);
     }
 }

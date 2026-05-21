@@ -96,7 +96,7 @@ public class OrderItemServiceImpl
     }
 
     @Override
-    public void deleteOrderItem(
+    public OrderItemResponse deleteOrderItem(
             Integer orderId) {
 
         OrderItem existingItem =
@@ -106,7 +106,12 @@ public class OrderItemServiceImpl
                                         "Order item not found with ID: "
                                                 + orderId));
 
+        OrderItemResponse response =
+                mapToResponse(existingItem);
+
         orderItemRepository.delete(existingItem);
+
+        return response;
     }
 
     private OrderItem mapToEntity(

@@ -1,7 +1,6 @@
 package com.company.order_inventory_system.config;
 
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -82,6 +81,17 @@ public class SecurityConfig {
     private String storePassword;
 
     /* =========================
+       REPORT CREDENTIALS
+       ========================= */
+
+    @Value("${report.username}")
+    private String reportUsername;
+
+    @Value("${report.password}")
+    private String reportPassword;
+
+
+    /* =========================
        SECURITY FILTER CHAIN
        ========================= */
 
@@ -100,7 +110,9 @@ public class SecurityConfig {
                         .requestMatchers(
 
                                 "/",
-
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html",
                                 "/login",
 
                                 "/css/**",
@@ -109,8 +121,14 @@ public class SecurityConfig {
                                 "/favicon.ico",
 
                                 "/error"
+                        )
+                        .permitAll()
 
-                        ).permitAll()
+                        .requestMatchers(
+                                "/api/orders/**",
+                                "/api/order-items/**"
+                        )
+                        .hasRole("ORDER")
 
                         /* MODULE PAGES */
 
@@ -178,6 +196,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/reports", "/api/reports/**")
                         .hasRole("PRODUCT")
 
+                        .requestMatchers("/api/reports/**")
+                        .hasRole("REPORT")
+
                         .anyRequest()
                         .authenticated()
                 )
@@ -217,6 +238,7 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 
     /* =========================
        USER DETAILS
@@ -327,6 +349,24 @@ public class SecurityConfig {
 
                         .build();
 
+        /* REPORT USER */
+
+        UserDetails reportUser =
+
+                User.builder()
+
+                        .username(reportUsername)
+
+                        .password(
+                                passwordEncoder()
+                                        .encode(reportPassword)
+                        )
+
+                        .roles("REPORT")
+
+                        .build();
+
+
         return new InMemoryUserDetailsManager(
 
                 customerUser,
@@ -339,7 +379,9 @@ public class SecurityConfig {
 
                 inventoryUser,
 
-                storeUser
+                storeUser,
+
+                reportUser
         );
     }
 

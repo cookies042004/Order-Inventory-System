@@ -1,5 +1,6 @@
 package com.company.order_inventory_system.order.service;
 
+import com.company.order_inventory_system.common.exception.InvalidDateRangeException;
 import com.company.order_inventory_system.order.dto.OrderRequest;
 import com.company.order_inventory_system.order.dto.OrderResponse;
 import com.company.order_inventory_system.order.entity.Order;
@@ -91,7 +92,8 @@ public class OrderServiceImpl
     }
 
     @Override
-    public void deleteOrder(Integer orderId) {
+    public OrderResponse deleteOrder(
+            Integer orderId) {
 
         Order existingOrder =
                 orderRepository.findById(orderId)
@@ -100,7 +102,12 @@ public class OrderServiceImpl
                                         "Order not found with ID: "
                                                 + orderId));
 
+        OrderResponse response =
+                mapToResponse(existingOrder);
+
         orderRepository.delete(existingOrder);
+
+        return response;
     }
 
     @Override
@@ -134,12 +141,31 @@ public class OrderServiceImpl
     }
 
     @Override
-    public List<OrderResponse> getOrdersByDateRange(
-            LocalDateTime from,
-            LocalDateTime to) {
+    public List<OrderResponse>
+    getOrdersByDateRange(
+            LocalDateTime start,
+            LocalDateTime end) {
+
+        if (start == null || end == null) {
+
+            throw new InvalidDateRangeException(
+                    "Start date-time and end date-time are required.");
+        }
+
+        if (start.isAfter(end)) {
+
+            throw new InvalidDateRangeException(
+                    "Start date-time cannot be after end date-time.");
+        }
+
+        if (start.equals(end)) {
+
+            throw new InvalidDateRangeException(
+                    "Start date-time and end date-time cannot be identical.");
+        }
 
         return orderRepository
-                .findByOrderTmsBetween(from, to)
+                .findByOrderTmsBetween(start, end)
                 .stream()
                 .map(this::mapToResponse)
                 .toList();
@@ -170,5 +196,24 @@ public class OrderServiceImpl
         response.setStoreId(order.getStoreId());
 
         return response;
+    }
+    @Override
+    public OrderResponse updateOrderStatus(
+            Integer orderId,
+            OrderStatus status) {
+
+        Order existingOrder =
+                orderRepository.findById(orderId)
+                        .orElseThrow(() ->
+                                new OrderNotFoundException(
+                                        "Order not found with ID: "
+                                                + orderId));
+
+        existingOrder.setOrderStatus(status);
+
+        Order updatedOrder =
+                orderRepository.save(existingOrder);
+
+        return mapToResponse(updatedOrder);
     }
 }

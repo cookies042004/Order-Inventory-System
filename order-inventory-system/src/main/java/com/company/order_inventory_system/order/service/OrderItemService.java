@@ -19,5 +19,6 @@ public interface OrderItemService {
             Integer orderId,
             OrderItemRequest request);
 
-    void deleteOrderItem(Integer orderId);
+    OrderItemResponse deleteOrderItem(
+            Integer orderId);
 }

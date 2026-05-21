@@ -4,6 +4,7 @@ import com.company.order_inventory_system.order.dto.OrderRequest;
 import com.company.order_inventory_system.order.dto.OrderResponse;
 import com.company.order_inventory_system.order.enums.OrderStatus;
 import com.company.order_inventory_system.order.service.OrderService;
+import io.swagger.v3.oas.annotations.Parameter;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -85,14 +86,15 @@ public class OrderController {
 
     @Operation(summary = "Delete order by ID")
     @DeleteMapping("/{orderId}")
-    public ResponseEntity<String>
+
+
+    public ResponseEntity<OrderResponse>
+
     deleteOrder(
             @PathVariable Integer orderId) {
 
-        orderService.deleteOrder(orderId);
-
         return ResponseEntity.ok(
-                "Order deleted successfully");
+                orderService.deleteOrder(orderId));
     }
 
     @Operation(summary = "Get orders by customer ID")
@@ -129,20 +131,49 @@ public class OrderController {
                 orderService
                         .getOrdersByStatus(status));
     }
+    @PatchMapping("/{orderId}/status")
+
+    public ResponseEntity<OrderResponse>
+    updateOrderStatus(
+
+            @PathVariable Integer orderId,
+
+            @RequestParam OrderStatus status) {
+
+        return ResponseEntity.ok(
+                orderService
+                        .updateOrderStatus(
+                                orderId,
+                                status));
+    }
 
     @Operation(summary = "Get orders between start and end date")
     @GetMapping("/daterange")
     public ResponseEntity<List<OrderResponse>>
     getOrdersByDateRange(
 
-            @RequestParam
-            @DateTimeFormat(
-                    iso = DateTimeFormat.ISO.DATE_TIME)
-            LocalDateTime start,
+            @Parameter(
+                    description =
+                            "Start date-time in format yyyy-MM-dd'T'HH:mm:ss",
+                    example =
+                            "2026-05-01T00:00:00"
+            )
 
             @RequestParam
             @DateTimeFormat(
-                    iso = DateTimeFormat.ISO.DATE_TIME)
+                    pattern = "yyyy-MM-dd'T'HH:mm:ss")
+            LocalDateTime start,
+
+            @Parameter(
+                    description =
+                            "End date-time in format yyyy-MM-dd'T'HH:mm:ss",
+                    example =
+                            "2026-05-20T23:59:59"
+            )
+
+            @RequestParam
+            @DateTimeFormat(
+                    pattern = "yyyy-MM-dd'T'HH:mm:ss")
             LocalDateTime end) {
 
         return ResponseEntity.ok(
