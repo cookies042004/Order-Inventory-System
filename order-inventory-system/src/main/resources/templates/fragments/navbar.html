@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 
 <body>
 
 <nav class="navbar"
      th:fragment="navbar">
 
+    <!-- LOGO SECTION -->
+
     <div class="logo-section">
 
         <div class="logo-box">
 
-            <img th:src="@{/images/logo.webp}" alt="logo">
+            <img th:src="@{/images/logo.webp}"
+                 alt="logo">
 
         </div>
 
@@ -20,39 +23,83 @@
 
     </div>
 
+    <!-- NAV LINKS -->
+
     <div class="nav-links">
+
+        <!-- HOME -->
 
         <a th:href="@{/}">
             Home
         </a>
 
+        <!-- ABOUT -->
+
         <a href="#">
             About Project
         </a>
 
-        <!-- SHOW ONLY BEFORE LOGIN -->
+        <!-- LOGIN BUTTON -->
 
         <a th:href="@{/login}"
-
-           sec:authorize="!isAuthenticated()">
+           sec:authorize="isAnonymous()">
 
             Login
 
         </a>
 
-        <!-- SHOW ONLY AFTER LOGIN -->
+        <!-- USER SESSION -->
 
-        <div class="user-session-badge" sec:authorize="isAuthenticated()">
-            <div class="user-avatar" th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">U</div>
-            <div class="user-info">
-                <span class="user-name" sec:authentication="name">User</span>
-                <span class="user-role-label" th:text="${#strings.replace(#authentication.authorities[0].authority, 'ROLE_', '')}">Role</span>
+        <div class="user-session-badge"
+             sec:authorize="isAuthenticated()">
+
+            <!-- USER AVATAR -->
+
+            <div class="user-avatar"
+
+                 th:text="${#authentication != null ?
+                 #strings.substring(#authentication.name,0,1).toUpperCase()
+                 : 'G'}">
+
+                U
+
             </div>
+
+            <!-- USER INFO -->
+
+            <div class="user-info">
+
+                <!-- USERNAME -->
+
+                <span class="user-name"
+                      sec:authentication="name">
+
+                    User
+
+                </span>
+
+                <!-- ROLE -->
+
+                <span class="user-role-label"
+
+                      th:text="${#strings.replace(
+                      #authentication.authorities[0].authority,
+                      'ROLE_',
+                      ''
+                      )}">
+
+                    Role
+
+                </span>
+
+            </div>
+
         </div>
+
+        <!-- LOGOUT -->
 
         <form th:action="@{/logout}"
               method="post"
-
               sec:authorize="isAuthenticated()">
 
             <button type="submit"
