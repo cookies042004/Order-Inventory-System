@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Endpoint Details</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/common/common.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/common/navbar.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/common/endpoint-details.css}">
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}">
+</div>
+
+<div class="details-page">
+
+    <!-- HEADER -->
+
+    <div class="details-header">
+
+        <h1 th:text="${endpointTitle}">
+        </h1>
+
+        <p th:text="${description}">
+        </p>
+
+    </div>
+
+    <!-- API CARD -->
+
+    <div class="api-card">
+
+        <div class="api-info">
+
+            <span class="method-badge"
+                  th:classappend="${httpMethod.toLowerCase()}"
+                  th:text="${httpMethod}">
+            </span>
+
+            <h2 th:text="${apiUrl}">
+            </h2>
+
+        </div>
+
+        <!-- EXECUTE FORM -->
+
+        <form method="post"
+              th:action="${executeUrl}">
+
+            <div class="request-input-container"
+
+                 th:if="${requiresInput}">
+
+                <label th:text="${inputLabel}">
+                </label>
+
+                <input type="number"
+
+                       th:name="${inputName}"
+
+                       class="request-input"
+
+                       required>
+            </div>
+
+            <!-- REQUEST BODY (DYNAMIC FIELDS) -->
+
+            <div class="request-body-container"
+
+                 th:if="${fields != null}">
+
+                <div th:each="field : ${fields}" class="form-group">
+
+                    <label th:text="${field.placeholder}" class="form-label"></label>
+
+                    <!-- Text, Email, Number input -->
+                    <input th:if="${field.type != 'select' && field.type != 'datetime-local'}"
+                           th:type="${field.type}"
+                           th:name="${field.name}"
+                           th:placeholder="${field.placeholder}"
+                           th:required="${field.required}"
+                           class="request-input"
+                           step="any">
+
+                    <!-- Datetime input -->
+                    <input th:if="${field.type == 'datetime-local'}"
+                           type="datetime-local"
+                           th:name="${field.name}"
+                           th:required="${field.required}"
+                           class="request-input">
+
+                    <!-- Select dropdown -->
+                    <select th:if="${field.type == 'select'}"
+                            th:name="${field.name}"
+                            th:required="${field.required}"
+                            class="request-select">
+                        <option value="" disabled selected th:text="'Select ' + ${field.placeholder}"></option>
+                        <option th:each="opt : ${field.options}"
+                                th:value="${opt}"
+                                th:text="${opt}"></option>
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <button type="submit"
+                    class="execute-btn">
+
+                Execute
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- RESPONSE SECTION -->
+
+    <div class="response-section"
+
+         th:if="${statusCode != null}">
+
+        <!-- SUCCESS RESPONSE -->
+
+        <div th:if="${statusCode < 400}">
+
+            <div class="response-header">
+
+                <h2>Response</h2>
+
+                <span class="status-success">
+
+                Status:
+                <span th:text="${statusCode}">
+                </span>
+
+            </span>
+
+            </div>
+
+            <!-- SUCCESS BANNER -->
+            <div th:if="${successMessage != null}" class="success-banner">
+                <span class="success-icon">✓</span>
+                <span class="success-text" th:text="${successMessage}"></span>
+            </div>
+
+            <!-- VIEW TABS -->
+
+            <div class="view-tabs">
+
+                <button class="tab-btn active"
+                        id="table-tab"
+                        onclick="showTableView()">
+
+                    Table View
+
+                </button>
+
+                <button class="tab-btn"
+                        id="json-tab"
+                        onclick="showJsonView()">
+
+                    JSON View
+
+                </button>
+
+            </div>
+
+            <!-- TABLE VIEW -->
+
+            <div id="table-view">
+
+                <table class="response-table"
+                       id="data-table"
+                       th:if="${tableData != null}">
+
+                    <thead>
+
+                    <tr>
+
+                        <th th:each="column : ${columns}"
+                            th:text="${column}">
+                        </th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="row : ${tableData}">
+
+                        <td th:each="column : ${columns}"
+                            th:text="${row.get(column)}">
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+                <!-- PAGINATION CONTROLS -->
+                <div id="pagination-container" class="pagination-container" th:if="${tableData != null && tableData.size() > 10}">
+                    <div class="pagination-info" id="pagination-info">Showing 1 to 10 of X entries</div>
+                    <div class="pagination-buttons" id="pagination-buttons">
+                        <!-- Buttons will be dynamically generated by JS -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- JSON VIEW -->
+
+            <div id="json-view"
+                 style="display: none;">
+
+                <div class="json-response">
+
+                <pre th:text="${responseData}">
+                </pre>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ERROR RESPONSE -->
+
+        <div th:if="${statusCode >= 400}">
+
+            <div class="response-header">
+
+                <h2>Error Response</h2>
+
+                <span class="status-error">
+
+                Status:
+                <span th:text="${statusCode}">
+                </span>
+
+            </span>
+
+            </div>
+
+            <!-- Raw Error Response (only shown if we failed to parse as structured JSON) -->
+            <pre class="error-message"
+                 th:if="${errorResponse == null && validationErrors == null}"
+                 th:text="${responseData}">
+            </pre>
+
+            <!-- Collapsible details for raw JSON when structured data is available -->
+            <details class="raw-error-details" th:if="${errorResponse != null || validationErrors != null}">
+                <summary class="raw-error-summary">View Raw Response JSON</summary>
+                <pre class="error-message" th:text="${responseData}"></pre>
+            </details>
+
+            <!-- STANDARD ERROR -->
+
+            <div th:if="${errorResponse != null}"
+
+                 class="error-box">
+
+                <div class="error-item">
+
+                    <strong>Error:</strong>
+
+                    <span th:text="${errorResponse.error}">
+                </span>
+
+                </div>
+
+                <div class="error-item">
+
+                    <strong>Message:</strong>
+
+                    <span th:text="${errorResponse.message}">
+                </span>
+
+                </div>
+
+                <div class="error-item">
+
+                    <strong>Timestamp:</strong>
+
+                    <span th:text="${errorResponse.timestamp}">
+                </span>
+
+                </div>
+
+            </div>
+
+            <!-- VALIDATION ERRORS -->
+
+            <div th:if="${validationErrors != null}">
+
+                <table class="response-table">
+
+                    <thead>
+
+                    <tr>
+
+                        <th>Field</th>
+
+                        <th>Validation Message</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="error : ${validationErrors.entrySet()}">
+
+                        <td th:text="${error.key}">
+                        </td>
+
+                        <td th:text="${error.value}">
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+    function showTableView() {
+
+        document
+            .getElementById("table-view")
+            .style.display = "block";
+
+        document
+            .getElementById("json-view")
+            .style.display = "none";
+
+        document
+            .getElementById("table-tab")
+            .classList.add("active");
+
+        document
+            .getElementById("json-tab")
+            .classList.remove("active");
+    }
+
+    function showJsonView() {
+
+        document
+            .getElementById("table-view")
+            .style.display = "none";
+
+        document
+            .getElementById("json-view")
+            .style.display = "block";
+
+        document
+            .getElementById("json-tab")
+            .classList.add("active");
+
+        document
+            .getElementById("table-tab")
+            .classList.remove("active");
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const table = document.getElementById("data-table");
+        if (!table) return;
+
+        const tbody = table.querySelector("tbody");
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+        const totalRows = rows.length;
+        const pageSize = 10;
+        let currentPage = 1;
+        const totalPages = Math.ceil(totalRows / pageSize);
+
+        if (totalRows <= pageSize) return; // No pagination needed
+
+        function showPage(page) {
+            currentPage = page;
+            const start = (page - 1) * pageSize;
+            const end = start + pageSize;
+
+            rows.forEach((row, idx) => {
+                if (idx >= start && idx < end) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+
+            // Update Info text
+            const infoText = `Showing ${start + 1} to ${Math.min(end, totalRows)} of ${totalRows} entries`;
+            const infoEl = document.getElementById("pagination-info");
+            if (infoEl) {
+                infoEl.innerText = infoText;
+            }
+
+            // Generate Buttons
+            renderButtons();
+        }
+
+        function renderButtons() {
+            const container = document.getElementById("pagination-buttons");
+            if (!container) return;
+            container.innerHTML = "";
+
+            // Helper for creating button
+            function createBtn(text, targetPage, disabled, active) {
+                const btn = document.createElement("button");
+                btn.className = "page-btn" + (active ? " active" : "") + (disabled ? " disabled" : "");
+                btn.innerText = text;
+                btn.disabled = disabled;
+                if (!disabled) {
+                    btn.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        showPage(targetPage);
+                    });
+                }
+                return btn;
+            }
+
+            // First & Prev
+            container.appendChild(createBtn("« First", 1, currentPage === 1));
+            container.appendChild(createBtn("‹ Prev", currentPage - 1, currentPage === 1));
+
+            // Page numbers range
+            const maxPageButtons = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+            let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+
+            if (endPage - startPage + 1 < maxPageButtons) {
+                startPage = Math.max(1, endPage - maxPageButtons + 1);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                container.appendChild(createBtn(i, i, false, i === currentPage));
+            }
+
+            // Next & Last
+            container.appendChild(createBtn("Next ›", currentPage + 1, currentPage === totalPages));
+            container.appendChild(createBtn("Last »", totalPages, currentPage === totalPages));
+        }
+
+        // Initialize first page
+        showPage(1);
+    });
+
+</script>
+</body>
+
+</html>

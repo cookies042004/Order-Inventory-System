@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Product Module</title>
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/common/endpoint.css}">
+    <link rel="stylesheet" th:href="@{/css/modules/store-module.css}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<!-- PAGE CONTAINER -->
+<div class="module-page-container">
+
+    <!-- MODULE HEADER -->
+    <div class="module-page-header">
+        <h1>Product Module</h1>
+        <p>Manage product catalog, unit prices, brands, sizing details, and ratings</p>
+    </div>
+
+    <!-- ENDPOINT SECTION -->
+    <div class="endpoint-section">
+
+        <div class="module-header">
+            <h2>Endpoints</h2>
+            <span class="endpoint-count">5 Endpoints</span>
+        </div>
+
+        <!-- GET ALL PRODUCTS -->
+        <a th:href="@{/product-module/endpoints/get-all-products}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/products</h3>
+                    <p>Get all catalog products</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET PRODUCT BY ID -->
+        <a th:href="@{/product-module/endpoints/get-product-by-id}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/products/{productId}</h3>
+                    <p>Get catalog product by ID</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- CREATE PRODUCT -->
+        <a th:href="@{/product-module/endpoints/create-product}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method post">POST</span>
+                <div class="endpoint-content">
+                    <h3>/api/products</h3>
+                    <p>Create a new catalog product</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- UPDATE PRODUCT -->
+        <a th:href="@{/product-module/endpoints/update-product}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method put">PUT</span>
+                <div class="endpoint-content">
+                    <h3>/api/products/{productId}</h3>
+                    <p>Update an existing catalog product</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- DELETE PRODUCT -->
+        <a th:href="@{/product-module/endpoints/delete-product}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method delete">DELETE</span>
+                <div class="endpoint-content">
+                    <h3>/api/products/{productId}</h3>
+                    <p>Delete a catalog product by ID</p>
+                </div>
+            </div>
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>

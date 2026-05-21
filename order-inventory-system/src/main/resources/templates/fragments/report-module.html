@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Report Module</title>
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/common/endpoint.css}">
+    <link rel="stylesheet" th:href="@{/css/modules/store-module.css}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<!-- PAGE CONTAINER -->
+<div class="module-page-container">
+
+    <!-- MODULE HEADER -->
+    <div class="module-page-header">
+        <h1>Report Module</h1>
+        <p>Analyze business metrics, generate sales summaries, identify high-spending customers, and manage stock risks</p>
+    </div>
+
+    <!-- ENDPOINT SECTION -->
+    <div class="endpoint-section">
+
+        <div class="module-header">
+            <h2>Endpoints</h2>
+            <span class="endpoint-count">3 Endpoints</span>
+        </div>
+
+        <!-- SALES SUMMARY -->
+        <a th:href="@{/report-module/endpoints/get-sales-summary}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/reports/sales/summary</h3>
+                    <p>Generate sales summaries containing revenue, order counts, and averages for a store in a date range</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- TOP CUSTOMERS -->
+        <a th:href="@{/report-module/endpoints/get-top-customers}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/reports/customers/top</h3>
+                    <p>Find top customers based on overall spending with a limit option</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- INVENTORY RISK -->
+        <a th:href="@{/report-module/endpoints/get-inventory-risk}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/reports/inventory/risk</h3>
+                    <p>Run inventory risk analysis to detect low-stock or out-of-stock items</p>
+                </div>
+            </div>
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>

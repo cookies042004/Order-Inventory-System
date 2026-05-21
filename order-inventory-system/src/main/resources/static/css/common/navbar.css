@@ -1,0 +1,172 @@
+.navbar {
+
+    width: 100%;
+
+    height: 72px;
+
+    background: rgba(255,255,255,0.82);
+
+    backdrop-filter: blur(10px);
+
+    border-radius: 18px;
+
+    padding: 0 30px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 45px;
+
+    box-shadow:
+        0 6px 20px rgba(15,23,42,0.05);
+}
+
+.logo-section {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+}
+
+.logo-box {
+
+    width: 46px;
+
+    height: 46px;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background: white;
+
+    box-shadow:
+        0 4px 10px rgba(0,0,0,0.06);
+}
+
+.logo-box img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.logo-section h2 {
+
+    font-size: 22px;
+
+    color: #0f172a;
+
+    font-weight: 700;
+}
+
+.nav-links {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 26px;
+}
+
+.nav-links a {
+
+    text-decoration: none;
+
+    color: #475569;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    transition: 0.2s ease;
+}
+
+.nav-links a:hover {
+
+    color: #7c3aed;
+}
+
+.logout-btn {
+
+    background: #dc2626;
+
+    color: white;
+
+    border: none;
+
+    padding: 10px 20px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+    background: #b91c1c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+}
+
+/* User Session Badge styling */
+.user-session-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(241, 245, 249, 0.8);
+    border: 1px solid #e2e8f0;
+    padding: 6px 14px 6px 8px;
+    border-radius: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(124, 58, 237, 0.3);
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.user-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.user-role-label {
+    font-size: 10px;
+    font-weight: 800;
+    color: #7c3aed;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 1px;
+}
