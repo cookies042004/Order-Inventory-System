@@ -1,12 +1,10 @@
 function showModule(element) {
 
-    const module =
-        element.getAttribute("data-module");
+    const module = element.getAttribute("data-module");
 
     // Hide all sections
 
-    const sections =
-        document.querySelectorAll(".endpoint-section");
+    const sections = document.querySelectorAll(".endpoint-section");
 
     sections.forEach(section => {
         section.style.display = "none";
@@ -14,13 +12,11 @@ function showModule(element) {
 
     // Convert URL to ID
 
-    const sectionId =
-        module.replace("/", "");
+    const sectionId = module.replace("/", "");
 
     // Find selected section
 
-    const selectedSection =
-        document.getElementById(sectionId);
+    const selectedSection = document.getElementById(sectionId);
 
     // Show section
 
