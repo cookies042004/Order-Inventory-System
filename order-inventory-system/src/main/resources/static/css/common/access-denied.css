@@ -1,90 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
 .access-container {
-
     height: 100vh;
-
     display: flex;
-
     justify-content: center;
-
     align-items: center;
-
-    background:
-        linear-gradient(
-            135deg,
-            #fee2e2,
-            #fef2f2
-        );
+    background-color: #060a12;
+    background-image:
+        radial-gradient(ellipse 55% 40% at 50% 35%, rgba(248,81,73,.07) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 30% at 10% 90%, rgba(79,142,247,.05) 0%, transparent 60%);
+    min-height: 100vh;
 }
 
 .access-card {
-
-    width: 500px;
-
-    background: white;
-
-    padding: 50px;
-
-    border-radius: 28px;
-
-    text-align: center;
-
+    width: 440px;
+    background: #0f1520;
+    padding: 52px 44px 44px;
+    border-radius: 20px;
+    border: 1px solid rgba(248,81,73,.18);
     box-shadow:
-        0 12px 35px rgba(0,0,0,0.08);
+        0 0 0 1px rgba(248,81,73,.06),
+        0 32px 80px rgba(0,0,0,.6),
+        0 1px 0 rgba(255,255,255,.05) inset;
+    text-align: center;
+    transition: transform .3s ease, box-shadow .3s ease;
 }
 
+.access-card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 0 0 1px rgba(248,81,73,.1),
+        0 40px 90px rgba(0,0,0,.65);
+}
+
+/* ICON BADGE */
+.access-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(248,81,73,.1);
+    border: 1px solid rgba(248,81,73,.22);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 24px;
+    font-size: 24px;
+}
+
+/* ERROR CODE */
 .access-card h1 {
-
-    font-size: 96px;
-
-    color: #dc2626;
-
-    margin-bottom: 10px;
-
+    font-size: 5.5rem;
     font-weight: 800;
+    color: #f85149;
+    margin-bottom: 8px;
+    letter-spacing: -4px;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
 }
 
+/* TITLE */
 .access-card h2 {
-
-    font-size: 32px;
-
-    color: #111827;
-
-    margin-bottom: 16px;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #e6edf3;
+    margin-bottom: 12px;
+    letter-spacing: -.4px;
 }
 
+/* DESCRIPTION */
 .access-card p {
-
-    font-size: 18px;
-
-    color: #64748b;
-
-    margin-bottom: 32px;
-
-    line-height: 1.6;
+    font-size: .9rem;
+    color: #7d8590;
+    line-height: 1.75;
+    margin-bottom: 36px;
 }
 
+/* DIVIDER */
+.access-divider {
+    height: 1px;
+    background: rgba(248,81,73,.1);
+    margin: 0 -44px 32px;
+}
+
+/* BUTTON */
 .home-btn {
-
     display: inline-block;
-
-    background: #dc2626;
-
-    color: white;
-
+    background: rgba(248,81,73,.12);
+    color: #ff8a80;
     text-decoration: none;
-
-    padding: 14px 28px;
-
-    border-radius: 12px;
-
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-size: 13.5px;
     font-weight: 600;
-
-    transition: 0.3s ease;
+    font-family: 'Inter', sans-serif;
+    border: 1px solid rgba(248,81,73,.28);
+    cursor: pointer;
+    letter-spacing: .02em;
+    transition: background .2s, border-color .2s, color .2s, transform .15s;
 }
 
 .home-btn:hover {
+    background: rgba(248,81,73,.2);
+    border-color: rgba(248,81,73,.48);
+    color: #ffb3ae;
+    transform: translateY(-1px);
+}
 
-    background: #b91c1c;
+.home-btn:active {
+    transform: translateY(0);
+}
 
-    transform: translateY(-2px);
+@media (max-width: 480px) {
+    .access-card {
+        width: 92%;
+        padding: 40px 28px 36px;
+    }
+    .access-divider { margin: 0 -28px 28px; }
+    .access-card h1 { font-size: 4.5rem; }
+    .access-card h2 { font-size: 1.2rem; }
+    .access-card p { font-size: .875rem; }
 }

@@ -1,90 +1,170 @@
-.login-container,
-.access-container {
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-    height: 100vh;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    background: #f1f5f9;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.login-card,
-.access-card {
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
 
-    width: 400px;
+.login-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #060a12;
+    background-image:
+        radial-gradient(ellipse 70% 60% at 15% 10%, rgba(79,142,247,.10) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 85% 85%, rgba(124,92,246,.09) 0%, transparent 60%);
+    min-height: 100vh;
+}
 
-    background: white;
-
-    padding: 40px;
-
-    border-radius: 24px;
-
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-
+.login-card {
+    width: 420px;
+    background: #0f1520;
+    padding: 44px 40px 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,.09);
+    box-shadow:
+        0 0 0 1px rgba(79,142,247,.06),
+        0 32px 80px rgba(0,0,0,.6),
+        0 1px 0 rgba(255,255,255,.05) inset;
     text-align: center;
 }
 
+/* LOGO MARK */
+.login-logo {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: rgba(79,142,247,.12);
+    border: 1px solid rgba(79,142,247,.22);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+    font-size: 22px;
+}
+
+.login-card h1 {
+    color: #e6edf3;
+    font-size: 1.55rem;
+    font-weight: 700;
+    margin-bottom: 7px;
+    letter-spacing: -.5px;
+}
+
+.login-card > p {
+    color: #7d8590;
+    font-size: .875rem;
+    margin-bottom: 32px;
+}
+
+/* DIVIDER LINE */
+.login-divider {
+    height: 1px;
+    background: rgba(255,255,255,.07);
+    margin: 0 -40px 28px;
+}
+
 .input-group {
-
-    margin-bottom: 20px;
-
+    margin-bottom: 16px;
     text-align: left;
 }
 
 .input-group label {
-
     display: block;
-
-    margin-bottom: 8px;
-
-    font-weight: 600;
+    margin-bottom: 7px;
+    font-weight: 500;
+    font-size: 11.5px;
+    color: #7d8590;
+    letter-spacing: .08em;
+    text-transform: uppercase;
 }
 
 .input-group input {
-
     width: 100%;
-
-    padding: 14px;
-
+    padding: 12px 15px;
     border-radius: 10px;
-
-    border: 1px solid #cbd5e1;
+    border: 1px solid rgba(255,255,255,.1);
+    background: #060a12;
+    color: #e6edf3;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    transition: border-color .2s, box-shadow .2s;
 }
 
-.login-btn,
-.home-btn {
+.input-group input:focus {
+    outline: none;
+    border-color: rgba(79,142,247,.55);
+    box-shadow: 0 0 0 3px rgba(79,142,247,.1);
+}
 
-    background: #2563eb;
+.input-group input::placeholder {
+    color: #30363d;
+}
 
-    color: white;
-
+.login-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #4f8ef7 0%, #7c5cf6 100%);
+    color: #ffffff;
     border: none;
-
-    padding: 12px 24px;
-
+    padding: 13px;
     border-radius: 10px;
-
     cursor: pointer;
-
-    text-decoration: none;
-
+    display: block;
+    font-size: 14px;
     font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: .02em;
+    margin-top: 8px;
+    box-shadow: 0 4px 20px rgba(79,142,247,.28);
+    transition: filter .2s, transform .15s, box-shadow .2s;
+}
+
+.login-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 28px rgba(79,142,247,.38);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+    filter: brightness(.98);
 }
 
 .error-message {
-
-    color: red;
-
-    margin-bottom: 20px;
+    color: #ff7b72;
+    margin-bottom: 16px;
+    font-size: 13px;
+    font-weight: 500;
+    background: rgba(248,81,73,.1);
+    border: 1px solid rgba(248,81,73,.2);
+    padding: 10px 14px;
+    border-radius: 8px;
+    text-align: left;
 }
 
 .success-message {
+    color: #56d364;
+    margin-bottom: 16px;
+    font-size: 13px;
+    font-weight: 500;
+    background: rgba(63,185,80,.1);
+    border: 1px solid rgba(63,185,80,.2);
+    padding: 10px 14px;
+    border-radius: 8px;
+    text-align: left;
+}
 
-    color: green;
-
-    margin-bottom: 20px;
+@media (max-width: 480px) {
+    .login-card {
+        width: 92%;
+        padding: 36px 24px;
+    }
+    .login-divider { margin: 0 -24px 24px; }
 }

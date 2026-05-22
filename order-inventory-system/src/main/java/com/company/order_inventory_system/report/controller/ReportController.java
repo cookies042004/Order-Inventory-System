@@ -61,32 +61,40 @@ public class ReportController {
     )
 
     @GetMapping("/sales/summary")
-    public SalesSummaryResponse getSalesSummary(
+    public ResponseEntity<?> getSalesSummary(
 
-            // Start date filter
             @RequestParam
             @DateTimeFormat(
                     iso = DateTimeFormat.ISO.DATE_TIME
             )
             LocalDateTime from,
 
-            // End date filter
             @RequestParam
             @DateTimeFormat(
                     iso = DateTimeFormat.ISO.DATE_TIME
             )
             LocalDateTime to,
 
-            // Store filter
             @RequestParam
             Integer storeId
     ) {
 
-        // Calls service layer
-        return reportService.getSalesSummaryReport(
-                from,
-                to,
-                storeId
+        if (from.isAfter(to)) {
+            return ResponseEntity.badRequest()
+                    .body("From date cannot be greater than To date");
+        }
+
+        if (storeId <= 0) {
+            return ResponseEntity.badRequest()
+                    .body("Store ID must be greater than 0");
+        }
+
+        return ResponseEntity.ok(
+                reportService.getSalesSummaryReport(
+                        from,
+                        to,
+                        storeId
+                )
         );
     }
 
@@ -102,16 +110,20 @@ public class ReportController {
     )
 
     @GetMapping("/customers/top")
-    public List<TopCustomerResponse> getTopCustomersReport(
+    public ResponseEntity<?> getTopCustomersReport(
 
-            // Number of top customers to fetch
             @RequestParam(defaultValue = "10")
             Integer limit
     ) {
 
-        // Calls service layer
-        return reportService
-                .getTopCustomersReport(limit);
+        if (limit <= 0) {
+            return ResponseEntity.badRequest()
+                    .body("Limit must be greater than 0");
+        }
+
+        return ResponseEntity.ok(
+                reportService.getTopCustomersReport(limit)
+        );
     }
 
     // Inventory Risk Report

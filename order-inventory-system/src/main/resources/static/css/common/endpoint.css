@@ -1,90 +1,101 @@
-.method {
+/* ===================================================
+   ENDPOINT LISTING MODULE PAGE
+   Depends on: common.css
+=================================================== */
 
-    min-width: 80px;
+/* All module page base styles live in common.css.
+   This file adds endpoint-card-specific enhancements. */
 
+/* === METHOD ARROW === */
+.endpoint-card-link .endpoint-arrow {
+    margin-left: auto;
+    color: var(--text-muted);
+    font-size: 18px;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+}
+
+.endpoint-card-link:hover .endpoint-arrow {
+    color: var(--accent);
+    transform: translateX(4px);
+}
+
+/* === ENDPOINT PATH HIGHLIGHT === */
+.endpoint-content h3 span.path-param {
+    color: var(--accent);
+    opacity: 0.85;
+}
+
+/* === METHOD-SPECIFIC CARD LEFT BORDER === */
+.endpoint-card[data-method="GET"]    { border-left: 3px solid rgba(16, 217, 140, 0.35); }
+.endpoint-card[data-method="POST"]   { border-left: 3px solid rgba(0, 212, 255, 0.35); }
+.endpoint-card[data-method="PUT"]    { border-left: 3px solid rgba(244, 169, 59, 0.35); }
+.endpoint-card[data-method="DELETE"] { border-left: 3px solid rgba(255, 79, 79, 0.35); }
+
+/* === SECTION HEADING (optional) === */
+.endpoint-section-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.10em;
+    margin: 28px 0 12px;
+    font-family: var(--font-display);
+    padding-left: 2px;
+}
+
+/* === EMPTY STATE === */
+.endpoint-empty {
     text-align: center;
-
-    padding: 8px 12px;
-
-    border-radius: 8px;
-
-    color: white;
-
-    font-weight: bold;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    font-weight: 300;
 }
 
-.get {
-
-    background: #16a34a;
-}
-
-.post {
-
-    background: #2563eb;
-}
-
-.put {
-
-    background: #ea580c;
-}
-
-.delete {
-
-    background: #dc2626;
-}
-
-.endpoint-card-link {
-
-    text-decoration: none;
-
-    color: inherit;
-}
-
-.endpoint-card {
-
+/* === SEARCH/FILTER BAR (optional) === */
+.endpoint-filter-bar {
     display: flex;
-
     align-items: center;
-
-    gap: 20px;
-
-    background: white;
-
-    border-radius: 18px;
-
-    padding: 24px;
-
-    margin-bottom: 20px;
-
-    transition: 0.3s;
-
-    box-shadow:
-            0 4px 20px rgba(0,0,0,0.05);
+    gap: 12px;
+    margin-bottom: 24px;
 }
 
-.endpoint-card:hover {
-
-    transform: translateY(-4px);
-
-    box-shadow:
-            0 8px 25px rgba(0,0,0,0.1);
+.endpoint-search {
+    flex: 1;
+    padding: 11px 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 13.5px;
+    font-family: var(--font-body);
+    transition: all 0.22s ease;
 }
 
-.endpoint-content {
+.endpoint-search::placeholder { color: var(--text-muted); }
 
-    display: flex;
-
-    flex-direction: column;
+.endpoint-search:focus {
+    outline: none;
+    border-color: rgba(0, 212, 255, 0.38);
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.08);
 }
 
-.endpoint-content h3 {
-
-    font-size: 20px;
-
-    margin-bottom: 6px;
+/* Method filter pills */
+.method-filter-pill {
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--font-display);
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
 }
 
-.endpoint-content p {
-
-    color: #64748b;
-}
+.method-filter-pill:hover { border-color: var(--border-hover); color: var(--text-primary); }
+.method-filter-pill.active { background: var(--accent-dim); border-color: var(--border-hover); color: var(--accent); }
