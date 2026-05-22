@@ -4,53 +4,53 @@
     --primary-hover: #4338ca;
     --primary-light: #f5f3ff;
     --primary-ring: rgba(79, 70, 229, 0.08);
-    
+
     /* Semantic Colors */
     --success: #10b981;            /* Emerald */
     --success-light: #f0fdf4;
     --success-border: #bbf7d0;
     --success-text: #166534;
-    
+
     --warning: #f59e0b;            /* Amber */
     --warning-light: #fffbeb;
     --warning-border: #fde68a;
     --warning-text: #92400e;
-    
+
     --danger: #ef4444;             /* Rose */
     --danger-light: #fef2f2;
     --danger-border: #fecaca;
     --danger-text: #991b1b;
-    
+
     --info: #0ea5e9;               /* Sky */
     --info-light: #f0f9ff;
     --info-border: #bae6fd;
     --info-text: #075985;
-    
+
     /* Surfaces */
     --bg-page: #f8fafc;            /* Clean Slate 50 */
     --bg-card: #ffffff;
     --bg-hover: #f1f5f9;           /* Slate 100 */
-    
+
     /* Typography Colors */
     --text-main: #0f172a;          /* Slate 900 */
     --text-medium: #334155;        /* Slate 700 */
     --text-muted: #64748b;         /* Slate 500 */
     --text-light: #94a3b8;         /* Slate 400 */
-    
+
     /* Borders & Outlines */
     --border-color: #e2e8f0;       /* Slate 200 */
     --border-hover: #cbd5e1;       /* Slate 300 */
-    
+
     /* Geometry & Corners */
     --radius-sm: 10px;             /* Precise items/inputs */
     --radius-md: 14px;             /* Buttons, smaller cards */
     --radius-lg: 20px;             /* Major cards & frames */
     --radius-pill: 9999px;         /* Badges */
-    
+
     /* Transitions */
     --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     --transition-fast: all 0.15s ease;
-    
+
     /* Elegant Shadows (Ultra-smooth, modern layered drop-shadows) */
     --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.02), 0 1px 3px 0 rgba(15, 23, 42, 0.01);
     --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.03), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
@@ -63,38 +63,38 @@
     --primary-hover: #38bdf8;
     --primary-light: rgba(14, 165, 233, 0.06);
     --primary-ring: rgba(14, 165, 233, 0.12);
-    
+
     /* Semantic Colors styled for Dark Navy */
     --success: #10b981;
     --success-light: rgba(16, 185, 129, 0.05);
     --success-border: #064e3b;
     --success-text: #34d399;
-    
+
     --warning: #f59e0b;
     --warning-light: rgba(245, 158, 11, 0.05);
     --warning-border: #78350f;
     --warning-text: #fbbf24;
-    
+
     --danger: #ef4444;
     --danger-light: rgba(239, 68, 68, 0.05);
     --danger-border: #7f1d1d;
     --danger-text: #fca5a5;
-    
+
     /* Surfaces - Deep Space Navy */
     --bg-page: #060913;            /* Deep space black-navy */
     --bg-card: #0c1122;            /* Translucent-looking dark card navy */
     --bg-hover: #131b2f;           /* Highlighted card navy */
-    
+
     /* Typography Colors */
     --text-main: #f8fafc;          /* High contrast slate/white */
     --text-medium: #cbd5e1;        /* Light Slate */
     --text-muted: #94a3b8;         /* Medium Slate */
     --text-light: #475569;
-    
+
     /* Borders & Outlines */
     --border-color: #1e293b;       /* Dark border slate */
     --border-hover: #334155;
-    
+
     /* Toned Down & Professionalized Dark Shadows */
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(14, 165, 233, 0.03);
     --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(14, 165, 233, 0.05);
@@ -125,7 +125,7 @@
 }
 
 [data-theme="dark"] body {
-    background-image: 
+    background-image:
         radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.06) 0%, transparent 60%),
         linear-gradient(rgba(14, 165, 233, 0.01) 1px, transparent 1px),
         linear-gradient(90deg, rgba(14, 165, 233, 0.01) 1px, transparent 1px);
@@ -213,16 +213,16 @@ body {
     .main-container {
         padding: 0 16px 40px;
     }
-    
+
     .hero-section {
         margin-bottom: 30px;
         padding-bottom: 16px;
     }
-    
+
     .hero-section h1 {
         font-size: 28px;
     }
-    
+
     .hero-section p {
         font-size: 14px;
     }

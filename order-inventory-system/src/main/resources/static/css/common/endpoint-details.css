@@ -507,29 +507,29 @@
     .details-page {
         margin: 15px auto;
     }
-    
+
     .details-header {
         padding-bottom: 12px;
     }
-    
+
     .details-header h1 {
         font-size: 24px;
     }
-    
+
     .api-card {
         padding: 20px 16px;
     }
-    
+
     .request-body-container {
         grid-template-columns: 1fr;
         padding: 16px;
     }
-    
+
     .execute-btn {
         width: 100%;
         justify-content: center;
     }
-    
+
     .response-section {
         padding: 20px 16px;
     }
