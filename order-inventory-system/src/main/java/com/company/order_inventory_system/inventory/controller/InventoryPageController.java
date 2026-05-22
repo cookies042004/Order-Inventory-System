@@ -3,12 +3,24 @@ package com.company.order_inventory_system.inventory.controller;
 import com.company.order_inventory_system.common.model.FormField;
 import com.company.order_inventory_system.common.ui.service.EndpointExecutionService;
 import com.company.order_inventory_system.inventory.dto.InventoryRequestDTO;
+import com.company.order_inventory_system.inventory.dto.InventoryResponseDTO;
+import com.company.order_inventory_system.inventory.service.InventoryService;
+import com.company.order_inventory_system.store.service.StoreService;
+import com.company.order_inventory_system.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.validation.BindingResult;
+import jakarta.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Map;
@@ -17,6 +29,9 @@ import java.util.Map;
 public class InventoryPageController {
 
     private final EndpointExecutionService endpointExecutionService;
+    private final InventoryService inventoryService;
+    private final StoreService storeService;
+    private final ProductService productService;
 
     @Value("${inventory.username}")
     private String inventoryUsername;
@@ -24,14 +39,128 @@ public class InventoryPageController {
     @Value("${inventory.password}")
     private String inventoryPassword;
 
-    public InventoryPageController(EndpointExecutionService endpointExecutionService) {
+    public InventoryPageController(EndpointExecutionService endpointExecutionService,
+                                   InventoryService inventoryService,
+                                   StoreService storeService,
+                                   ProductService productService) {
         this.endpointExecutionService = endpointExecutionService;
+        this.inventoryService = inventoryService;
+        this.storeService = storeService;
+        this.productService = productService;
     }
 
     // DASHBOARD
     @GetMapping("/inventory-module/dashboard")
     public String inventoryDashboardPage() {
         return "fragments/inventory-module";
+    }
+
+    // TRADITIONAL CRUD VIEW
+    @GetMapping("/inventory-module/inventory")
+    public String listInventoryPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Model model
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<InventoryResponseDTO> inventoryPage = inventoryService.getAllInventory(pageable);
+
+        model.addAttribute("inventoryList", inventoryPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", inventoryPage.getTotalPages());
+        model.addAttribute("totalItems", inventoryPage.getTotalElements());
+
+        return "inventory/list";
+    }
+
+    @GetMapping("/inventory-module/inventory/create")
+    public String createInventoryForm(Model model) {
+        model.addAttribute("inventoryForm", new InventoryRequestDTO());
+        model.addAttribute("stores", storeService.getAllStores());
+        model.addAttribute("products", productService.getAllProducts());
+        return "inventory/create";
+    }
+
+    @PostMapping("/inventory-module/inventory/create")
+    public String processCreateInventory(
+            @Valid @ModelAttribute("inventoryForm") InventoryRequestDTO inventoryForm,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("stores", storeService.getAllStores());
+            model.addAttribute("products", productService.getAllProducts());
+            return "inventory/create";
+        }
+
+        try {
+            inventoryService.createInventory(inventoryForm);
+            redirectAttributes.addFlashAttribute("successMessage", "Inventory record created successfully!");
+            return "redirect:/inventory-module/inventory";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("stores", storeService.getAllStores());
+            model.addAttribute("products", productService.getAllProducts());
+            return "inventory/create";
+        }
+    }
+
+    @GetMapping("/inventory-module/inventory/edit/{id}")
+    public String editInventoryForm(@PathVariable Integer id, Model model) {
+        InventoryResponseDTO inventory = inventoryService.getInventoryById(id);
+        InventoryRequestDTO inventoryForm = new InventoryRequestDTO();
+        inventoryForm.setStoreId(inventory.getStoreId());
+        inventoryForm.setProductId(inventory.getProductId());
+        inventoryForm.setProductInventory(inventory.getProductInventory());
+
+        model.addAttribute("inventoryForm", inventoryForm);
+        model.addAttribute("inventoryId", id);
+        model.addAttribute("stores", storeService.getAllStores());
+        model.addAttribute("products", productService.getAllProducts());
+        return "inventory/edit";
+    }
+
+    @PostMapping("/inventory-module/inventory/edit/{id}")
+    public String processUpdateInventory(
+            @PathVariable Integer id,
+            @Valid @ModelAttribute("inventoryForm") InventoryRequestDTO inventoryForm,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("inventoryId", id);
+            model.addAttribute("stores", storeService.getAllStores());
+            model.addAttribute("products", productService.getAllProducts());
+            return "inventory/edit";
+        }
+
+        try {
+            inventoryService.updateInventory(id, inventoryForm);
+            redirectAttributes.addFlashAttribute("successMessage", "Inventory record updated successfully!");
+            return "redirect:/inventory-module/inventory";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("inventoryId", id);
+            model.addAttribute("stores", storeService.getAllStores());
+            model.addAttribute("products", productService.getAllProducts());
+            return "inventory/edit";
+        }
+    }
+
+    @GetMapping("/inventory-module/inventory/delete/{id}")
+    public String deleteInventory(
+            @PathVariable Integer id,
+            RedirectAttributes redirectAttributes
+    ) {
+        try {
+            inventoryService.deleteInventory(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Inventory record deleted successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
+        return "redirect:/inventory-module/inventory";
     }
 
     // GET ALL INVENTORY

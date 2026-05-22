@@ -7,6 +7,8 @@ import com.company.order_inventory_system.shipment.enums.ShipmentStatus;
 import com.company.order_inventory_system.shipment.exception.ShipmentNotFoundException;
 import com.company.order_inventory_system.shipment.repository.ShipmentRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,6 +47,12 @@ public class ShipmentServiceImpl
                 .stream()
                 .map(this::mapToResponse)
                 .toList();
+    }
+
+    @Override
+    public Page<ShipmentResponse> getAllShipments(Pageable pageable) {
+        return shipmentRepository.findAll(pageable)
+                .map(this::mapToResponse);
     }
 
     @Override

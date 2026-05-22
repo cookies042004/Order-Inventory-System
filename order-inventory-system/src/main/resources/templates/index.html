@@ -6,6 +6,11 @@
 
     <title>Order Inventory System</title>
 
+    <!-- GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <link rel="stylesheet"
           th:href="@{/css/common/common.css}">
 
@@ -26,12 +31,51 @@
 
     <!-- HERO SECTION -->
 
-    <div class="hero-section">
+    <div class="hero-section" id="about-section">
 
-        <h1 th:text="${projectTitle}"></h1>
+        <h1 th:text="${projectTitle}">Order Inventory System</h1>
 
-        <p th:text="${projectDescription}"></p>
+        <div class="hero-desc" th:utext="${projectDescription}">
+            The <strong>Order Inventory System (OIS)</strong> is a high-performance management platform designed to streamline retail operations. It provides end-to-end automation for store management, real-time inventory tracking, customer profiling, order lifecycle processing, and shipment logistics, supported by role-based security and business intelligence reporting.
+        </div>
 
+        <!-- OPERATIONAL PILLARS KPI GRID -->
+        <div class="hero-stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon-wrapper">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-num">7 Domains</div>
+                    <div class="stat-label">Fully Orchestrated Core Modules</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon-wrapper">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-num">Real-Time</div>
+                    <div class="stat-label">Synchronized Inventory Pipeline</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon-wrapper">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-num">Access Sync</div>
+                    <div class="stat-label">Role-Based Identity Enforcement</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TEAM SECTION HEADER -->
+    <div class="team-header" id="team-section">
+        <h2>Development Leadership & Owners</h2>
+        <p>Select a card below to access respective business domain management dashboards</p>
     </div>
 
     <!-- TEAM CARDS -->
@@ -44,10 +88,16 @@
 
             <div class="card-default">
 
-                <img th:src="@{${member.image}}"
-                     alt="Profile Image">
+                <div class="image-wrapper">
+                    <img th:src="@{${member.image}}"
+                         alt="Profile Image">
+                </div>
 
-                <h2 th:text="${member.name}"></h2>
+                <h2 th:text="${member.name}">Kumar Aditya Pratap</h2>
+
+                <div class="module-count-tag">
+                    <span th:text="${#lists.size(member.modules)}">3</span> Modules
+                </div>
 
             </div>
 
@@ -55,7 +105,7 @@
 
             <div class="card-hover">
 
-                <h3>Modules</h3>
+                <h3>Assigned Domains</h3>
 
                 <div class="module-links">
 

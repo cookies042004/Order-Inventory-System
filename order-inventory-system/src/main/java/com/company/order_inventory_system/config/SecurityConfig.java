@@ -194,7 +194,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/report-module",
                                 "/report-module/**"
-                        ).hasRole("PRODUCT")
+                        ).hasRole("REPORT")
 
                         /* API ENDPOINTS */
 
@@ -221,7 +221,7 @@ public class SecurityConfig {
                         .hasRole("SHIPMENT")
 
                         .requestMatchers("/api/reports", "/api/reports/**")
-                        .hasRole("PRODUCT")
+                        .hasRole("REPORT")
 
                         .requestMatchers("/api/reports/**")
                         .hasRole("REPORT")
@@ -259,8 +259,16 @@ public class SecurityConfig {
                 /* ACCESS DENIED */
 
                 .exceptionHandling(ex -> ex
-
-                        .accessDeniedPage("/access-denied")
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            String requestURI = request.getRequestURI();
+                            if (requestURI != null && requestURI.startsWith("/api/")) {
+                                response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN);
+                                response.setContentType("application/json;charset=UTF-8");
+                                response.getWriter().write("{\"status\": 403, \"error\": \"Forbidden\", \"message\": \"Access Denied: You are not authorized to access this API endpoint.\"}");
+                            } else {
+                                request.getRequestDispatcher("/access-denied").forward(request, response);
+                            }
+                        })
                 );
 
         return http.build();

@@ -2,6 +2,8 @@ package com.company.order_inventory_system.customer.service;
 
 import com.company.order_inventory_system.customer.dto.CustomerRequest;
 import com.company.order_inventory_system.customer.dto.CustomerResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -15,6 +17,9 @@ public interface CustomerService {
 
     /* Fetches all customer records */
     List<CustomerResponse> getAllCustomers();
+
+    /* Fetches all customer records (paginated) */
+    Page<CustomerResponse> getAllCustomers(Pageable pageable);
 
     /* Fetches customer using customer ID */
     CustomerResponse getCustomerById(

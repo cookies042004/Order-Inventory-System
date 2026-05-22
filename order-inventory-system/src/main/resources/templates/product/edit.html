@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Product</title>
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/pages/store-crud.css}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="crud-page">
+
+    <!-- HEADER -->
+    <div class="crud-header" style="max-width: 600px; margin: 0 auto 30px;">
+        <div>
+            <h1>Edit Product</h1>
+            <p>Update product details. Unchanged fields will retain their current values.</p>
+        </div>
+    </div>
+
+    <!-- GENERAL ERROR -->
+    <div th:if="${errorMessage != null}" class="alert alert-error" style="max-width: 600px; margin: 0 auto 24px;">
+        <span>⚠️</span>
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="crud-card form-container">
+        <form th:action="@{/product-module/products/edit/{id}(id=${productId})}" th:object="${productForm}" method="post">
+            <div class="form-grid">
+                
+                <!-- Product Name -->
+                <div class="form-group">
+                    <label for="productName">Product Name *</label>
+                    <input type="text" 
+                           id="productName" 
+                           th:field="*{productName}" 
+                           class="form-control" 
+                           th:classappend="${#fields.hasErrors('productName')} ? 'is-invalid' : ''"
+                           placeholder="Enter product name" 
+                           required>
+                    <span class="field-error" 
+                          th:if="${#fields.hasErrors('productName')}" 
+                          th:errors="*{productName}"></span>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <!-- Brand -->
+                    <div class="form-group">
+                        <label for="brand">Brand *</label>
+                        <input type="text" 
+                               id="brand" 
+                               th:field="*{brand}" 
+                               class="form-control" 
+                               th:classappend="${#fields.hasErrors('brand')} ? 'is-invalid' : ''"
+                               placeholder="Enter brand name" 
+                               required>
+                        <span class="field-error" 
+                              th:if="${#fields.hasErrors('brand')}" 
+                              th:errors="*{brand}"></span>
+                    </div>
+
+                    <!-- Colour -->
+                    <div class="form-group">
+                        <label for="colour">Colour *</label>
+                        <input type="text" 
+                               id="colour" 
+                               th:field="*{colour}" 
+                               class="form-control" 
+                               th:classappend="${#fields.hasErrors('colour')} ? 'is-invalid' : ''"
+                               placeholder="Enter color" 
+                               required>
+                        <span class="field-error" 
+                              th:if="${#fields.hasErrors('colour')}" 
+                              th:errors="*{colour}"></span>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <!-- Size -->
+                    <div class="form-group">
+                        <label for="size">Size *</label>
+                        <input type="text" 
+                               id="size" 
+                               th:field="*{size}" 
+                               class="form-control" 
+                               th:classappend="${#fields.hasErrors('size')} ? 'is-invalid' : ''"
+                               placeholder="e.g. Small, Medium, 10, etc." 
+                               required>
+                        <span class="field-error" 
+                              th:if="${#fields.hasErrors('size')}" 
+                              th:errors="*{size}"></span>
+                    </div>
+
+                    <!-- Unit Price -->
+                    <div class="form-group">
+                        <label for="unitPrice">Unit Price ($) *</label>
+                        <input type="number" 
+                               step="0.01"
+                               id="unitPrice" 
+                               th:field="*{unitPrice}" 
+                               class="form-control" 
+                               th:classappend="${#fields.hasErrors('unitPrice')} ? 'is-invalid' : ''"
+                               placeholder="e.g. 29.99" 
+                               required>
+                        <span class="field-error" 
+                              th:if="${#fields.hasErrors('unitPrice')}" 
+                              th:errors="*{unitPrice}"></span>
+                    </div>
+                </div>
+
+                <!-- Rating -->
+                <div class="form-group">
+                    <label for="rating">Rating (1 to 5) *</label>
+                    <input type="number" 
+                           id="rating" 
+                           th:field="*{rating}" 
+                           class="form-control" 
+                           th:classappend="${#fields.hasErrors('rating')} ? 'is-invalid' : ''"
+                           placeholder="Enter rating from 1 to 5" 
+                           min="1" 
+                           max="5"
+                           required>
+                    <span class="field-error" 
+                          th:if="${#fields.hasErrors('rating')}" 
+                          th:errors="*{rating}"></span>
+                </div>
+
+            </div>
+
+            <!-- FORM ACTIONS -->
+            <div class="form-actions">
+                <a th:href="@{/product-module/products}" class="btn-secondary">
+                    Cancel
+                </a>
+                <button type="submit" class="btn-primary">
+                    Update Product
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

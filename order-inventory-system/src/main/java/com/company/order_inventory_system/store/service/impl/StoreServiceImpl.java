@@ -78,6 +78,12 @@
         }
 
         @Override
+        public org.springframework.data.domain.Page<StoreResponseDTO> getAllStores(org.springframework.data.domain.Pageable pageable) {
+            return storeRepository.findAll(pageable)
+                    .map(StoreMapper::mapToResponseDTO);
+        }
+
+        @Override
         public StoreResponseDTO getStoreById(Integer storeId){
             Store store = storeRepository.findById(storeId)
                     .orElseThrow(() -> new ResourceNotFoundException("Store not found with id: " + storeId));
@@ -91,6 +97,13 @@
                     .orElseThrow(() -> new ResourceNotFoundException("Store not found with id: " + storeId));
 
             validateStoreAddress(storeRequestDTO);
+
+            // Enforce unique store name
+            if (!existingStore.getStoreName().equals(storeRequestDTO.getStoreName())) {
+                if (storeRepository.existsByStoreName(storeRequestDTO.getStoreName())) {
+                    throw new DuplicateResourceException("Store name already exists");
+                }
+            }
 
             // update existing entity fields
             existingStore.setStoreName(storeRequestDTO.getStoreName());
@@ -160,6 +173,32 @@
                     ));
 
             return shipmentService.getShipmentsByStoreId(storeId);
+        }
+
+        @Override
+        public StoreResponseDTO uploadStoreLogo(Integer storeId, byte[] logoBytes, String filename, String mimeType) {
+            Store store = storeRepository.findById(storeId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Store not found with id: " + storeId));
+            
+            store.setLogo(logoBytes);
+            store.setLogoFilename(filename);
+            store.setLogoMimeType(mimeType);
+            store.setLogoLastUpdated(java.time.LocalDate.now());
+            
+            Store savedStore = storeRepository.save(store);
+            return StoreMapper.mapToResponseDTO(savedStore);
+        }
+
+        @Override
+        public byte[] getStoreLogo(Integer storeId) {
+            Store store = storeRepository.findById(storeId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Store not found with id: " + storeId));
+            
+            if (store.getLogo() == null) {
+                throw new ResourceNotFoundException("Logo not found for store id: " + storeId);
+            }
+            
+            return store.getLogo();
         }
 
         // Helper Function

@@ -3,6 +3,8 @@ package com.company.order_inventory_system.shipment.service;
 import com.company.order_inventory_system.shipment.dto.ShipmentRequest;
 import com.company.order_inventory_system.shipment.dto.ShipmentResponse;
 import com.company.order_inventory_system.shipment.enums.ShipmentStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -12,6 +14,8 @@ public interface ShipmentService {
             ShipmentRequest request);
 
     List<ShipmentResponse> getAllShipments();
+
+    Page<ShipmentResponse> getAllShipments(Pageable pageable);
 
     ShipmentResponse getShipmentById(
             Integer shipmentId);
