@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Customer</title>
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/pages/store-crud.css}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="crud-page">
+
+    <!-- HEADER -->
+    <div class="crud-header" style="max-width: 600px; margin: 0 auto 30px;">
+        <div>
+            <h1>Edit Customer</h1>
+            <p>Update customer details. Unchanged fields will retain their current values.</p>
+        </div>
+    </div>
+
+    <!-- GENERAL ERROR -->
+    <div th:if="${errorMessage != null}" class="alert alert-error" style="max-width: 600px; margin: 0 auto 24px;">
+        <span>⚠️</span>
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="crud-card form-container">
+        <form th:action="@{/customer-module/customers/edit/{id}(id=${customerId})}" th:object="${customerForm}" method="post">
+            <div class="form-grid">
+                
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label for="fullName">Full Name *</label>
+                    <input type="text" 
+                           id="fullName" 
+                           th:field="*{fullName}" 
+                           class="form-control" 
+                           th:classappend="${#fields.hasErrors('fullName')} ? 'is-invalid' : ''"
+                           placeholder="Enter customer full name" 
+                           required>
+                    <span class="field-error" 
+                          th:if="${#fields.hasErrors('fullName')}" 
+                          th:errors="*{fullName}"></span>
+                </div>
+
+                <!-- Email Address -->
+                <div class="form-group">
+                    <label for="emailAddress">Email Address *</label>
+                    <input type="email" 
+                           id="emailAddress" 
+                           th:field="*{emailAddress}" 
+                           class="form-control" 
+                           th:classappend="${#fields.hasErrors('emailAddress')} ? 'is-invalid' : ''"
+                           placeholder="e.g. customer@example.com" 
+                           required>
+                    <span class="field-error" 
+                          th:if="${#fields.hasErrors('emailAddress')}" 
+                          th:errors="*{emailAddress}"></span>
+                </div>
+
+            </div>
+
+            <!-- FORM ACTIONS -->
+            <div class="form-actions">
+                <a th:href="@{/customer-module/customers}" class="btn-secondary">
+                    Cancel
+                </a>
+                <button type="submit" class="btn-primary">
+                    Update Customer
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

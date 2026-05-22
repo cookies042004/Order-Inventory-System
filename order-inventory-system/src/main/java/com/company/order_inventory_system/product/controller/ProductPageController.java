@@ -3,12 +3,22 @@ package com.company.order_inventory_system.product.controller;
 import com.company.order_inventory_system.common.model.FormField;
 import com.company.order_inventory_system.common.ui.service.EndpointExecutionService;
 import com.company.order_inventory_system.product.dto.ProductRequest;
+import com.company.order_inventory_system.product.dto.ProductResponse;
+import com.company.order_inventory_system.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.validation.BindingResult;
+import jakarta.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Map;
@@ -17,6 +27,7 @@ import java.util.Map;
 public class ProductPageController {
 
     private final EndpointExecutionService endpointExecutionService;
+    private final ProductService productService;
 
     @Value("${product.username}")
     private String productUsername;
@@ -24,14 +35,114 @@ public class ProductPageController {
     @Value("${product.password}")
     private String productPassword;
 
-    public ProductPageController(EndpointExecutionService endpointExecutionService) {
+    public ProductPageController(EndpointExecutionService endpointExecutionService, ProductService productService) {
         this.endpointExecutionService = endpointExecutionService;
+        this.productService = productService;
     }
 
     // DASHBOARD
     @GetMapping("/product-module/dashboard")
     public String productDashboardPage() {
         return "fragments/product-module";
+    }
+
+    // TRADITIONAL CRUD VIEW
+    @GetMapping("/product-module/products")
+    public String listProductsPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Model model
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductResponse> productPage = productService.getAllProducts(pageable);
+
+        model.addAttribute("products", productPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("totalItems", productPage.getTotalElements());
+
+        return "product/list";
+    }
+
+    @GetMapping("/product-module/products/create")
+    public String createProductForm(Model model) {
+        model.addAttribute("productForm", new ProductRequest());
+        return "product/create";
+    }
+
+    @PostMapping("/product-module/products/create")
+    public String processCreateProduct(
+            @Valid @ModelAttribute("productForm") ProductRequest productForm,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            return "product/create";
+        }
+
+        try {
+            productService.createProduct(productForm);
+            redirectAttributes.addFlashAttribute("successMessage", "Product created successfully!");
+            return "redirect:/product-module/products";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "product/create";
+        }
+    }
+
+    @GetMapping("/product-module/products/edit/{id}")
+    public String editProductForm(@PathVariable Integer id, Model model) {
+        ProductResponse product = productService.getProductById(id);
+        ProductRequest productForm = new ProductRequest();
+        productForm.setProductName(product.getProductName());
+        productForm.setUnitPrice(product.getUnitPrice());
+        productForm.setColour(product.getColour());
+        productForm.setBrand(product.getBrand());
+        productForm.setSize(product.getSize());
+        productForm.setRating(product.getRating());
+
+        model.addAttribute("productForm", productForm);
+        model.addAttribute("productId", id);
+        return "product/edit";
+    }
+
+    @PostMapping("/product-module/products/edit/{id}")
+    public String processUpdateProduct(
+            @PathVariable Integer id,
+            @Valid @ModelAttribute("productForm") ProductRequest productForm,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("productId", id);
+            return "product/edit";
+        }
+
+        try {
+            productService.updateProduct(id, productForm);
+            redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully!");
+            return "redirect:/product-module/products";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("productId", id);
+            return "product/edit";
+        }
+    }
+
+    @GetMapping("/product-module/products/delete/{id}")
+    public String deleteProduct(
+            @PathVariable Integer id,
+            RedirectAttributes redirectAttributes
+    ) {
+        try {
+            productService.deleteProduct(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Product deleted successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
+        return "redirect:/product-module/products";
     }
 
     // GET ALL PRODUCTS
