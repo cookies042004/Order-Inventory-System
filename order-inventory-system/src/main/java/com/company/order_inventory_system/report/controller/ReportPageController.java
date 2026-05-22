@@ -17,11 +17,11 @@ public class ReportPageController {
 
     private final EndpointExecutionService endpointExecutionService;
 
-    @Value("${product.username}")
-    private String productUsername;
+    @Value("${report.username}")
+    private String reportUsername;
 
-    @Value("${product.password}")
-    private String productPassword;
+    @Value("${report.password}")
+    private String reportPassword;
 
     public ReportPageController(EndpointExecutionService endpointExecutionService) {
         this.endpointExecutionService = endpointExecutionService;
@@ -65,8 +65,8 @@ public class ReportPageController {
 
         Map<String, Object> response = endpointExecutionService.executeGetRequest(
                 "http://localhost:8080/api/reports/sales/summary?from=" + from + "&to=" + to + "&storeId=" + storeId,
-                productUsername,
-                productPassword
+                reportUsername,
+                reportPassword
         );
         model.addAllAttributes(response);
         model.addAttribute("endpointTitle", "Sales Summary Report");
@@ -101,8 +101,8 @@ public class ReportPageController {
 
         Map<String, Object> response = endpointExecutionService.executeGetRequest(
                 "http://localhost:8080/api/reports/customers/top?limit=" + limit,
-                productUsername,
-                productPassword
+                reportUsername,
+                reportPassword
         );
         model.addAllAttributes(response);
         model.addAttribute("endpointTitle", "Top Customers Report");
@@ -129,8 +129,8 @@ public class ReportPageController {
     public String executeGetInventoryRisk(Model model) {
         Map<String, Object> response = endpointExecutionService.executeGetRequest(
                 "http://localhost:8080/api/reports/inventory/risk",
-                productUsername,
-                productPassword
+                reportUsername,
+                reportPassword
         );
         model.addAllAttributes(response);
         model.addAttribute("endpointTitle", "Inventory Risk Report");

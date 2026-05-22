@@ -133,6 +133,7 @@
     align-items: center;
     margin-top: 25px;
     padding-top: 20px;
+    padding-bottom: 10px; /* Consistent bottom breathing space */
     border-top: 1px solid var(--border-color);
 }
 

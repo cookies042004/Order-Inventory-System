@@ -22,12 +22,21 @@
     transition: var(--transition-smooth);
 }
 
+.login-card h1,
 .login-card h2 {
-    font-size: 24px;
+    font-size: 23px;
     font-weight: 800;
-    margin-bottom: 24px;
+    margin-bottom: 8px;
     color: var(--text-main);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+}
+
+.login-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+    font-weight: 400;
 }
 
 .input-group {

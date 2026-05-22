@@ -2,6 +2,8 @@
     width: 100%;
     max-width: 1300px;
     margin: 30px auto;
+    padding: 0 24px;
+    box-sizing: border-box;
 }
 
 .details-header {
@@ -42,9 +44,18 @@
 .api-info {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 16px;
     border-bottom: 1.5px solid var(--border-color);
     padding-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.api-info h2 {
+    font-size: 20px;
+    font-weight: 750;
+    color: var(--text-main);
+    word-break: break-all;
+    margin: 0;
 }
 
 .api-card form {
@@ -388,7 +399,7 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 25px;
-    padding-top: 20px;
+    padding: 20px 24px 20px 24px; /* Premium spacious padding inside the bordered card table container */
     border-top: 1px solid var(--border-color);
     flex-wrap: wrap;
     gap: 15px;
@@ -479,33 +490,48 @@
 }
 
 .logo-preview-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    background-color: var(--bg-page);
-    border-radius: var(--radius-md);
-    border: 2px dashed var(--border-color);
-    min-height: 200px;
+    position: relative;
+    width: 160px;
+    height: 160px;
+    margin: 15px auto;
+    background-color: #ffffff;
+    border-radius: 28px;
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 16px var(--primary-ring);
+    overflow: hidden;
+    padding: 0;
+    transition: var(--transition-smooth);
+}
+
+[data-theme="dark"] .logo-preview-container {
+    background-color: var(--bg-card); /* Match card background dynamically */
 }
 
 .logo-preview-img {
-    max-width: 100%;
-    max-height: 220px;
-    object-fit: contain;
-    border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-sm);
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
     transition: var(--transition-smooth);
-    border: 1px solid var(--border-color);
+    border: none;
+    box-shadow: none;
+    mix-blend-mode: multiply; /* Blends white backgrounds perfectly in light mode */
+}
+
+[data-theme="dark"] .logo-preview-img {
+    filter: invert(1) contrast(1.05); /* Invert colors to get white logo on dark background */
+    mix-blend-mode: screen; /* Blends dark backgrounds perfectly in dark mode */
 }
 
 .logo-preview-img:hover {
-    transform: scale(1.02);
+    transform: scale(1.04);
 }
 
 @media (max-width: 768px) {
     .details-page {
         margin: 15px auto;
+        padding: 0 16px;
     }
 
     .details-header {
@@ -532,5 +558,13 @@
 
     .response-section {
         padding: 20px 16px;
+    }
+
+    .pagination-container {
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+        text-align: center;
+        padding: 16px 16px 16px 16px;
     }
 }
