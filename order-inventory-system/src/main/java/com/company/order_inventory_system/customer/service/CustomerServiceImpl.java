@@ -9,6 +9,8 @@ import com.company.order_inventory_system.customer.exception.CustomerNotFoundExc
 
 import com.company.order_inventory_system.customer.repository.CustomerRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,6 +53,13 @@ public class CustomerServiceImpl
                 .stream()
                 .map(this::mapToResponse)
                 .toList();
+    }
+
+    /* Fetches all customer records (paginated) */
+    @Override
+    public Page<CustomerResponse> getAllCustomers(Pageable pageable) {
+        return customerRepository.findAll(pageable)
+                .map(this::mapToResponse);
     }
 
     /* Fetches customer using customer ID */

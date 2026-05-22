@@ -113,4 +113,42 @@
     
             return ResponseEntity.ok(shipments);
         }
+
+        // POST /api/stores/{storeId}/logo
+        @Operation(summary = "Upload store logo")
+        @PostMapping("/{storeId}/logo")
+        public ResponseEntity<StoreResponseDTO> uploadStoreLogo(
+                @PathVariable @Positive(message = "Store ID must be positive") Integer storeId,
+                @RequestParam("file") org.springframework.web.multipart.MultipartFile file) throws java.io.IOException {
+            
+            if (file == null || file.isEmpty()) {
+                throw new com.company.order_inventory_system.common.exception.InvalidDataException("File must not be empty");
+            }
+            
+            byte[] logoBytes = file.getBytes();
+            String filename = file.getOriginalFilename();
+            String mimeType = file.getContentType();
+            
+            StoreResponseDTO updatedStore = storeService.uploadStoreLogo(storeId, logoBytes, filename, mimeType);
+            return ResponseEntity.ok(updatedStore);
+        }
+
+        // GET /api/stores/{storeId}/logo
+        @Operation(summary = "Get store logo")
+        @GetMapping("/{storeId}/logo")
+        public ResponseEntity<byte[]> getStoreLogo(
+                @PathVariable @Positive(message = "Store ID must be positive") Integer storeId) {
+            
+            byte[] logoBytes = storeService.getStoreLogo(storeId);
+            StoreResponseDTO store = storeService.getStoreById(storeId);
+            String mimeType = store.getLogoMimeType();
+            
+            if (mimeType == null || mimeType.isBlank()) {
+                mimeType = "image/png"; // default fallback
+            }
+            
+            return ResponseEntity.ok()
+                    .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, mimeType)
+                    .body(logoBytes);
+        }
     }

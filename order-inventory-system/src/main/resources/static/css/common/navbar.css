@@ -1,112 +1,114 @@
 .navbar {
-    width: 100%;
-    height: 70px;
-    background: rgba(9, 14, 28, 0.80);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: var(--radius-xl);
+    width: calc(100% - 48px);
+    max-width: 1300px;
+    height: 72px;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    border-radius: var(--radius-md);
     padding: 0 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 48px;
-    position: relative;
-    z-index: 10;
-
-    /* Subtle top highlight line */
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.06),
-        0 16px 48px rgba(0, 0, 0, 0.40);
+    margin: 24px auto 40px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-smooth);
 }
 
-/* === LOGO === */
 .logo-section {
     display: flex;
     align-items: center;
     gap: 12px;
+    transition: var(--transition-smooth);
+}
+
+.logo-section:hover {
+    transform: translateY(-0.5px);
 }
 
 .logo-box {
-    width: 42px;
-    height: 42px;
-    border-radius: var(--radius-md);
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 212, 255, 0.08);
-    border: 1px solid rgba(0, 212, 255, 0.20);
-    overflow: hidden;
+    background-color: var(--bg-page);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-smooth);
 }
 
 .logo-box img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    padding: 4px;
+    transition: var(--transition-smooth);
+}
+
+.logo-section:hover .logo-box {
+    border-color: var(--primary);
+    box-shadow: 0 0 12px var(--primary-ring);
 }
 
 .logo-section h2 {
-    font-family: var(--font-display);
-    font-size: 1rem;
-    color: var(--text-primary);
-    font-weight: 600;
-    letter-spacing: -0.3px;
+    font-size: 18px;
+    color: var(--text-main);
+    font-weight: 800;
+    letter-spacing: -0.02em;
 }
 
-/* === NAV LINKS === */
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 20px;
 }
 
 .nav-links a {
     text-decoration: none;
-    color: var(--text-secondary);
-    font-size: 13.5px;
-    font-weight: 400;
-    padding: 8px 14px;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 16px;
     border-radius: var(--radius-sm);
-    transition: all 0.2s ease;
-    letter-spacing: 0.01em;
+    position: relative;
+    transition: var(--transition-smooth);
 }
 
 .nav-links a:hover {
-    color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.05);
+    color: var(--primary);
+    background-color: var(--primary-light);
+    transform: translateY(-1px);
 }
 
-/* === RIGHT CLUSTER === */
-.nav-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-/* === USER BADGE === */
+/* User Session Badge styling */
 .user-session-badge {
     display: flex;
     align-items: center;
     gap: 10px;
-    background: rgba(0, 0, 0, 0.35);
-    border: 1px solid var(--border);
-    padding: 5px 14px 5px 5px;
-    border-radius: 999px;
+    background-color: rgba(248, 250, 252, 0.8);
+    border: 1px solid var(--border-color);
+    padding: 6px 14px 6px 8px;
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-smooth);
 }
 
 .user-avatar {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-    color: var(--bg-primary);
+    background: linear-gradient(135deg, var(--primary), #3b82f6);
+    color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-weight: 700;
+    font-weight: 800;
     font-size: 12px;
-    font-family: var(--font-display);
-    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(79, 70, 229, 0.2);
 }
 
 .user-info {
@@ -117,47 +119,122 @@
 
 .user-name {
     font-size: 12px;
-    font-weight: 600;
-    color: var(--text-primary);
-    letter-spacing: 0.01em;
+    font-weight: 700;
+    color: var(--text-main);
 }
 
 .user-role-label {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--accent);
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--primary);
     text-transform: uppercase;
-    letter-spacing: 1.2px;
+    letter-spacing: 0.05em;
     margin-top: 1px;
 }
 
-/* === LOGOUT BUTTON === */
+.nav-links form {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+}
+
 .logout-btn {
-    background: rgba(255, 79, 79, 0.12);
-    color: #ff6b6b;
-    border: 1px solid rgba(255, 79, 79, 0.25);
-    padding: 8px 20px;
-    border-radius: var(--radius-md);
+    background-color: var(--danger-light);
+    color: var(--danger-text);
+    border: 1px solid var(--danger-border);
+    padding: 8px 18px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 13px;
-    letter-spacing: 0.02em;
-    transition: all 0.25s ease;
-    font-family: var(--font-body);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    transition: var(--transition-smooth);
+    box-shadow: var(--shadow-sm);
 }
 
 .logout-btn:hover {
-    background: rgba(255, 79, 79, 0.22);
-    border-color: rgba(255, 79, 79, 0.45);
-    color: #ff4f4f;
+    background-color: var(--danger);
+    color: #ffffff;
+    border-color: var(--danger);
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(255, 79, 79, 0.18);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
 }
 
-@media (max-width: 768px) {
-    .navbar { padding: 0 16px; }
-    .logo-section h2 { display: none; }
-    .nav-links { gap: 2px; }
-    .nav-links a { padding: 6px 10px; font-size: 12px; }
-    .user-name { display: none; }
+/* Responsiveness */
+@media(max-width: 900px) {
+    .navbar {
+        width: calc(100% - 32px);
+        margin: 16px auto 24px;
+        height: auto;
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px;
+        align-items: stretch;
+    }
+
+    .logo-section {
+        justify-content: center;
+    }
+
+    .nav-links {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .user-session-badge {
+        align-self: center;
+        width: fit-content;
+    }
+
+    .logout-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* ==========================================================================
+   THEME TOGGLE BUTTON STYLING
+   ========================================================================== */
+.theme-toggle-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-pill);
+    transition: var(--transition-smooth);
+    width: 38px;
+    height: 38px;
+    color: var(--text-muted);
+}
+
+.theme-toggle-btn:hover {
+    background-color: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: scale(1.06);
+}
+
+[data-theme="dark"] .theme-toggle-btn {
+    border-color: var(--border-color);
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .theme-toggle-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 0 12px var(--primary-ring);
+}
+
+[data-theme="dark"] .navbar {
+    background-color: rgba(12, 17, 34, 0.6);
+    border-color: rgba(30, 41, 59, 0.4);
+}
+
+[data-theme="dark"] .user-session-badge {
+    background-color: rgba(12, 17, 34, 0.4);
 }

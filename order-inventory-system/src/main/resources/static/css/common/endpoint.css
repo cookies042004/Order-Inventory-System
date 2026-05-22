@@ -1,101 +1,104 @@
-/* ===================================================
-   ENDPOINT LISTING MODULE PAGE
-   Depends on: common.css
-=================================================== */
-
-/* All module page base styles live in common.css.
-   This file adds endpoint-card-specific enhancements. */
-
-/* === METHOD ARROW === */
-.endpoint-card-link .endpoint-arrow {
-    margin-left: auto;
-    color: var(--text-muted);
-    font-size: 18px;
-    transition: all 0.25s ease;
-    flex-shrink: 0;
-}
-
-.endpoint-card-link:hover .endpoint-arrow {
-    color: var(--accent);
-    transform: translateX(4px);
-}
-
-/* === ENDPOINT PATH HIGHLIGHT === */
-.endpoint-content h3 span.path-param {
-    color: var(--accent);
-    opacity: 0.85;
-}
-
-/* === METHOD-SPECIFIC CARD LEFT BORDER === */
-.endpoint-card[data-method="GET"]    { border-left: 3px solid rgba(16, 217, 140, 0.35); }
-.endpoint-card[data-method="POST"]   { border-left: 3px solid rgba(0, 212, 255, 0.35); }
-.endpoint-card[data-method="PUT"]    { border-left: 3px solid rgba(244, 169, 59, 0.35); }
-.endpoint-card[data-method="DELETE"] { border-left: 3px solid rgba(255, 79, 79, 0.35); }
-
-/* === SECTION HEADING (optional) === */
-.endpoint-section-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.10em;
-    margin: 28px 0 12px;
-    font-family: var(--font-display);
-    padding-left: 2px;
-}
-
-/* === EMPTY STATE === */
-.endpoint-empty {
+.method {
+    min-width: 80px;
     text-align: center;
-    padding: 60px 20px;
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    font-weight: 300;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    font-weight: 800;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-smooth);
 }
 
-/* === SEARCH/FILTER BAR (optional) === */
-.endpoint-filter-bar {
+.get {
+    background-color: var(--success-light);
+    color: var(--success-text);
+    border: 1px solid var(--success-border);
+}
+
+.post {
+    background-color: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid rgba(79, 70, 229, 0.2);
+}
+
+.put {
+    background-color: var(--warning-light);
+    color: var(--warning-text);
+    border: 1px solid var(--warning-border);
+}
+
+.delete {
+    background-color: var(--danger-light);
+    color: var(--danger-text);
+    border: 1px solid var(--danger-border);
+}
+
+.endpoint-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.endpoint-card {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 24px;
-}
-
-.endpoint-search {
-    flex: 1;
-    padding: 11px 16px;
+    gap: 20px;
+    background-color: var(--bg-card);
     border-radius: var(--radius-md);
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    color: var(--text-primary);
+    padding: 22px 26px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-smooth);
+}
+
+[data-theme="dark"] .endpoint-card {
+    border-color: rgba(30, 41, 59, 0.4);
+}
+
+.endpoint-card:hover {
+    transform: translateY(-3.5px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary);
+}
+
+.endpoint-card:hover .method {
+    transform: scale(1.04);
+}
+
+.endpoint-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.endpoint-content h3 {
+    font-size: 16.5px;
+    font-weight: 750;
+    color: var(--text-main);
+    margin-bottom: 3px;
+    letter-spacing: -0.01em;
+}
+
+.endpoint-content p {
+    color: var(--text-muted);
     font-size: 13.5px;
-    font-family: var(--font-body);
-    transition: all 0.22s ease;
+    font-weight: 400;
 }
 
-.endpoint-search::placeholder { color: var(--text-muted); }
-
-.endpoint-search:focus {
-    outline: none;
-    border-color: rgba(0, 212, 255, 0.38);
-    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.08);
+@media(max-width: 600px) {
+    .endpoint-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+    }
+    
+    .method {
+        width: 100%;
+    }
 }
-
-/* Method filter pills */
-.method-filter-pill {
-    padding: 7px 14px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text-secondary);
-    font-size: 12px;
-    font-weight: 600;
-    font-family: var(--font-display);
-    cursor: pointer;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    transition: all 0.2s ease;
-}
-
-.method-filter-pill:hover { border-color: var(--border-hover); color: var(--text-primary); }
-.method-filter-pill.active { background: var(--accent-dim); border-color: var(--border-hover); color: var(--accent); }

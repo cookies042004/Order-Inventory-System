@@ -12,6 +12,8 @@ public interface InventoryService {
 
     List<InventoryResponseDTO> getAllInventory();
 
+    org.springframework.data.domain.Page<InventoryResponseDTO> getAllInventory(org.springframework.data.domain.Pageable pageable);
+
     InventoryResponseDTO getInventoryById(Integer inventoryId);
 
     InventoryResponseDTO updateInventory(Integer inventoryId, InventoryRequestDTO inventoryRequestDTO);

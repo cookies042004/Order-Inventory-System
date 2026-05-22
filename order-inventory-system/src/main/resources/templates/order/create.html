@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Order</title>
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/pages/store-crud.css}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="crud-page">
+
+    <!-- HEADER -->
+    <div class="crud-header" style="max-width: 600px; margin: 0 auto 30px;">
+        <div>
+            <h1>Create New Order</h1>
+            <p>Fill out the form below to register a new customer order.</p>
+        </div>
+    </div>
+
+    <!-- GENERAL ERROR -->
+    <div th:if="${errorMessage != null}" class="alert alert-error" style="max-width: 600px; margin: 0 auto 24px;">
+        <span>⚠️</span>
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="crud-card form-container">
+        <form th:action="@{/order-module/orders/create}" th:object="${orderForm}" method="post">
+            <div class="form-grid">
+                
+                <!-- Order Timestamp -->
+                <div class="form-group">
+                    <label for="orderTms">Order Date & Time *</label>
+                    <input type="datetime-local" 
+                           id="orderTms" 
+                           th:field="*{orderTms}" 
+                           class="form-control" 
+                           th:classappend="${#fields.hasErrors('orderTms')} ? 'is-invalid' : ''"
+                           required>
+                    <span class="field-error" 
+                          th:if="${#fields.hasErrors('orderTms')}" 
+                          th:errors="*{orderTms}"></span>
+                </div>
+
+                <!-- Customer Dropdown Selection -->
+                <div class="form-group">
+                    <label for="customerId">Customer *</label>
+                    <select id="customerId" 
+                            th:field="*{customerId}" 
+                            class="form-control" 
+                            th:classappend="${#fields.hasErrors('customerId')} ? 'is-invalid' : ''"
+                            required>
+                        <option value="">-- Select Customer --</option>
+                        <option th:each="cust : ${customers}" 
+                                th:value="${cust.customerId}" 
+                                th:text="${cust.fullName} + ' (ID: ' + ${cust.customerId} + ')'"></option>
+                    </select>
+                    <span class="field-error" 
+                          th:if="${#fields.hasErrors('customerId')}" 
+                          th:errors="*{customerId}"></span>
+                </div>
+
+                <!-- Store Dropdown Selection -->
+                <div class="form-group">
+                    <label for="storeId">Store *</label>
+                    <select id="storeId" 
+                            th:field="*{storeId}" 
+                            class="form-control" 
+                            th:classappend="${#fields.hasErrors('storeId')} ? 'is-invalid' : ''"
+                            required>
+                        <option value="">-- Select Store --</option>
+                        <option th:each="store : ${stores}" 
+                                th:value="${store.storeId}" 
+                                th:text="${store.storeName} + ' (ID: ' + ${store.storeId} + ')'"></option>
+                    </select>
+                    <span class="field-error" 
+                          th:if="${#fields.hasErrors('storeId')}" 
+                          th:errors="*{storeId}"></span>
+                </div>
+
+                <!-- Order Status Dropdown -->
+                <div class="form-group">
+                    <label for="orderStatus">Order Status *</label>
+                    <select id="orderStatus" 
+                            th:field="*{orderStatus}" 
+                            class="form-control" 
+                            th:classappend="${#fields.hasErrors('orderStatus')} ? 'is-invalid' : ''"
+                            required>
+                        <option value="">-- Select Status --</option>
+                        <option th:each="status : ${statuses}" 
+                                th:value="${status}" 
+                                th:text="${status}"></option>
+                    </select>
+                    <span class="field-error" 
+                          th:if="${#fields.hasErrors('orderStatus')}" 
+                          th:errors="*{orderStatus}"></span>
+                </div>
+
+            </div>
+
+            <!-- FORM ACTIONS -->
+            <div class="form-actions">
+                <a th:href="@{/order-module/orders}" class="btn-secondary">
+                    Cancel
+                </a>
+                <button type="submit" class="btn-primary">
+                    Create Order
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>
