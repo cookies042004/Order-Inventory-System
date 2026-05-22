@@ -296,3 +296,22 @@ body {
     transform: translateY(-1.5px);
     box-shadow: var(--shadow-md);
 }
+
+/* ==========================================================================
+   GLOBAL CALENDAR PICKER STYLES (MAKES DATE INPUT ICONS VISIBLE IN DARK MODE)
+   ========================================================================== */
+::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    padding: 4px;
+    filter: invert(0);
+    transition: var(--transition-fast);
+}
+
+[data-theme="dark"] ::-webkit-calendar-picker-indicator {
+    filter: invert(1) brightness(1.2); /* High visibility in dark mode */
+}
+
+::-webkit-calendar-picker-indicator:hover {
+    background-color: var(--bg-hover);
+}
