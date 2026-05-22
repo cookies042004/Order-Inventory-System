@@ -2,6 +2,8 @@ package com.company.order_inventory_system.product.service;
 
 import com.company.order_inventory_system.product.dto.ProductRequest;
 import com.company.order_inventory_system.product.dto.ProductResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -13,6 +15,9 @@ public interface ProductService {
 
     // Fetches all products
     List<ProductResponse> getAllProducts();
+
+    // Fetches all products (paginated)
+    Page<ProductResponse> getAllProducts(Pageable pageable);
 
     // Fetches product by ID
     ProductResponse getProductById(Integer productId);

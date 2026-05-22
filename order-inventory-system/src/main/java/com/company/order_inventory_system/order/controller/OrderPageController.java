@@ -3,13 +3,25 @@ package com.company.order_inventory_system.order.controller;
 import com.company.order_inventory_system.common.model.FormField;
 import com.company.order_inventory_system.common.ui.service.EndpointExecutionService;
 import com.company.order_inventory_system.order.dto.OrderRequest;
+import com.company.order_inventory_system.order.dto.OrderResponse;
 import com.company.order_inventory_system.order.enums.OrderStatus;
+import com.company.order_inventory_system.order.service.OrderService;
+import com.company.order_inventory_system.store.service.StoreService;
+import com.company.order_inventory_system.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.validation.BindingResult;
+import jakarta.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +32,9 @@ import java.util.Map;
 public class OrderPageController {
 
     private final EndpointExecutionService endpointExecutionService;
+    private final OrderService orderService;
+    private final StoreService storeService;
+    private final CustomerService customerService;
 
     @Value("${order.username}")
     private String orderUsername;
@@ -27,14 +42,135 @@ public class OrderPageController {
     @Value("${order.password}")
     private String orderPassword;
 
-    public OrderPageController(EndpointExecutionService endpointExecutionService) {
+    public OrderPageController(EndpointExecutionService endpointExecutionService,
+                               OrderService orderService,
+                               StoreService storeService,
+                               CustomerService customerService) {
         this.endpointExecutionService = endpointExecutionService;
+        this.orderService = orderService;
+        this.storeService = storeService;
+        this.customerService = customerService;
     }
 
     // DASHBOARD
     @GetMapping("/order-module/dashboard")
     public String orderDashboardPage() {
         return "fragments/order-module";
+    }
+
+    // TRADITIONAL CRUD VIEW
+    @GetMapping("/order-module/orders")
+    public String listOrdersPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Model model
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<OrderResponse> orderPage = orderService.getAllOrders(pageable);
+
+        model.addAttribute("orders", orderPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", orderPage.getTotalPages());
+        model.addAttribute("totalItems", orderPage.getTotalElements());
+
+        return "order/list";
+    }
+
+    @GetMapping("/order-module/orders/create")
+    public String createOrderForm(Model model) {
+        model.addAttribute("orderForm", new OrderRequest());
+        model.addAttribute("stores", storeService.getAllStores());
+        model.addAttribute("customers", customerService.getAllCustomers());
+        model.addAttribute("statuses", OrderStatus.values());
+        return "order/create";
+    }
+
+    @PostMapping("/order-module/orders/create")
+    public String processCreateOrder(
+            @Valid @ModelAttribute("orderForm") OrderRequest orderForm,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("stores", storeService.getAllStores());
+            model.addAttribute("customers", customerService.getAllCustomers());
+            model.addAttribute("statuses", OrderStatus.values());
+            return "order/create";
+        }
+
+        try {
+            orderService.createOrder(orderForm);
+            redirectAttributes.addFlashAttribute("successMessage", "Order created successfully!");
+            return "redirect:/order-module/orders";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("stores", storeService.getAllStores());
+            model.addAttribute("customers", customerService.getAllCustomers());
+            model.addAttribute("statuses", OrderStatus.values());
+            return "order/create";
+        }
+    }
+
+    @GetMapping("/order-module/orders/edit/{id}")
+    public String editOrderForm(@PathVariable Integer id, Model model) {
+        OrderResponse order = orderService.getOrderById(id);
+        OrderRequest orderForm = new OrderRequest();
+        orderForm.setCustomerId(order.getCustomerId());
+        orderForm.setStoreId(order.getStoreId());
+        orderForm.setOrderStatus(order.getOrderStatus());
+        orderForm.setOrderTms(order.getOrderTms());
+
+        model.addAttribute("orderForm", orderForm);
+        model.addAttribute("orderId", id);
+        model.addAttribute("stores", storeService.getAllStores());
+        model.addAttribute("customers", customerService.getAllCustomers());
+        model.addAttribute("statuses", OrderStatus.values());
+        return "order/edit";
+    }
+
+    @PostMapping("/order-module/orders/edit/{id}")
+    public String processUpdateOrder(
+            @PathVariable Integer id,
+            @Valid @ModelAttribute("orderForm") OrderRequest orderForm,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("orderId", id);
+            model.addAttribute("stores", storeService.getAllStores());
+            model.addAttribute("customers", customerService.getAllCustomers());
+            model.addAttribute("statuses", OrderStatus.values());
+            return "order/edit";
+        }
+
+        try {
+            orderService.updateOrder(id, orderForm);
+            redirectAttributes.addFlashAttribute("successMessage", "Order updated successfully!");
+            return "redirect:/order-module/orders";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("orderId", id);
+            model.addAttribute("stores", storeService.getAllStores());
+            model.addAttribute("customers", customerService.getAllCustomers());
+            model.addAttribute("statuses", OrderStatus.values());
+            return "order/edit";
+        }
+    }
+
+    @GetMapping("/order-module/orders/delete/{id}")
+    public String deleteOrder(
+            @PathVariable Integer id,
+            RedirectAttributes redirectAttributes
+    ) {
+        try {
+            orderService.deleteOrder(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Order deleted successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
+        return "redirect:/order-module/orders";
     }
 
     // GET ALL ORDERS

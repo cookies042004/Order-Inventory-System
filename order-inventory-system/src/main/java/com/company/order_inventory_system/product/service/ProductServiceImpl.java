@@ -9,6 +9,8 @@ import com.company.order_inventory_system.product.exception.ProductNotFoundExcep
 
 import com.company.order_inventory_system.product.repository.ProductRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,6 +47,13 @@ public class ProductServiceImpl implements ProductService {
                 .stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
+    }
+
+    // Fetches all products (paginated)
+    @Override
+    public Page<ProductResponse> getAllProducts(Pageable pageable) {
+        return productRepository.findAll(pageable)
+                .map(this::mapToResponse);
     }
 
     // Fetches product by ID

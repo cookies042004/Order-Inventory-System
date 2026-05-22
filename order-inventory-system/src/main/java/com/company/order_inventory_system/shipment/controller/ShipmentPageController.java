@@ -3,13 +3,25 @@ package com.company.order_inventory_system.shipment.controller;
 import com.company.order_inventory_system.common.model.FormField;
 import com.company.order_inventory_system.common.ui.service.EndpointExecutionService;
 import com.company.order_inventory_system.shipment.dto.ShipmentRequest;
+import com.company.order_inventory_system.shipment.dto.ShipmentResponse;
 import com.company.order_inventory_system.shipment.enums.ShipmentStatus;
+import com.company.order_inventory_system.shipment.service.ShipmentService;
+import com.company.order_inventory_system.store.service.StoreService;
+import com.company.order_inventory_system.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.validation.BindingResult;
+import jakarta.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +30,9 @@ import java.util.Map;
 public class ShipmentPageController {
 
     private final EndpointExecutionService endpointExecutionService;
+    private final ShipmentService shipmentService;
+    private final StoreService storeService;
+    private final CustomerService customerService;
 
     @Value("${shipment.username}")
     private String shipmentUsername;
@@ -25,14 +40,135 @@ public class ShipmentPageController {
     @Value("${shipment.password}")
     private String shipmentPassword;
 
-    public ShipmentPageController(EndpointExecutionService endpointExecutionService) {
+    public ShipmentPageController(EndpointExecutionService endpointExecutionService,
+                                  ShipmentService shipmentService,
+                                  StoreService storeService,
+                                  CustomerService customerService) {
         this.endpointExecutionService = endpointExecutionService;
+        this.shipmentService = shipmentService;
+        this.storeService = storeService;
+        this.customerService = customerService;
     }
 
     // DASHBOARD
     @GetMapping("/shipment-module/dashboard")
     public String shipmentDashboardPage() {
         return "fragments/shipment-module";
+    }
+
+    // TRADITIONAL CRUD VIEW
+    @GetMapping("/shipment-module/shipments")
+    public String listShipmentsPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Model model
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ShipmentResponse> shipmentPage = shipmentService.getAllShipments(pageable);
+
+        model.addAttribute("shipments", shipmentPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", shipmentPage.getTotalPages());
+        model.addAttribute("totalItems", shipmentPage.getTotalElements());
+
+        return "shipment/list";
+    }
+
+    @GetMapping("/shipment-module/shipments/create")
+    public String createShipmentForm(Model model) {
+        model.addAttribute("shipmentForm", new ShipmentRequest());
+        model.addAttribute("stores", storeService.getAllStores());
+        model.addAttribute("customers", customerService.getAllCustomers());
+        model.addAttribute("statuses", ShipmentStatus.values());
+        return "shipment/create";
+    }
+
+    @PostMapping("/shipment-module/shipments/create")
+    public String processCreateShipment(
+            @Valid @ModelAttribute("shipmentForm") ShipmentRequest shipmentForm,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("stores", storeService.getAllStores());
+            model.addAttribute("customers", customerService.getAllCustomers());
+            model.addAttribute("statuses", ShipmentStatus.values());
+            return "shipment/create";
+        }
+
+        try {
+            shipmentService.createShipment(shipmentForm);
+            redirectAttributes.addFlashAttribute("successMessage", "Shipment created successfully!");
+            return "redirect:/shipment-module/shipments";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("stores", storeService.getAllStores());
+            model.addAttribute("customers", customerService.getAllCustomers());
+            model.addAttribute("statuses", ShipmentStatus.values());
+            return "shipment/create";
+        }
+    }
+
+    @GetMapping("/shipment-module/shipments/edit/{id}")
+    public String editShipmentForm(@PathVariable Integer id, Model model) {
+        ShipmentResponse shipment = shipmentService.getShipmentById(id);
+        ShipmentRequest shipmentForm = new ShipmentRequest();
+        shipmentForm.setCustomerId(shipment.getCustomerId());
+        shipmentForm.setStoreId(shipment.getStoreId());
+        shipmentForm.setDeliveryAddress(shipment.getDeliveryAddress());
+        shipmentForm.setShipmentStatus(shipment.getShipmentStatus());
+
+        model.addAttribute("shipmentForm", shipmentForm);
+        model.addAttribute("shipmentId", id);
+        model.addAttribute("stores", storeService.getAllStores());
+        model.addAttribute("customers", customerService.getAllCustomers());
+        model.addAttribute("statuses", ShipmentStatus.values());
+        return "shipment/edit";
+    }
+
+    @PostMapping("/shipment-module/shipments/edit/{id}")
+    public String processUpdateShipment(
+            @PathVariable Integer id,
+            @Valid @ModelAttribute("shipmentForm") ShipmentRequest shipmentForm,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("shipmentId", id);
+            model.addAttribute("stores", storeService.getAllStores());
+            model.addAttribute("customers", customerService.getAllCustomers());
+            model.addAttribute("statuses", ShipmentStatus.values());
+            return "shipment/edit";
+        }
+
+        try {
+            shipmentService.updateShipment(id, shipmentForm);
+            redirectAttributes.addFlashAttribute("successMessage", "Shipment updated successfully!");
+            return "redirect:/shipment-module/shipments";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("shipmentId", id);
+            model.addAttribute("stores", storeService.getAllStores());
+            model.addAttribute("customers", customerService.getAllCustomers());
+            model.addAttribute("statuses", ShipmentStatus.values());
+            return "shipment/edit";
+        }
+    }
+
+    @GetMapping("/shipment-module/shipments/delete/{id}")
+    public String deleteShipment(
+            @PathVariable Integer id,
+            RedirectAttributes redirectAttributes
+    ) {
+        try {
+            shipmentService.deleteShipment(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Shipment deleted successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
+        return "redirect:/shipment-module/shipments";
     }
 
     // GET ALL SHIPMENTS

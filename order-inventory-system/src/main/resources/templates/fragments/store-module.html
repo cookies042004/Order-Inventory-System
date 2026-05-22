@@ -32,15 +32,14 @@
 <div class="module-page-container">
 
     <!-- MODULE HEADER -->
-
     <div class="module-page-header">
-
-        <h1>Store Module</h1>
-
-        <p>
-            Manage store operations and endpoints
-        </p>
-
+        <div>
+            <h1>Store Module</h1>
+            <p>Manage store operations and endpoints</p>
+        </div>
+        <a th:href="@{/store-module/stores}" class="btn-primary">
+            Launch MVC CRUD
+        </a>
     </div>
 
     <!-- ENDPOINT SECTION -->
@@ -55,7 +54,7 @@
 
             <span class="endpoint-count">
 
-                8 Endpoints
+                10 Endpoints
 
             </span>
 
@@ -266,6 +265,58 @@
                     <h3>/api/stores/{storeId}/inventory</h3>
 
                     <p>Get inventory by store ID</p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+        <!-- GET STORE LOGO -->
+
+        <a th:href="@{/store-module/endpoints/get-store-logo}"
+
+           class="endpoint-card-link">
+
+            <div class="endpoint-card">
+
+        <span class="method get">
+
+            GET
+
+        </span>
+
+                <div class="endpoint-content">
+
+                    <h3>/api/stores/{storeId}/logo</h3>
+
+                    <p>Get store logo image</p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+        <!-- UPLOAD STORE LOGO -->
+
+        <a th:href="@{/store-module/endpoints/upload-store-logo}"
+
+           class="endpoint-card-link">
+
+            <div class="endpoint-card">
+
+        <span class="method post">
+
+            POST
+
+        </span>
+
+                <div class="endpoint-content">
+
+                    <h3>/api/stores/{storeId}/logo</h3>
+
+                    <p>Upload store logo image</p>
 
                 </div>
 

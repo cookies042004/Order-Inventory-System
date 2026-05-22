@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Product Catalog (Traditional CRUD)</title>
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/pages/store-crud.css}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="crud-page">
+
+    <!-- HEADER -->
+    <div class="crud-header">
+        <div>
+            <h1>Product Management</h1>
+            <p>Direct Spring MVC CRUD Operations with Backend Pagination & Validation</p>
+        </div>
+        <div class="header-actions">
+            <a th:href="@{/product-module/dashboard}" class="btn-secondary">
+                ← Dashboard
+            </a>
+            <a th:href="@{/product-module/products/create}" class="btn-primary">
+                + Add New Product
+            </a>
+        </div>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div th:if="${successMessage != null}" class="alert alert-success">
+        <span>✓</span>
+        <span th:text="${successMessage}"></span>
+    </div>
+    <div th:if="${errorMessage != null}" class="alert alert-error">
+        <span>⚠️</span>
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+    <!-- MAIN CARD -->
+    <div class="crud-card">
+        <div class="table-responsive">
+            <table class="crud-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Product Name</th>
+                    <th>Brand</th>
+                    <th>Colour</th>
+                    <th>Size</th>
+                    <th>Unit Price</th>
+                    <th>Rating</th>
+                    <th style="text-align: right;">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="prod : ${products}">
+                    <td th:text="${prod.productId}" style="font-weight: 700; color: #475569;"></td>
+                    <td th:text="${prod.productName}" style="font-weight: 600;"></td>
+                    <td th:text="${prod.brand}"></td>
+                    <td th:text="${prod.colour}"></td>
+                    <td th:text="${prod.size}"></td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(prod.unitPrice, 1, 2)}" style="font-weight: 600; color: #0f172a;"></td>
+                    <td>
+                        <span th:text="${prod.rating} + ' / 5'" style="font-weight: 600; color: #d97706;"></span>
+                    </td>
+                    <td style="text-align: right; white-space: nowrap;">
+                        <a th:href="@{/product-module/products/edit/{id}(id=${prod.productId})}" class="action-btn edit">
+                            Edit
+                        </a>
+                        <a th:href="@{/product-module/products/delete/{id}(id=${prod.productId})}" 
+                           class="action-btn delete" 
+                           onclick="return confirm('Are you sure you want to delete this product?')">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+                <tr th:if="${products.isEmpty()}">
+                    <td colspan="8" style="text-align: center; padding: 40px; color: #64748b; font-style: italic;">
+                        No products found in database.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- PAGINATION CONTROLS -->
+        <div class="pagination-wrapper" th:if="${totalPages > 1}">
+            <div class="pagination-info">
+                Showing page <span th:text="${currentPage + 1}" style="font-weight: 700; color: #0f172a;"></span> 
+                of <span th:text="${totalPages}" style="font-weight: 700; color: #0f172a;"></span> 
+                (Total <span th:text="${totalItems}"></span> products)
+            </div>
+            
+            <div class="pagination-links">
+                <!-- First Page -->
+                <a th:href="@{/product-module/products(page=0)}" 
+                   th:classappend="${currentPage == 0} ? 'disabled' : ''"
+                   title="First Page">«</a>
+                
+                <!-- Previous Page -->
+                <a th:href="@{/product-module/products(page=${currentPage - 1})}" 
+                   th:classappend="${currentPage == 0} ? 'disabled' : ''"
+                   title="Previous Page">‹</a>
+                
+                <!-- First Page always if not in range -->
+                <a th:if="${currentPage - 3 > 0}"
+                   th:href="@{/product-module/products(page=0)}"
+                   th:text="1"></a>
+                
+                <!-- Ellipsis before window -->
+                <span th:if="${currentPage - 3 > 1}" style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border: 1px solid #e2e8f0; border-radius: 10px; color: #64748b; font-weight: 600;">...</span>
+
+                <!-- Dynamic Page Numbers in sliding window -->
+                <a th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+                   th:if="${pageNum >= currentPage - 3 && pageNum <= currentPage + 3}"
+                   th:href="@{/product-module/products(page=${pageNum})}"
+                   th:text="${pageNum + 1}"
+                   th:classappend="${pageNum == currentPage} ? 'active' : ''"></a>
+
+                <!-- Ellipsis after window -->
+                <span th:if="${currentPage + 3 < totalPages - 2}" style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border: 1px solid #e2e8f0; border-radius: 10px; color: #64748b; font-weight: 600;">...</span>
+
+                <!-- Last Page always if not in range -->
+                <a th:if="${currentPage + 3 < totalPages - 1}"
+                   th:href="@{/product-module/products(page=${totalPages - 1})}"
+                   th:text="${totalPages}"></a>
+                
+                <!-- Next Page -->
+                <a th:href="@{/product-module/products(page=${currentPage + 1})}" 
+                   th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''"
+                   title="Next Page">›</a>
+                
+                <!-- Last Page -->
+                <a th:href="@{/product-module/products(page=${totalPages - 1})}" 
+                   th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''"
+                   title="Last Page">»</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
