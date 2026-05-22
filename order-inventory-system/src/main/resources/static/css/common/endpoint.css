@@ -5,16 +5,17 @@
 .method {
     min-width: 80px;
     text-align: center;
-    padding: 6px 12px;
-    border-radius: var(--radius-sm);
-    color: #ffffff;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
     font-weight: 800;
-    font-size: 11px;
+    font-size: 10.5px;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-smooth);
 }
 
 .get {
@@ -26,7 +27,7 @@
 .post {
     background-color: var(--primary-light);
     color: var(--primary);
-    border: 1px solid var(--primary-ring);
+    border: 1px solid rgba(79, 70, 229, 0.2);
 }
 
 .put {
@@ -53,17 +54,25 @@
     gap: 20px;
     background-color: var(--bg-card);
     border-radius: var(--radius-md);
-    padding: 20px 24px;
+    padding: 22px 26px;
     margin-bottom: 16px;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(226, 232, 240, 0.6);
     box-shadow: var(--shadow-sm);
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: var(--transition-smooth);
+}
+
+[data-theme="dark"] .endpoint-card {
+    border-color: rgba(30, 41, 59, 0.4);
 }
 
 .endpoint-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-3.5px);
     box-shadow: var(--shadow-md);
-    border-color: var(--border-hover);
+    border-color: var(--primary);
+}
+
+.endpoint-card:hover .method {
+    transform: scale(1.04);
 }
 
 .endpoint-content {
@@ -72,16 +81,16 @@
 }
 
 .endpoint-content h3 {
-    font-size: 16px;
+    font-size: 16.5px;
     font-weight: 750;
     color: var(--text-main);
-    margin-bottom: 2px;
+    margin-bottom: 3px;
     letter-spacing: -0.01em;
 }
 
 .endpoint-content p {
     color: var(--text-muted);
-    font-size: 13px;
+    font-size: 13.5px;
     font-weight: 400;
 }
 

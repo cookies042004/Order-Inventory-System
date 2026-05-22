@@ -167,7 +167,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/report-module",
                                 "/report-module/**"
-                        ).hasRole("PRODUCT")
+                        ).hasRole("REPORT")
 
                         /* API ENDPOINTS */
 
@@ -194,7 +194,7 @@ public class SecurityConfig {
                         .hasRole("SHIPMENT")
 
                         .requestMatchers("/api/reports", "/api/reports/**")
-                        .hasRole("PRODUCT")
+                        .hasRole("REPORT")
 
                         .requestMatchers("/api/reports/**")
                         .hasRole("REPORT")

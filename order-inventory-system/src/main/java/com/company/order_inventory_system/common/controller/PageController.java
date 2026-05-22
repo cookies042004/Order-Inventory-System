@@ -19,7 +19,8 @@ public class PageController {
 
                 new TeamMember(
                         "Kumar Aditya Pratap",
-                        "/images/user-default.png",
+                        "Lead Systems Architect & Logistics Orchestrator",
+                        "/images/Kumar.png",
                         List.of(
                                 new ModuleLink(
                                         "Order",
@@ -38,7 +39,8 @@ public class PageController {
 
                 new TeamMember(
                         "Akshaya Priya D",
-                        "/images/user-default.png",
+                        "Principal Security Engineer & Customer Relations Lead",
+                        "/images/Akshaya.jpeg",
                         List.of(
                                 new ModuleLink(
                                         "Customer",
@@ -53,7 +55,8 @@ public class PageController {
 
                 new TeamMember(
                         "Sneha Angapparaj",
-                        "/images/user-default.png",
+                        "Head of Product & Business Intelligence Analytics",
+                        "/images/Sneha.jpeg",
                         List.of(
                                 new ModuleLink(
                                         "Product",
@@ -68,7 +71,8 @@ public class PageController {
 
                 new TeamMember(
                         "Akhil Puri",
-                        "/images/user-default.png",
+                        "Director of Store Operations & Inventory Control",
+                        "/images/Akhil.png",
                         List.of(
                                 new ModuleLink(
                                         "Store",
@@ -89,7 +93,10 @@ public class PageController {
 
         model.addAttribute(
                 "projectDescription",
-                "Enterprise Inventory & Order Management Platform"
+                "The <strong>Order Inventory System (OIS)</strong> is a high-performance management platform " +
+                        "designed to streamline retail operations. It provides end-to-end automation for store " +
+                        "management, real-time inventory tracking, customer profiling, order lifecycle processing, " +
+                        "and shipment logistics, supported by role-based security and business intelligence reporting."
         );
 
         model.addAttribute(

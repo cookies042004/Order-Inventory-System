@@ -9,6 +9,7 @@
     align-items: center;
     background-color: var(--bg-page);
     padding: 16px;
+    transition: var(--transition-smooth);
 }
 
 .access-card {
@@ -20,6 +21,7 @@
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-lg);
     text-align: center;
+    transition: var(--transition-smooth);
 }
 
 .access-card h1 {
@@ -40,7 +42,7 @@
 }
 
 .access-card p {
-    font-size: 14px;
+    font-size: 14.5px;
     color: var(--text-muted);
     margin-bottom: 30px;
     line-height: 1.6;
@@ -55,17 +57,21 @@
     color: #ffffff;
     text-decoration: none;
     padding: 12px 28px;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     font-weight: 750;
     font-size: 14px;
     border: 1px solid var(--primary);
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: var(--transition-smooth);
     box-shadow: 0 4px 10px rgba(79, 70, 229, 0.15);
 }
 
 .home-btn:hover {
     background-color: var(--primary-hover);
     border-color: var(--primary-hover);
-    transform: translateY(-1px);
+    transform: translateY(-1.5px);
     box-shadow: 0 6px 14px rgba(79, 70, 229, 0.25);
+}
+
+.home-btn:active {
+    transform: translateY(0.5px) scale(0.98);
 }

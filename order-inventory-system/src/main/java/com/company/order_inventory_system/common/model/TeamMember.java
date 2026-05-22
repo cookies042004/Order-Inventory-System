@@ -6,6 +6,8 @@ public class TeamMember {
 
     private String name;
 
+    private String role;
+
     private String image;
 
     private List<ModuleLink> modules;
@@ -15,16 +17,22 @@ public class TeamMember {
 
     public TeamMember(
             String name,
+            String role,
             String image,
             List<ModuleLink> modules
     ) {
         this.name = name;
+        this.role = role;
         this.image = image;
         this.modules = modules;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     public List<ModuleLink> getModules() {
@@ -37,6 +45,10 @@ public class TeamMember {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public void setImage(String image) {
