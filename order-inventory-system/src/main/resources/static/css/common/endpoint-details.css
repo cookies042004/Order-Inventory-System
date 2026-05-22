@@ -7,9 +7,19 @@
 }
 
 .details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 20px;
     margin-bottom: 35px;
+}
+
+.details-header .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .details-header h1 {
@@ -535,11 +545,25 @@
     }
 
     .details-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
         padding-bottom: 12px;
     }
 
     .details-header h1 {
         font-size: 24px;
+    }
+
+    .details-header .header-actions {
+        width: 100%;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .details-header .header-actions .btn-secondary {
+        width: 100%;
+        justify-content: center;
     }
 
     .api-card {

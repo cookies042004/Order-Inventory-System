@@ -28,11 +28,19 @@
 
     <div class="details-header">
 
-        <h1 th:text="${endpointTitle}">
-        </h1>
+        <div>
+            <h1 th:text="${endpointTitle}">
+            </h1>
 
-        <p th:text="${description}">
-        </p>
+            <p th:text="${description}">
+            </p>
+        </div>
+
+        <div class="header-actions">
+            <a th:href="@{${executeUrl.substring(0, executeUrl.indexOf('/endpoints/')) + '/dashboard'}}" class="btn-secondary">
+                ← Dashboard
+            </a>
+        </div>
 
     </div>
 
@@ -200,7 +208,7 @@
                     <tr>
 
                         <th th:each="column : ${columns}"
-                            th:text="${column}">
+                            th:text="${column.contains('.') ? column.substring(column.lastIndexOf('.') + 1) : column}">
                         </th>
 
                     </tr>
