@@ -18,7 +18,9 @@ import java.util.List;
 
 import com.company.order_inventory_system.report.dto.InventoryRiskResponse;
 
-import com.company.order_inventory_system.report.dto.InventoryRiskResponse;
+import com.company.order_inventory_system.store.repository.StoreRepository;
+
+import com.company.order_inventory_system.common.exception.ResourceNotFoundException;
 
 @Service
 public class ReportServiceImpl implements ReportService {
@@ -26,11 +28,15 @@ public class ReportServiceImpl implements ReportService {
     // Repository dependency
     private final ReportRepository reportRepository;
 
+    private final StoreRepository storeRepository;
+
     // Constructor injection
     public ReportServiceImpl(
-            ReportRepository reportRepository
+            ReportRepository reportRepository,
+            StoreRepository storeRepository
     ) {
         this.reportRepository = reportRepository;
+        this.storeRepository = storeRepository;
     }
 
     // Fetches sales summary report
@@ -43,6 +49,12 @@ public class ReportServiceImpl implements ReportService {
 
             Integer storeId
     ) {
+
+        if (!storeRepository.existsById(storeId)) {
+            throw new ResourceNotFoundException(
+                    "Store not found with id: " + storeId
+            );
+        }
 
         // Calls repository query
         return reportRepository.getSalesSummaryReport(
