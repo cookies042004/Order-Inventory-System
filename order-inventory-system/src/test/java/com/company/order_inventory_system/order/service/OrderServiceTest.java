@@ -1,15 +1,17 @@
 package com.company.order_inventory_system.order.service;
 
+import com.company.order_inventory_system.customer.repository.CustomerRepository;
 import com.company.order_inventory_system.order.dto.OrderRequest;
 import com.company.order_inventory_system.order.dto.OrderResponse;
 import com.company.order_inventory_system.order.entity.Order;
 import com.company.order_inventory_system.order.enums.OrderStatus;
 import com.company.order_inventory_system.order.exception.OrderNotFoundException;
 import com.company.order_inventory_system.order.repository.OrderRepository;
-import com.company.order_inventory_system.customer.repository.CustomerRepository;
+
 import com.company.order_inventory_system.store.repository.StoreRepository;
 import com.company.order_inventory_system.customer.exception.CustomerNotFoundException;
 import com.company.order_inventory_system.common.exception.ResourceNotFoundException;
+
 
 import org.junit.jupiter.api.Test;
 

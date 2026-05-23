@@ -6,6 +6,7 @@ import com.company.order_inventory_system.customer.dto.CustomerResponse;
 import com.company.order_inventory_system.customer.entity.Customer;
 
 import com.company.order_inventory_system.customer.exception.CustomerNotFoundException;
+import com.company.order_inventory_system.common.exception.DuplicateResourceException;
 
 import com.company.order_inventory_system.customer.repository.CustomerRepository;
 
@@ -34,6 +35,15 @@ public class CustomerServiceImpl
     @Override
     public CustomerResponse createCustomer(
             CustomerRequest request) {
+
+        if (customerRepository.existsByEmailAddress(
+                request.getEmailAddress())) {
+
+            throw new DuplicateResourceException(
+                    "Customer already exists with email: "
+                            + request.getEmailAddress()
+            );
+        }
 
         Customer customer =
                 mapToEntity(request);
@@ -114,6 +124,20 @@ public class CustomerServiceImpl
                                                 + customerId
                                 ));
 
+        if (customerRepository.existsByEmailAddress(
+                request.getEmailAddress())
+
+                &&
+
+                !existingCustomer.getEmailAddress()
+                        .equals(request.getEmailAddress())) {
+
+            throw new DuplicateResourceException(
+                    "Customer already exists with email: "
+                            + request.getEmailAddress()
+            );
+        }
+
         existingCustomer.setEmailAddress(
                 request.getEmailAddress()
         );
@@ -129,7 +153,6 @@ public class CustomerServiceImpl
 
         return mapToResponse(updatedCustomer);
     }
-
     /* Deletes customer using customer ID */
     @Override
     public CustomerResponse deleteCustomer(

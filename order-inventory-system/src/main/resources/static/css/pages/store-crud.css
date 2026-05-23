@@ -44,7 +44,13 @@
 .action-btn.edit {
     background-color: var(--primary-light);
     color: var(--primary);
-    border: 1px solid rgba(79, 70, 229, 0.05);
+    border: 1px solid rgba(79, 70, 229, 0.15);
+}
+
+[data-theme="dark"] .action-btn.edit {
+    background-color: rgba(14, 165, 233, 0.12);
+    color: #38bdf8;
+    border: 1px solid rgba(14, 165, 233, 0.35);
 }
 
 .action-btn.edit:hover {
@@ -55,10 +61,22 @@
     box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
 }
 
+[data-theme="dark"] .action-btn.edit:hover {
+    background-color: #0ea5e9;
+    border-color: #0ea5e9;
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
 .action-btn.delete {
     background-color: var(--danger-light);
     color: var(--danger-text);
-    border: 1px solid rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+[data-theme="dark"] .action-btn.delete {
+    background-color: rgba(239, 68, 68, 0.12);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.35);
 }
 
 .action-btn.delete:hover {
@@ -67,6 +85,12 @@
     border-color: var(--danger);
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
+}
+
+[data-theme="dark"] .action-btn.delete:hover {
+    background-color: #ef4444;
+    border-color: #ef4444;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
 /* CARDS WITH HARD-BORDERED PANELS */
@@ -99,12 +123,12 @@
 
 .crud-table th {
     background-color: var(--bg-page);
-    color: var(--text-medium);
+    color: var(--text-main);
     font-weight: 800;
     text-align: left;
     padding: 16px 20px;
     border-bottom: 2px solid var(--border-color);
-    font-size: 11.5px;
+    font-size: 12.5px;
     text-transform: uppercase;
     letter-spacing: 0.07em;
 }
@@ -133,6 +157,7 @@
     align-items: center;
     margin-top: 25px;
     padding-top: 20px;
+    padding-bottom: 10px; /* Consistent bottom breathing space */
     border-top: 1px solid var(--border-color);
 }
 
@@ -142,8 +167,6 @@
     color: var(--text-muted);
     margin: 0;
     line-height: 38px;
-    display: inline-flex;
-    align-items: center;
 }
 
 .pagination-links {

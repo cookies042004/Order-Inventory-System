@@ -17,7 +17,7 @@
     <div class="crud-header">
         <div>
             <h1>Shipment Management</h1>
-            <p>Direct Spring MVC CRUD Operations with Backend Pagination & Validation</p>
+            <p>Direct Spring MVC CRUD Operations</p>
         </div>
         <div class="header-actions">
             <a th:href="@{/shipment-module/dashboard}" class="btn-secondary">
@@ -55,9 +55,9 @@
                 </thead>
                 <tbody>
                 <tr th:each="ship : ${shipments}">
-                    <td th:text="${ship.shipmentId}" style="font-weight: 700; color: #475569;"></td>
-                    <td th:text="'Store ID: ' + ${ship.storeId}"></td>
-                    <td th:text="'Customer ID: ' + ${ship.customerId}"></td>
+                    <td th:text="${ship.shipmentId}" style="font-weight: 700; color: var(--text-muted);"></td>
+                    <td th:text="${ship.storeId}"></td>
+                    <td th:text="${ship.customerId}"></td>
                     <td th:text="${ship.deliveryAddress}"></td>
                     <td>
                         <span th:text="${ship.shipmentStatus.value}" 
@@ -91,9 +91,7 @@
         <!-- PAGINATION CONTROLS -->
         <div class="pagination-wrapper" th:if="${totalPages > 1}">
             <div class="pagination-info">
-                Showing page <span th:text="${currentPage + 1}" style="font-weight: 700; color: #0f172a;"></span> 
-                of <span th:text="${totalPages}" style="font-weight: 700; color: #0f172a;"></span> 
-                (Total <span th:text="${totalItems}"></span> shipments)
+                Showing page&nbsp;<span th:text="${currentPage + 1}" style="font-weight: 700; color: var(--text-main);"></span>&nbsp;of&nbsp;<span th:text="${totalPages}" style="font-weight: 700; color: var(--text-main);"></span>&nbsp;(Total&nbsp;<span th:text="${totalItems}"></span>&nbsp;shipments)
             </div>
             
             <div class="pagination-links">

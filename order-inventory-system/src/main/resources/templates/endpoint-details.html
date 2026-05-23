@@ -28,11 +28,19 @@
 
     <div class="details-header">
 
-        <h1 th:text="${endpointTitle}">
-        </h1>
+        <div>
+            <h1 th:text="${endpointTitle}">
+            </h1>
 
-        <p th:text="${description}">
-        </p>
+            <p th:text="${description}">
+            </p>
+        </div>
+
+        <div class="header-actions">
+            <a th:href="@{${executeUrl.substring(0, executeUrl.indexOf('/endpoints/')) + '/dashboard'}}" class="btn-secondary">
+                ← Dashboard
+            </a>
+        </div>
 
     </div>
 
@@ -130,7 +138,7 @@
     <!-- RESPONSE SECTION -->
 
     <div class="response-section"
-
+         id="response-section"
          th:if="${statusCode != null}">
 
         <!-- SUCCESS RESPONSE -->
@@ -191,16 +199,28 @@
 
             <div id="table-view">
 
+                <!-- EMPTY STATE BANNER -->
+                <div th:if="${tableData == null || tableData.isEmpty()}" class="empty-state-banner">
+                    <div class="empty-state-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                        </svg>
+                    </div>
+                    <h3>No Records Found</h3>
+                    <p>The GET request executed successfully, but returned an empty dataset from the database.</p>
+                </div>
+
                 <table class="response-table"
                        id="data-table"
-                       th:if="${tableData != null}">
+                       th:if="${tableData != null && !tableData.isEmpty()}">
 
                     <thead>
 
                     <tr>
 
                         <th th:each="column : ${columns}"
-                            th:text="${column}">
+                            th:text="${@endpointExecutionService.formatHeader(column)}">
                         </th>
 
                     </tr>
@@ -287,7 +307,7 @@
 
                     <strong>Error:</strong>
 
-                    <span th:text="${errorResponse.error}">
+                    <span th:text="${errorResponse.get('error')}">
                 </span>
 
                 </div>
@@ -296,7 +316,7 @@
 
                     <strong>Message:</strong>
 
-                    <span th:text="${errorResponse.message}">
+                    <span th:text="${errorResponse.get('message')}">
                 </span>
 
                 </div>
@@ -305,7 +325,7 @@
 
                     <strong>Timestamp:</strong>
 
-                    <span th:text="${errorResponse.timestamp}">
+                    <span th:text="${errorResponse.get('timestamp')}">
                 </span>
 
                 </div>
@@ -334,7 +354,7 @@
 
                     <tr th:each="error : ${validationErrors.entrySet()}">
 
-                        <td th:text="${error.key}">
+                        <td th:text="${@endpointExecutionService.formatHeader(error.key)}">
                         </td>
 
                         <td th:text="${error.value}">
@@ -397,85 +417,95 @@
 
     document.addEventListener("DOMContentLoaded", function() {
         const table = document.getElementById("data-table");
-        if (!table) return;
+        if (table) {
+            const tbody = table.querySelector("tbody");
+            if (tbody) {
+                const rows = Array.from(tbody.querySelectorAll("tr"));
+                const totalRows = rows.length;
+                const pageSize = 10;
+                let currentPage = 1;
+                const totalPages = Math.ceil(totalRows / pageSize);
 
-        const tbody = table.querySelector("tbody");
-        const rows = Array.from(tbody.querySelectorAll("tr"));
-        const totalRows = rows.length;
-        const pageSize = 10;
-        let currentPage = 1;
-        const totalPages = Math.ceil(totalRows / pageSize);
+                if (totalRows > pageSize) {
+                    function showPage(page) {
+                        currentPage = page;
+                        const start = (page - 1) * pageSize;
+                        const end = start + pageSize;
 
-        if (totalRows <= pageSize) return; // No pagination needed
+                        rows.forEach((row, idx) => {
+                            if (idx >= start && idx < end) {
+                                row.style.display = "";
+                            } else {
+                                row.style.display = "none";
+                            }
+                        });
 
-        function showPage(page) {
-            currentPage = page;
-            const start = (page - 1) * pageSize;
-            const end = start + pageSize;
+                        // Update Info text
+                        const infoText = `Showing ${start + 1} to ${Math.min(end, totalRows)} of ${totalRows} entries`;
+                        const infoEl = document.getElementById("pagination-info");
+                        if (infoEl) {
+                            infoEl.innerText = infoText;
+                        }
 
-            rows.forEach((row, idx) => {
-                if (idx >= start && idx < end) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
+                        // Generate Buttons
+                        renderButtons();
+                    }
+
+                    function renderButtons() {
+                        const container = document.getElementById("pagination-buttons");
+                        if (!container) return;
+                        container.innerHTML = "";
+
+                        // Helper for creating button
+                        function createBtn(text, targetPage, disabled, active) {
+                            const btn = document.createElement("button");
+                            btn.className = "page-btn" + (active ? " active" : "") + (disabled ? " disabled" : "");
+                            btn.innerText = text;
+                            btn.disabled = disabled;
+                            if (!disabled) {
+                                btn.addEventListener("click", (e) => {
+                                    e.preventDefault();
+                                    showPage(targetPage);
+                                });
+                            }
+                            return btn;
+                        }
+
+                        // First & Prev
+                        container.appendChild(createBtn("« First", 1, currentPage === 1));
+                        container.appendChild(createBtn("‹ Prev", currentPage - 1, currentPage === 1));
+
+                        // Page numbers range
+                        const maxPageButtons = 5;
+                        let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+                        let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+
+                        if (endPage - startPage + 1 < maxPageButtons) {
+                            startPage = Math.max(1, endPage - maxPageButtons + 1);
+                        }
+
+                        for (let i = startPage; i <= endPage; i++) {
+                            container.appendChild(createBtn(i, i, false, i === currentPage));
+                        }
+
+                        // Next & Last
+                        container.appendChild(createBtn("Next ›", currentPage + 1, currentPage === totalPages));
+                        container.appendChild(createBtn("Last »", totalPages, currentPage === totalPages));
+                    }
+
+                    // Initialize first page
+                    showPage(1);
                 }
-            });
-
-            // Update Info text
-            const infoText = `Showing ${start + 1} to ${Math.min(end, totalRows)} of ${totalRows} entries`;
-            const infoEl = document.getElementById("pagination-info");
-            if (infoEl) {
-                infoEl.innerText = infoText;
             }
-
-            // Generate Buttons
-            renderButtons();
         }
 
-        function renderButtons() {
-            const container = document.getElementById("pagination-buttons");
-            if (!container) return;
-            container.innerHTML = "";
-
-            // Helper for creating button
-            function createBtn(text, targetPage, disabled, active) {
-                const btn = document.createElement("button");
-                btn.className = "page-btn" + (active ? " active" : "") + (disabled ? " disabled" : "");
-                btn.innerText = text;
-                btn.disabled = disabled;
-                if (!disabled) {
-                    btn.addEventListener("click", (e) => {
-                        e.preventDefault();
-                        showPage(targetPage);
-                    });
-                }
-                return btn;
-            }
-
-            // First & Prev
-            container.appendChild(createBtn("« First", 1, currentPage === 1));
-            container.appendChild(createBtn("‹ Prev", currentPage - 1, currentPage === 1));
-
-            // Page numbers range
-            const maxPageButtons = 5;
-            let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
-            let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
-
-            if (endPage - startPage + 1 < maxPageButtons) {
-                startPage = Math.max(1, endPage - maxPageButtons + 1);
-            }
-
-            for (let i = startPage; i <= endPage; i++) {
-                container.appendChild(createBtn(i, i, false, i === currentPage));
-            }
-
-            // Next & Last
-            container.appendChild(createBtn("Next ›", currentPage + 1, currentPage === totalPages));
-            container.appendChild(createBtn("Last »", totalPages, currentPage === totalPages));
+        // Auto-scroll to response section if present
+        const responseSection = document.getElementById("response-section");
+        if (responseSection) {
+            setTimeout(() => {
+                responseSection.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 100);
         }
-
-        // Initialize first page
-        showPage(1);
     });
 
 </script>

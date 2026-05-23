@@ -22,4 +22,8 @@ public interface CustomerRepository
     List<Customer> findByFullName(
             String fullName
     );
+
+    boolean existsByEmailAddress(
+            String emailAddress
+    );
 }

@@ -172,22 +172,22 @@
         padding: 16px;
         align-items: stretch;
     }
-    
+
     .logo-section {
         justify-content: center;
     }
-    
+
     .nav-links {
         justify-content: center;
         flex-wrap: wrap;
         gap: 8px;
     }
-    
+
     .user-session-badge {
         align-self: center;
         width: fit-content;
     }
-    
+
     .logout-btn {
         width: 100%;
         text-align: center;
