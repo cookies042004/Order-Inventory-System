@@ -338,6 +338,12 @@ public class CustomerController {
             @PathVariable
             Integer customerId) {
 
+        /* Verify customer exists */
+
+        customerService.getCustomerById(
+                customerId
+        );
+
         List<Order> orders =
                 orderRepository
                         .findByCustomerId(
@@ -346,6 +352,8 @@ public class CustomerController {
 
         Map<String, Object> response =
                 new HashMap<>();
+
+        /* Customer exists but no orders linked */
 
         if (orders.isEmpty()) {
 
@@ -394,6 +402,12 @@ public class CustomerController {
             @PathVariable
             Integer customerId) {
 
+        /* Verify customer exists */
+
+        customerService.getCustomerById(
+                customerId
+        );
+
         List<Shipment> shipments =
                 shipmentRepository
                         .findByCustomerId(
@@ -402,6 +416,8 @@ public class CustomerController {
 
         Map<String, Object> response =
                 new HashMap<>();
+
+        /* Customer exists but no shipments linked */
 
         if (shipments.isEmpty()) {
 
