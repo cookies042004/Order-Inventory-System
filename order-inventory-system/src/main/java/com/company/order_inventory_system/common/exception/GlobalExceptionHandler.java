@@ -266,7 +266,11 @@ public class GlobalExceptionHandler {
 
             if (rootMessage != null) {
 
-                if (rootMessage.contains(
+                if (rootMessage.toLowerCase().contains("cannot delete or update a parent row")) {
+                    message = "Cannot delete this record because it is currently referenced by other active entities (e.g. inventory records, orders, or shipments). Please delete the dependent records first.";
+                }
+
+                else if (rootMessage.contains(
                         "foreign key constraint fails")) {
 
                     message =
