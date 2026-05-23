@@ -32,9 +32,7 @@
     public class StoreServiceImpl implements StoreService {
         private final StoreRepository storeRepository;
         private final InventoryRepository inventoryRepository;
-
         private final OrderService orderService;
-
         private final ShipmentService shipmentService;
 
         public StoreServiceImpl(StoreRepository storeRepository, InventoryRepository inventoryRepository,

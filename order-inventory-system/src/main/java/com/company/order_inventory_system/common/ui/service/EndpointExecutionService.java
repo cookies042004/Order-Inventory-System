@@ -335,4 +335,45 @@ public class EndpointExecutionService {
             }
         }
     }
+
+    public String formatHeader(String text) {
+        if (text == null || text.isEmpty()) {
+            return "";
+        }
+
+        // Take substring after last dot if present (e.g., customer.fullName -> fullName)
+        String name = text.contains(".") ? text.substring(text.lastIndexOf(".") + 1) : text;
+
+        // Replace all underscores and hyphens with spaces
+        name = name.replaceAll("[-_]+", " ");
+        
+        // Insert space before capital letters (camelCase splitting)
+        name = name.replaceAll("(?<!^)(?=[A-Z])", " ");
+        
+        // Insert space between letters and numbers
+        name = name.replaceAll("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)", " ");
+
+        // Capitalize each word and convert known abbreviations
+        String[] words = name.split("\\s+");
+        StringBuilder formatted = new StringBuilder();
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i].trim();
+            if (word.isEmpty()) {
+                continue;
+            }
+            if (i > 0) {
+                formatted.append(" ");
+            }
+            String lower = word.toLowerCase();
+            if (lower.equals("id")) {
+                formatted.append("ID");
+            } else if (lower.equals("tms")) {
+                formatted.append("Timestamp");
+            } else {
+                formatted.append(Character.toUpperCase(word.charAt(0)))
+                         .append(word.substring(1).toLowerCase());
+            }
+        }
+        return formatted.toString();
+    }
 }

@@ -125,6 +125,15 @@ public class InventoryServiceImpl implements InventoryService {
 
         validateInventoryQuantity(inventoryRequestDTO.getProductInventory());
 
+        // Validate duplicate inventory for different entries
+        java.util.Optional<Inventory> duplicateInv = inventoryRepository.findByStoreStoreIdAndProductProductId(
+                                inventoryRequestDTO.getStoreId(),
+                                inventoryRequestDTO.getProductId()
+        );
+        if (duplicateInv.isPresent() && !duplicateInv.get().getInventoryId().equals(inventoryId)) {
+            throw new DuplicateResourceException("Inventory already exists for this store and product");
+        }
+
         existingInventory.setStore(store);
 
         existingInventory.setProduct(product);
@@ -158,6 +167,10 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public List<InventoryResponseDTO> getInventoryByStoreId(Integer storeId) {
 
+        // Validate store existence
+        storeRepository.findById(storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Store not found with id: " + storeId));
+
         List<Inventory> inventoryList = inventoryRepository.findByStoreStoreId(storeId);
 
         return inventoryList.stream()
@@ -167,6 +180,10 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public List<InventoryResponseDTO> getInventoryByProductId(Integer productId) {
+
+        // Validate product existence
+        productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + productId));
 
         List<Inventory> inventoryList = inventoryRepository.findByProductProductId(productId);
 
