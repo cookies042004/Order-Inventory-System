@@ -10,7 +10,10 @@ import com.company.order_inventory_system.order.entity.Order;
 import com.company.order_inventory_system.order.enums.OrderStatus;
 import com.company.order_inventory_system.order.exception.OrderNotFoundException;
 import com.company.order_inventory_system.order.repository.OrderRepository;
+
+
 import com.company.order_inventory_system.store.repository.StoreRepository;
+
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +44,14 @@ public class OrderServiceImpl
     @Override
     public OrderResponse createOrder(
             OrderRequest request) {
+
+        if (request.getCustomerId() == null || !customerRepository.existsById(request.getCustomerId())) {
+            throw new CustomerNotFoundException("Customer not found with ID: " + request.getCustomerId());
+        }
+
+        if (request.getStoreId() == null || !storeRepository.existsById(request.getStoreId())) {
+            throw new ResourceNotFoundException("Store not found with id: " + request.getStoreId());
+        }
 
         Order order = mapToEntity(request);
 
@@ -90,6 +101,14 @@ public class OrderServiceImpl
                                 new OrderNotFoundException(
                                         "Order not found with ID: "
                                                 + orderId));
+
+        if (request.getCustomerId() == null || !customerRepository.existsById(request.getCustomerId())) {
+            throw new CustomerNotFoundException("Customer not found with ID: " + request.getCustomerId());
+        }
+
+        if (request.getStoreId() == null || !storeRepository.existsById(request.getStoreId())) {
+            throw new ResourceNotFoundException("Store not found with id: " + request.getStoreId());
+        }
 
         existingOrder.setOrderTms(
                 request.getOrderTms());

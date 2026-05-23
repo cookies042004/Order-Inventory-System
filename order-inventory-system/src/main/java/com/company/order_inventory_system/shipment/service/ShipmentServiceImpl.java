@@ -9,7 +9,9 @@ import com.company.order_inventory_system.shipment.entity.Shipment;
 import com.company.order_inventory_system.shipment.enums.ShipmentStatus;
 import com.company.order_inventory_system.shipment.exception.ShipmentNotFoundException;
 import com.company.order_inventory_system.shipment.repository.ShipmentRepository;
+
 import com.company.order_inventory_system.store.repository.StoreRepository;
+
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +41,14 @@ public class ShipmentServiceImpl
     @Override
     public ShipmentResponse createShipment(
             ShipmentRequest request) {
+
+        if (request.getCustomerId() == null || !customerRepository.existsById(request.getCustomerId())) {
+            throw new CustomerNotFoundException("Customer not found with ID: " + request.getCustomerId());
+        }
+
+        if (request.getStoreId() == null || !storeRepository.existsById(request.getStoreId())) {
+            throw new ResourceNotFoundException("Store not found with id: " + request.getStoreId());
+        }
 
         Shipment shipment =
                 mapToEntity(request);
@@ -89,6 +99,14 @@ public class ShipmentServiceImpl
                                 new ShipmentNotFoundException(
                                         "Shipment not found with ID: "
                                                 + shipmentId));
+
+        if (request.getCustomerId() == null || !customerRepository.existsById(request.getCustomerId())) {
+            throw new CustomerNotFoundException("Customer not found with ID: " + request.getCustomerId());
+        }
+
+        if (request.getStoreId() == null || !storeRepository.existsById(request.getStoreId())) {
+            throw new ResourceNotFoundException("Store not found with id: " + request.getStoreId());
+        }
 
         existingShipment.setStoreId(
                 request.getStoreId());
