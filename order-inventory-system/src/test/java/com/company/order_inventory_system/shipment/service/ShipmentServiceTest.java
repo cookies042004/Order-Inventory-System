@@ -6,6 +6,10 @@ import com.company.order_inventory_system.shipment.entity.Shipment;
 import com.company.order_inventory_system.shipment.enums.ShipmentStatus;
 import com.company.order_inventory_system.shipment.exception.ShipmentNotFoundException;
 import com.company.order_inventory_system.shipment.repository.ShipmentRepository;
+import com.company.order_inventory_system.customer.repository.CustomerRepository;
+import com.company.order_inventory_system.store.repository.StoreRepository;
+import com.company.order_inventory_system.customer.exception.CustomerNotFoundException;
+import com.company.order_inventory_system.common.exception.ResourceNotFoundException;
 
 import com.company.order_inventory_system.shipment.service.ShipmentServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -27,6 +31,12 @@ class ShipmentServiceTest {
 
     @Mock
     private ShipmentRepository shipmentRepository;
+
+    @Mock
+    private CustomerRepository customerRepository;
+
+    @Mock
+    private StoreRepository storeRepository;
 
     @InjectMocks
     private ShipmentServiceImpl shipmentService;
@@ -66,6 +76,8 @@ class ShipmentServiceTest {
     @Test
     void testCreateShipment() {
 
+        when(customerRepository.existsById(101)).thenReturn(true);
+        when(storeRepository.existsById(1)).thenReturn(true);
         when(shipmentRepository.save(any(Shipment.class)))
                 .thenReturn(createSampleShipment());
 
@@ -143,6 +155,8 @@ class ShipmentServiceTest {
         when(shipmentRepository.findById(1))
                 .thenReturn(Optional.of(shipment));
 
+        when(customerRepository.existsById(101)).thenReturn(true);
+        when(storeRepository.existsById(1)).thenReturn(true);
         when(shipmentRepository.save(any(Shipment.class)))
                 .thenReturn(shipment);
 
@@ -183,6 +197,7 @@ class ShipmentServiceTest {
     @Test
     void testGetShipmentsByCustomerId() {
 
+        when(customerRepository.existsById(101)).thenReturn(true);
         when(shipmentRepository
                 .findByCustomerId(101))
 
@@ -200,6 +215,7 @@ class ShipmentServiceTest {
     @Test
     void testGetShipmentsByStoreId() {
 
+        when(storeRepository.existsById(1)).thenReturn(true);
         when(shipmentRepository
                 .findByStoreId(1))
 
@@ -231,5 +247,49 @@ class ShipmentServiceTest {
 
         assertEquals(1,
                 responses.size());
+    }
+
+    @Test
+    void testGetShipmentsByCustomerIdCustomerNotFound() {
+        when(customerRepository.existsById(101)).thenReturn(false);
+        assertThrows(CustomerNotFoundException.class, () -> shipmentService.getShipmentsByCustomerId(101));
+    }
+
+    @Test
+    void testGetShipmentsByStoreIdStoreNotFound() {
+        when(storeRepository.existsById(1)).thenReturn(false);
+        assertThrows(ResourceNotFoundException.class, () -> shipmentService.getShipmentsByStoreId(1));
+    }
+
+    @Test
+    void testCreateShipmentCustomerNotFound() {
+        ShipmentRequest request = createRequest();
+        when(customerRepository.existsById(101)).thenReturn(false);
+        assertThrows(CustomerNotFoundException.class, () -> shipmentService.createShipment(request));
+    }
+
+    @Test
+    void testCreateShipmentStoreNotFound() {
+        ShipmentRequest request = createRequest();
+        when(customerRepository.existsById(101)).thenReturn(true);
+        when(storeRepository.existsById(1)).thenReturn(false);
+        assertThrows(ResourceNotFoundException.class, () -> shipmentService.createShipment(request));
+    }
+
+    @Test
+    void testUpdateShipmentCustomerNotFound() {
+        ShipmentRequest request = createRequest();
+        when(shipmentRepository.findById(1)).thenReturn(Optional.of(createSampleShipment()));
+        when(customerRepository.existsById(101)).thenReturn(false);
+        assertThrows(CustomerNotFoundException.class, () -> shipmentService.updateShipment(1, request));
+    }
+
+    @Test
+    void testUpdateShipmentStoreNotFound() {
+        ShipmentRequest request = createRequest();
+        when(shipmentRepository.findById(1)).thenReturn(Optional.of(createSampleShipment()));
+        when(customerRepository.existsById(101)).thenReturn(true);
+        when(storeRepository.existsById(1)).thenReturn(false);
+        assertThrows(ResourceNotFoundException.class, () -> shipmentService.updateShipment(1, request));
     }
 }

@@ -6,6 +6,10 @@ import com.company.order_inventory_system.order.entity.Order;
 import com.company.order_inventory_system.order.enums.OrderStatus;
 import com.company.order_inventory_system.order.exception.OrderNotFoundException;
 import com.company.order_inventory_system.order.repository.OrderRepository;
+import com.company.order_inventory_system.customer.repository.CustomerRepository;
+import com.company.order_inventory_system.store.repository.StoreRepository;
+import com.company.order_inventory_system.customer.exception.CustomerNotFoundException;
+import com.company.order_inventory_system.common.exception.ResourceNotFoundException;
 
 import org.junit.jupiter.api.Test;
 
@@ -28,6 +32,12 @@ class OrderServiceTest {
 
     @Mock
     private OrderRepository orderRepository;
+
+    @Mock
+    private CustomerRepository customerRepository;
+
+    @Mock
+    private StoreRepository storeRepository;
 
     @InjectMocks
     private OrderServiceImpl orderService;
@@ -62,6 +72,8 @@ class OrderServiceTest {
 
         Order order = createSampleOrder();
 
+        when(customerRepository.existsById(101)).thenReturn(true);
+        when(storeRepository.existsById(1)).thenReturn(true);
         when(orderRepository.save(any(Order.class)))
                 .thenReturn(order);
 
@@ -141,6 +153,8 @@ class OrderServiceTest {
         when(orderRepository.findById(1))
                 .thenReturn(Optional.of(existingOrder));
 
+        when(customerRepository.existsById(101)).thenReturn(true);
+        when(storeRepository.existsById(1)).thenReturn(true);
         when(orderRepository.save(any(Order.class)))
                 .thenReturn(existingOrder);
 
@@ -180,6 +194,7 @@ class OrderServiceTest {
     @Test
     void testGetOrdersByCustomerId() {
 
+        when(customerRepository.existsById(101)).thenReturn(true);
         when(orderRepository.findByCustomerId(101))
                 .thenReturn(
                         List.of(createSampleOrder()));
@@ -195,6 +210,7 @@ class OrderServiceTest {
     @Test
     void testGetOrdersByStoreId() {
 
+        when(storeRepository.existsById(1)).thenReturn(true);
         when(orderRepository.findByStoreId(1))
                 .thenReturn(
                         List.of(createSampleOrder()));
@@ -246,5 +262,49 @@ class OrderServiceTest {
 
         assertEquals(1,
                 responses.size());
+    }
+
+    @Test
+    void testGetOrdersByCustomerIdCustomerNotFound() {
+        when(customerRepository.existsById(101)).thenReturn(false);
+        assertThrows(CustomerNotFoundException.class, () -> orderService.getOrdersByCustomerId(101));
+    }
+
+    @Test
+    void testGetOrdersByStoreIdStoreNotFound() {
+        when(storeRepository.existsById(1)).thenReturn(false);
+        assertThrows(ResourceNotFoundException.class, () -> orderService.getOrdersByStoreId(1));
+    }
+
+    @Test
+    void testCreateOrderCustomerNotFound() {
+        OrderRequest request = createOrderRequest();
+        when(customerRepository.existsById(101)).thenReturn(false);
+        assertThrows(CustomerNotFoundException.class, () -> orderService.createOrder(request));
+    }
+
+    @Test
+    void testCreateOrderStoreNotFound() {
+        OrderRequest request = createOrderRequest();
+        when(customerRepository.existsById(101)).thenReturn(true);
+        when(storeRepository.existsById(1)).thenReturn(false);
+        assertThrows(ResourceNotFoundException.class, () -> orderService.createOrder(request));
+    }
+
+    @Test
+    void testUpdateOrderCustomerNotFound() {
+        OrderRequest request = createOrderRequest();
+        when(orderRepository.findById(1)).thenReturn(Optional.of(createSampleOrder()));
+        when(customerRepository.existsById(101)).thenReturn(false);
+        assertThrows(CustomerNotFoundException.class, () -> orderService.updateOrder(1, request));
+    }
+
+    @Test
+    void testUpdateOrderStoreNotFound() {
+        OrderRequest request = createOrderRequest();
+        when(orderRepository.findById(1)).thenReturn(Optional.of(createSampleOrder()));
+        when(customerRepository.existsById(101)).thenReturn(true);
+        when(storeRepository.existsById(1)).thenReturn(false);
+        assertThrows(ResourceNotFoundException.class, () -> orderService.updateOrder(1, request));
     }
 }
