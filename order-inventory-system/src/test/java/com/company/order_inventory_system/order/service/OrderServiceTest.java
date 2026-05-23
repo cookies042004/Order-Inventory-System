@@ -1,11 +1,13 @@
 package com.company.order_inventory_system.order.service;
 
+import com.company.order_inventory_system.customer.repository.CustomerRepository;
 import com.company.order_inventory_system.order.dto.OrderRequest;
 import com.company.order_inventory_system.order.dto.OrderResponse;
 import com.company.order_inventory_system.order.entity.Order;
 import com.company.order_inventory_system.order.enums.OrderStatus;
 import com.company.order_inventory_system.order.exception.OrderNotFoundException;
 import com.company.order_inventory_system.order.repository.OrderRepository;
+import com.company.order_inventory_system.store.repository.StoreRepository;
 
 import org.junit.jupiter.api.Test;
 
@@ -28,6 +30,12 @@ class OrderServiceTest {
 
     @Mock
     private OrderRepository orderRepository;
+
+    @Mock
+    private CustomerRepository customerRepository;
+
+    @Mock
+    private StoreRepository storeRepository;
 
     @InjectMocks
     private OrderServiceImpl orderService;
@@ -180,6 +188,8 @@ class OrderServiceTest {
     @Test
     void testGetOrdersByCustomerId() {
 
+        when(customerRepository.existsById(101)).thenReturn(true);
+
         when(orderRepository.findByCustomerId(101))
                 .thenReturn(
                         List.of(createSampleOrder()));
@@ -194,6 +204,8 @@ class OrderServiceTest {
 
     @Test
     void testGetOrdersByStoreId() {
+
+        when(storeRepository.existsById(1)).thenReturn(true);
 
         when(orderRepository.findByStoreId(1))
                 .thenReturn(

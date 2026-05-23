@@ -1,11 +1,13 @@
 package com.company.order_inventory_system.shipment.service;
 
+import com.company.order_inventory_system.customer.repository.CustomerRepository;
 import com.company.order_inventory_system.shipment.dto.ShipmentRequest;
 import com.company.order_inventory_system.shipment.dto.ShipmentResponse;
 import com.company.order_inventory_system.shipment.entity.Shipment;
 import com.company.order_inventory_system.shipment.enums.ShipmentStatus;
 import com.company.order_inventory_system.shipment.exception.ShipmentNotFoundException;
 import com.company.order_inventory_system.shipment.repository.ShipmentRepository;
+import com.company.order_inventory_system.store.repository.StoreRepository;
 
 import com.company.order_inventory_system.shipment.service.ShipmentServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -27,6 +29,12 @@ class ShipmentServiceTest {
 
     @Mock
     private ShipmentRepository shipmentRepository;
+
+    @Mock
+    private CustomerRepository customerRepository;
+
+    @Mock
+    private StoreRepository storeRepository;
 
     @InjectMocks
     private ShipmentServiceImpl shipmentService;
@@ -183,6 +191,8 @@ class ShipmentServiceTest {
     @Test
     void testGetShipmentsByCustomerId() {
 
+        when(customerRepository.existsById(101)).thenReturn(true);
+
         when(shipmentRepository
                 .findByCustomerId(101))
 
@@ -199,6 +209,8 @@ class ShipmentServiceTest {
 
     @Test
     void testGetShipmentsByStoreId() {
+
+        when(storeRepository.existsById(1)).thenReturn(true);
 
         when(shipmentRepository
                 .findByStoreId(1))
