@@ -1,89 +1,89 @@
 :root {
-    /* Color Palette */
-    --primary: #4f46e5;            /* Sophisticated Indigo */
+    /* Color Palette - Vibrant Royal Indigo & Slate */
+    --primary: #4f46e5;            /* Deep Indigo */
     --primary-hover: #4338ca;
-    --primary-light: #f5f3ff;
-    --primary-ring: rgba(79, 70, 229, 0.08);
+    --primary-light: #eef2ff;      /* Ultra-soft Indigo backdrop */
+    --primary-ring: rgba(79, 70, 229, 0.12);
 
-    /* Semantic Colors */
+    /* Semantic Colors styled for harmony */
     --success: #10b981;            /* Emerald */
     --success-light: #f0fdf4;
     --success-border: #bbf7d0;
-    --success-text: #166534;
+    --success-text: #15803d;
 
     --warning: #f59e0b;            /* Amber */
     --warning-light: #fffbeb;
     --warning-border: #fde68a;
-    --warning-text: #92400e;
+    --warning-text: #b45309;
 
     --danger: #ef4444;             /* Rose */
     --danger-light: #fef2f2;
     --danger-border: #fecaca;
-    --danger-text: #991b1b;
+    --danger-text: #b91c1c;
 
     --info: #0ea5e9;               /* Sky */
     --info-light: #f0f9ff;
     --info-border: #bae6fd;
-    --info-text: #075985;
+    --info-text: #0369a1;
 
-    /* Surfaces */
-    --bg-page: #f8fafc;            /* Clean Slate 50 */
+    /* Surfaces - Clean Slate */
+    --bg-page: #f8fafc;            /* Ice-white Slate 50 */
     --bg-card: #ffffff;
-    --bg-hover: #f1f5f9;           /* Slate 100 */
+    --bg-hover: #f1f5f9;           /* Highlight Slate 100 */
 
     /* Typography Colors */
-    --text-main: #0f172a;          /* Slate 900 */
-    --text-medium: #334155;        /* Slate 700 */
-    --text-muted: #64748b;         /* Slate 500 */
-    --text-light: #94a3b8;         /* Slate 400 */
+    --text-main: #0f172a;          /* Deep Slate 900 */
+    --text-medium: #334155;        /* Medium Slate 700 */
+    --text-muted: #64748b;         /* Muted Slate 500 */
+    --text-light: #94a3b8;         /* Light Slate 400 */
 
     /* Borders & Outlines */
-    --border-color: #e2e8f0;       /* Slate 200 */
-    --border-hover: #cbd5e1;       /* Slate 300 */
+    --border-color: rgba(226, 232, 240, 0.8);  /* Sub-pixel Slate 200 */
+    --border-hover: rgba(203, 213, 225, 0.9);  /* Sub-pixel Slate 300 */
 
     /* Geometry & Corners */
-    --radius-sm: 10px;             /* Precise items/inputs */
-    --radius-md: 14px;             /* Buttons, smaller cards */
-    --radius-lg: 20px;             /* Major cards & frames */
+    --radius-sm: 12px;             /* Precise items/inputs */
+    --radius-md: 16px;             /* Buttons, smaller cards */
+    --radius-lg: 24px;             /* Major cards & frames */
     --radius-pill: 9999px;         /* Badges */
 
     /* Transitions */
-    --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    --transition-fast: all 0.15s ease;
+    --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-fast: all 0.2s ease;
 
-    /* Elegant Shadows (Ultra-smooth, modern layered drop-shadows) */
-    --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.02), 0 1px 3px 0 rgba(15, 23, 42, 0.01);
-    --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.03), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
-    --shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.04), 0 4px 12px -2px rgba(15, 23, 42, 0.02);
+    /* Multi-layered soft drop shadows (premium aesthetic) */
+    --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.03), 0 1px 2px -1px rgba(15, 23, 42, 0.03);
+    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.05);
 }
 
 [data-theme="dark"] {
-    /* Color Palette - Glowing Sky Indigo */
-    --primary: #0ea5e9;            /* Sky Blue */
-    --primary-hover: #38bdf8;
-    --primary-light: rgba(14, 165, 233, 0.06);
-    --primary-ring: rgba(14, 165, 233, 0.12);
+    /* Color Palette - Cyberpunk Glowing Violet Indigo */
+    --primary: #6366f1;            /* Electric Indigo */
+    --primary-hover: #4f46e5;
+    --primary-light: rgba(99, 102, 241, 0.08);
+    --primary-ring: rgba(99, 102, 241, 0.25);
 
     /* Semantic Colors styled for Dark Navy */
     --success: #10b981;
-    --success-light: rgba(16, 185, 129, 0.05);
-    --success-border: #064e3b;
+    --success-light: rgba(16, 185, 129, 0.06);
+    --success-border: rgba(16, 185, 129, 0.2);
     --success-text: #34d399;
 
     --warning: #f59e0b;
-    --warning-light: rgba(245, 158, 11, 0.05);
-    --warning-border: #78350f;
+    --warning-light: rgba(245, 158, 11, 0.06);
+    --warning-border: rgba(245, 158, 11, 0.2);
     --warning-text: #fbbf24;
 
     --danger: #ef4444;
-    --danger-light: rgba(239, 68, 68, 0.05);
-    --danger-border: #7f1d1d;
+    --danger-light: rgba(239, 68, 68, 0.06);
+    --danger-border: rgba(239, 68, 68, 0.2);
     --danger-text: #fca5a5;
 
-    /* Surfaces - Deep Space Navy */
-    --bg-page: #060913;            /* Deep space black-navy */
-    --bg-card: #0c1122;            /* Translucent-looking dark card navy */
-    --bg-hover: #131b2f;           /* Highlighted card navy */
+    /* Surfaces - Cosmic Slate-Black */
+    --bg-page: #030712;            /* Deep obsidian dark */
+    --bg-card: #0b0f19;            /* Translucent dark card navy */
+    --bg-hover: #111827;           /* Highlighted card gray */
 
     /* Typography Colors */
     --text-main: #f8fafc;          /* High contrast slate/white */
@@ -92,19 +92,19 @@
     --text-light: #475569;
 
     /* Borders & Outlines */
-    --border-color: #1e293b;       /* Dark border slate */
-    --border-hover: #334155;
+    --border-color: rgba(255, 255, 255, 0.07);  /* Translucent border */
+    --border-hover: rgba(255, 255, 255, 0.15);
 
     /* Toned Down & Professionalized Dark Shadows */
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(14, 165, 233, 0.03);
-    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(14, 165, 233, 0.05);
-    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(14, 165, 233, 0.08);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 24px 50px rgba(0, 0, 0, 0.6);
 }
 
 /* Global Custom Thin Scrollbar */
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -124,25 +124,26 @@
     background: var(--border-hover);
 }
 
+/* Premium radial backdrop gradients */
+body {
+    background-color: var(--bg-page);
+    background-image: radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.05) 0%, transparent 60%);
+    background-repeat: no-repeat;
+    background-size: 100% 800px;
+    min-height: 100vh;
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-medium);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
 [data-theme="dark"] body {
     background-image:
-        radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.06) 0%, transparent 60%),
-        linear-gradient(rgba(14, 165, 233, 0.01) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(14, 165, 233, 0.01) 1px, transparent 1px);
-    background-size: 100% 800px, 40px 40px, 40px 40px;
+        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.09) 0%, transparent 60%),
+        linear-gradient(rgba(255, 255, 255, 0.005) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.005) 1px, transparent 1px);
+    background-size: 100% 800px, 48px 48px, 48px 48px;
     background-position: center top;
-    background-repeat: no-repeat, repeat, repeat;
-}
-
-[data-theme="dark"] .hero-section h1 {
-    background: linear-gradient(135deg, #ffffff 40%, #0ea5e9 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
-}
-
-html {
-    scroll-behavior: smooth;
 }
 
 /* Base Resets & Box-Model Rules */
@@ -154,31 +155,24 @@ html {
     -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: var(--bg-page);
-    background-image: radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.04) 0%, transparent 55%);
-    background-repeat: no-repeat;
-    background-size: 100% 800px;
-    min-height: 100vh;
-    color: var(--text-medium);
-    line-height: 1.6;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
+/* Smooth Transitions */
 .navbar, .main-container, .module-page-container, .crud-page, .team-card, .endpoint-card, .crud-card, .form-control, .btn-primary, .btn-secondary, a {
     transition: var(--transition-smooth);
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 /* Fluid Main Container */
 .main-container {
     padding: 0 24px 80px;
-    max-width: 1300px;
+    max-width: 1340px;
     margin: 0 auto;
     width: 100%;
 }
 
-/* Left-Aligned, Highly Professional Page Hero Section */
+/* Fluid Page Hero Section */
 .hero-section {
     text-align: left;
     margin-bottom: 48px;
@@ -228,18 +222,14 @@ body {
     }
 }
 
-/* ==========================================================================
-   UNIVERSAL COMPONENT STYLES (BUTTONS, OUTLINES & TYPOGRAPHY)
-   ========================================================================== */
-
-.hero-desc {
-    font-size: 15.5px !important;
-    color: var(--text-muted) !important;
-    line-height: 1.65 !important;
-    max-width: 900px !important;
-    margin-top: 12px;
+/* Universal typography rules */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    color: var(--text-main);
+    letter-spacing: -0.02em;
 }
 
+/* Buttons */
 .btn-primary {
     display: inline-flex;
     align-items: center;
@@ -247,23 +237,30 @@ body {
     gap: 8px;
     background-color: var(--primary);
     color: #ffffff !important;
-    padding: 10px 22px;
+    padding: 12px 24px;
     border-radius: var(--radius-md);
     font-weight: 700;
     font-size: 14px;
     text-decoration: none;
-    transition: var(--transition-smooth);
     border: 1px solid var(--primary);
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.15);
     white-space: nowrap;
 }
 
 .btn-primary:hover {
     background-color: var(--primary-hover);
     border-color: var(--primary-hover);
-    transform: translateY(-1.5px);
-    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.25);
+}
+
+[data-theme="dark"] .btn-primary {
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.2);
+}
+
+[data-theme="dark"] .btn-primary:hover {
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
 }
 
 .btn-primary:active, .btn-secondary:active, .action-btn:active, button:active, input[type="submit"]:active {
@@ -277,12 +274,11 @@ body {
     gap: 8px;
     background-color: var(--bg-card);
     color: var(--text-medium) !important;
-    padding: 10px 22px;
+    padding: 12px 24px;
     border-radius: var(--radius-md);
     font-weight: 700;
     font-size: 14px;
     text-decoration: none;
-    transition: var(--transition-smooth);
     border: 1px solid var(--border-color);
     cursor: pointer;
     white-space: nowrap;
@@ -293,23 +289,21 @@ body {
     background-color: var(--bg-hover);
     color: var(--text-main) !important;
     border-color: var(--border-hover);
-    transform: translateY(-1.5px);
+    transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
 
-/* ==========================================================================
-   GLOBAL CALENDAR PICKER STYLES (MAKES DATE INPUT ICONS VISIBLE IN DARK MODE)
-   ========================================================================== */
+/* Dynamic Calendar Indicator Colors */
 ::-webkit-calendar-picker-indicator {
     cursor: pointer;
     border-radius: var(--radius-sm);
-    padding: 4px;
+    padding: 6px;
     filter: invert(0);
     transition: var(--transition-fast);
 }
 
 [data-theme="dark"] ::-webkit-calendar-picker-indicator {
-    filter: invert(1) brightness(1.2); /* High visibility in dark mode */
+    filter: invert(1) brightness(1.2);
 }
 
 ::-webkit-calendar-picker-indicator:hover {

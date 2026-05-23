@@ -22,7 +22,7 @@
 
         <div class="logo-box">
 
-            <img th:src="@{/images/logo.webp}" alt="Logo">
+            <img th:src="@{/images/logo.png}" alt="Logo">
 
         </div>
 
@@ -173,6 +173,44 @@
                 localStorage.setItem("theme", target);
                 updateToggleUI(target);
             });
+            // Dynamic High-Legibility Favicon Generation
+            function initFavicon() {
+                const img = new Image();
+                img.src = '/images/logo.png';
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 64;
+                    canvas.height = 64;
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Draw a white circular backing
+                    ctx.fillStyle = '#ffffff';
+                    ctx.beginPath();
+                    ctx.arc(32, 32, 30, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Draw soft border
+                    ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                    
+                    // Draw centered logo
+                    const size = 42;
+                    const offset = (64 - size) / 2;
+                    ctx.drawImage(img, offset, offset, size, size);
+                    
+                    // Set/update the favicon tag
+                    let link = document.querySelector("link[rel*='icon']");
+                    if (!link) {
+                        link = document.createElement('link');
+                        link.rel = 'icon';
+                        link.type = 'image/png';
+                        document.head.appendChild(link);
+                    }
+                    link.href = canvas.toDataURL('image/png');
+                };
+            }
+            initFavicon();
         });
     </script>
 
