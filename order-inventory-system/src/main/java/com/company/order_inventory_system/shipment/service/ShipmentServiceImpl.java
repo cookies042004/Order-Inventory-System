@@ -1,11 +1,15 @@
 package com.company.order_inventory_system.shipment.service;
 
+import com.company.order_inventory_system.common.exception.ResourceNotFoundException;
+import com.company.order_inventory_system.customer.exception.CustomerNotFoundException;
+import com.company.order_inventory_system.customer.repository.CustomerRepository;
 import com.company.order_inventory_system.shipment.dto.ShipmentRequest;
 import com.company.order_inventory_system.shipment.dto.ShipmentResponse;
 import com.company.order_inventory_system.shipment.entity.Shipment;
 import com.company.order_inventory_system.shipment.enums.ShipmentStatus;
 import com.company.order_inventory_system.shipment.exception.ShipmentNotFoundException;
 import com.company.order_inventory_system.shipment.repository.ShipmentRepository;
+import com.company.order_inventory_system.store.repository.StoreRepository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,12 +23,17 @@ public class ShipmentServiceImpl
         implements ShipmentService {
 
     private final ShipmentRepository shipmentRepository;
+    private final CustomerRepository customerRepository;
+    private final StoreRepository storeRepository;
 
     public ShipmentServiceImpl(
-            ShipmentRepository shipmentRepository) {
+            ShipmentRepository shipmentRepository,
+            CustomerRepository customerRepository,
+            StoreRepository storeRepository) {
 
-        this.shipmentRepository =
-                shipmentRepository;
+        this.shipmentRepository = shipmentRepository;
+        this.customerRepository = customerRepository;
+        this.storeRepository = storeRepository;
     }
 
     @Override
@@ -123,6 +132,10 @@ public class ShipmentServiceImpl
     getShipmentsByCustomerId(
             Integer customerId) {
 
+        if (!customerRepository.existsById(customerId)) {
+            throw new CustomerNotFoundException("Customer not found with ID: " + customerId);
+        }
+
         return shipmentRepository
                 .findByCustomerId(customerId)
                 .stream()
@@ -134,6 +147,10 @@ public class ShipmentServiceImpl
     public List<ShipmentResponse>
     getShipmentsByStoreId(
             Integer storeId) {
+
+        if (!storeRepository.existsById(storeId)) {
+            throw new ResourceNotFoundException("Store not found with id: " + storeId);
+        }
 
         return shipmentRepository
                 .findByStoreId(storeId)
