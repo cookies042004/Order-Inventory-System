@@ -199,16 +199,28 @@
 
             <div id="table-view">
 
+                <!-- EMPTY STATE BANNER -->
+                <div th:if="${tableData == null || tableData.isEmpty()}" class="empty-state-banner">
+                    <div class="empty-state-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                        </svg>
+                    </div>
+                    <h3>No Records Found</h3>
+                    <p>The GET request executed successfully, but returned an empty dataset from the database.</p>
+                </div>
+
                 <table class="response-table"
                        id="data-table"
-                       th:if="${tableData != null}">
+                       th:if="${tableData != null && !tableData.isEmpty()}">
 
                     <thead>
 
                     <tr>
 
                         <th th:each="column : ${columns}"
-                            th:text="${column.contains('.') ? column.substring(column.lastIndexOf('.') + 1) : column}">
+                            th:text="${@endpointExecutionService.formatHeader(column)}">
                         </th>
 
                     </tr>
@@ -342,7 +354,7 @@
 
                     <tr th:each="error : ${validationErrors.entrySet()}">
 
-                        <td th:text="${error.key}">
+                        <td th:text="${@endpointExecutionService.formatHeader(error.key)}">
                         </td>
 
                         <td th:text="${error.value}">

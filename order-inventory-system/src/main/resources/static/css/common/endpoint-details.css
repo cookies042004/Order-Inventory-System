@@ -308,12 +308,12 @@
 
 .response-table th {
     background-color: var(--bg-page);
-    color: var(--text-medium);
+    color: var(--text-main);
     padding: 14px 18px;
     text-align: left;
     font-weight: 800;
     border-bottom: 2px solid var(--border-color);
-    font-size: 11px;
+    font-size: 12.5px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
 }
@@ -421,8 +421,6 @@
     font-weight: 600;
     margin: 0;
     line-height: 38px;
-    display: inline-flex;
-    align-items: center;
 }
 
 .pagination-buttons {
@@ -590,5 +588,72 @@
         align-items: center;
         text-align: center;
         padding: 16px 16px 16px 16px;
+    }
+}
+
+/* Premium Empty State Banner */
+.empty-state-banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.05) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    margin: 30px auto;
+    max-width: 600px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-smooth);
+}
+
+[data-theme="dark"] .empty-state-banner {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.2) 100%);
+}
+
+.empty-state-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50px;
+    background-color: rgba(79, 70, 229, 0.06);
+    color: var(--primary);
+    margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.08);
+    animation: floatIcon 3s ease-in-out infinite;
+}
+
+[data-theme="dark"] .empty-state-icon {
+    background-color: rgba(79, 70, 229, 0.12);
+    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.15);
+}
+
+.empty-state-banner h3 {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 0 0 10px 0;
+    letter-spacing: -0.02em;
+}
+
+.empty-state-banner p {
+    font-size: 14px;
+    color: var(--text-muted);
+    max-width: 420px;
+    margin: 0;
+    line-height: 1.5;
+}
+
+@keyframes floatIcon {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
     }
 }
