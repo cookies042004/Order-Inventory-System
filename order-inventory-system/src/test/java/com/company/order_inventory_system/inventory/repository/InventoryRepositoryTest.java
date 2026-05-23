@@ -1,6 +1,7 @@
 package com.company.order_inventory_system.inventory.repository;
 
 import com.company.order_inventory_system.inventory.entity.Inventory;
+import com.company.order_inventory_system.inventory.repository.InventoryRepository;
 import com.company.order_inventory_system.product.entity.Product;
 import com.company.order_inventory_system.product.repository.ProductRepository;
 import com.company.order_inventory_system.store.entity.Store;

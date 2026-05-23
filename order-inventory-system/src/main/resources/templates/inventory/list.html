@@ -17,7 +17,7 @@
     <div class="crud-header">
         <div>
             <h1>Inventory Management</h1>
-            <p>Direct Spring MVC CRUD Operations with Backend Pagination & Validation</p>
+            <p>Direct Spring MVC CRUD Operations</p>
         </div>
         <div class="header-actions">
             <a th:href="@{/inventory-module/dashboard}" class="btn-secondary">
@@ -48,13 +48,13 @@
                     <th>ID</th>
                     <th>Store</th>
                     <th>Product</th>
-                    <th>Stock Quantity</th>
+                    <th>Product Inventory</th>
                     <th style="text-align: right;">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="inv : ${inventoryList}">
-                    <td th:text="${inv.inventoryId}" style="font-weight: 700; color: #475569;"></td>
+                    <td th:text="${inv.inventoryId}" style="font-weight: 700; color: var(--text-muted);"></td>
                     <td>
                         <span th:text="${inv.storeName}" style="font-weight: 600;"></span>
                         <span th:text="'(ID: ' + ${inv.storeId} + ')'" style="font-size: 0.85em; color: #64748b;"></span>
@@ -63,7 +63,7 @@
                         <span th:text="${inv.productName}" style="font-weight: 600;"></span>
                         <span th:text="'(ID: ' + ${inv.productId} + ')'" style="font-size: 0.85em; color: #64748b;"></span>
                     </td>
-                    <td th:text="${inv.productInventory}" style="font-weight: 600; color: #0f172a;"></td>
+                    <td th:text="${inv.productInventory}" style="font-weight: 600; color: var(--text-main);"></td>
                     <td style="text-align: right; white-space: nowrap;">
                         <a th:href="@{/inventory-module/inventory/edit/{id}(id=${inv.inventoryId})}" class="action-btn edit">
                             Edit
@@ -87,9 +87,7 @@
         <!-- PAGINATION CONTROLS -->
         <div class="pagination-wrapper" th:if="${totalPages > 1}">
             <div class="pagination-info">
-                Showing page <span th:text="${currentPage + 1}" style="font-weight: 700; color: #0f172a;"></span> 
-                of <span th:text="${totalPages}" style="font-weight: 700; color: #0f172a;"></span> 
-                (Total <span th:text="${totalItems}"></span> inventory records)
+                Showing page&nbsp;<span th:text="${currentPage + 1}" style="font-weight: 700; color: var(--text-main);"></span>&nbsp;of&nbsp;<span th:text="${totalPages}" style="font-weight: 700; color: var(--text-main);"></span>&nbsp;(Total&nbsp;<span th:text="${totalItems}"></span>&nbsp;inventory records)
             </div>
             
             <div class="pagination-links">

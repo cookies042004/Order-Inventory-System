@@ -17,7 +17,7 @@
     <div class="crud-header">
         <div>
             <h1>Product Management</h1>
-            <p>Direct Spring MVC CRUD Operations with Backend Pagination & Validation</p>
+            <p>Direct Spring MVC CRUD Operations</p>
         </div>
         <div class="header-actions">
             <a th:href="@{/product-module/dashboard}" class="btn-secondary">
@@ -57,12 +57,12 @@
                 </thead>
                 <tbody>
                 <tr th:each="prod : ${products}">
-                    <td th:text="${prod.productId}" style="font-weight: 700; color: #475569;"></td>
+                    <td th:text="${prod.productId}" style="font-weight: 700; color: var(--text-muted);"></td>
                     <td th:text="${prod.productName}" style="font-weight: 600;"></td>
                     <td th:text="${prod.brand}"></td>
                     <td th:text="${prod.colour}"></td>
                     <td th:text="${prod.size}"></td>
-                    <td th:text="'$' + ${#numbers.formatDecimal(prod.unitPrice, 1, 2)}" style="font-weight: 600; color: #0f172a;"></td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(prod.unitPrice, 1, 2)}" style="font-weight: 600; color: var(--text-main);"></td>
                     <td>
                         <span th:text="${prod.rating} + ' / 5'" style="font-weight: 600; color: #d97706;"></span>
                     </td>
@@ -89,9 +89,7 @@
         <!-- PAGINATION CONTROLS -->
         <div class="pagination-wrapper" th:if="${totalPages > 1}">
             <div class="pagination-info">
-                Showing page <span th:text="${currentPage + 1}" style="font-weight: 700; color: #0f172a;"></span> 
-                of <span th:text="${totalPages}" style="font-weight: 700; color: #0f172a;"></span> 
-                (Total <span th:text="${totalItems}"></span> products)
+                Showing page&nbsp;<span th:text="${currentPage + 1}" style="font-weight: 700; color: var(--text-main);"></span>&nbsp;of&nbsp;<span th:text="${totalPages}" style="font-weight: 700; color: var(--text-main);"></span>&nbsp;(Total&nbsp;<span th:text="${totalItems}"></span>&nbsp;products)
             </div>
             
             <div class="pagination-links">

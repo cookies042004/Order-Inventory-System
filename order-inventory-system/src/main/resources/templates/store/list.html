@@ -17,7 +17,7 @@
     <div class="crud-header">
         <div>
             <h1>Store Management</h1>
-            <p>Direct Spring MVC CRUD Operations with Backend Pagination & Validation</p>
+            <p>Direct Spring MVC CRUD Operations</p>
         </div>
         <div class="header-actions">
             <a th:href="@{/store-module/dashboard}" class="btn-secondary">
@@ -56,7 +56,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="store : ${stores}">
-                    <td th:text="${store.storeId}" style="font-weight: 700; color: #475569;"></td>
+                    <td th:text="${store.storeId}" style="font-weight: 700; color: var(--text-muted);"></td>
                     <td th:text="${store.storeName}" style="font-weight: 600;"></td>
                     <td>
                         <a th:if="${store.webAddress != null && !store.webAddress.isBlank()}" 
@@ -92,9 +92,7 @@
         <!-- PAGINATION CONTROLS -->
         <div class="pagination-wrapper" th:if="${totalPages > 1}">
             <div class="pagination-info">
-                Showing page <span th:text="${currentPage + 1}" style="font-weight: 700; color: #0f172a;"></span> 
-                of <span th:text="${totalPages}" style="font-weight: 700; color: #0f172a;"></span> 
-                (Total <span th:text="${totalItems}"></span> stores)
+                Showing page&nbsp;<span th:text="${currentPage + 1}" style="font-weight: 700; color: var(--text-main);"></span>&nbsp;of&nbsp;<span th:text="${totalPages}" style="font-weight: 700; color: var(--text-main);"></span>&nbsp;(Total&nbsp;<span th:text="${totalItems}"></span>&nbsp;stores)
             </div>
             
             <div class="pagination-links">
