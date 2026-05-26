@@ -18,10 +18,12 @@ import java.util.List;
         description = "APIs for managing products"
 )
 
-@RestController // Marks this class as REST controller
+@RestController // Marks this class as REST controller,class has REST api
 @RequestMapping("/api/products") // Base URL for product APIs
 public class ProductController {
 
+
+    //Stores reference of ProductService
     private final ProductService productService;
 
     // Constructor injection for service layer

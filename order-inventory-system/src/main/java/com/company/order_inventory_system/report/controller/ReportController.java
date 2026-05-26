@@ -110,7 +110,7 @@ public class ReportController {
     )
 
     @GetMapping("/customers/top")
-    public ResponseEntity<?> getTopCustomersReport(
+    public ResponseEntity<?>  getTopCustomersReport(
 
             @RequestParam(defaultValue = "10")
             Integer limit

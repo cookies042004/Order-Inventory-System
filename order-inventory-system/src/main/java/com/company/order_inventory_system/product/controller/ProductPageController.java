@@ -35,6 +35,8 @@ public class ProductPageController {
     @Value("${product.password}")
     private String productPassword;
 
+    //constructor injection -Spring automatically injects these objects
+
     public ProductPageController(EndpointExecutionService endpointExecutionService, ProductService productService) {
         this.endpointExecutionService = endpointExecutionService;
         this.productService = productService;
@@ -72,7 +74,9 @@ public class ProductPageController {
 
     @PostMapping("/product-module/products/create")
     public String processCreateProduct(
+            //transfer data from Controller to View(HTML page)
             @Valid @ModelAttribute("productForm") ProductRequest productForm,
+            //Stores validation errors
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
             Model model

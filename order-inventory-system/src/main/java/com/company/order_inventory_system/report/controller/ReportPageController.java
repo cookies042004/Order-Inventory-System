@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class ReportPageController {
+public class    ReportPageController {
 
     private final EndpointExecutionService endpointExecutionService;
 

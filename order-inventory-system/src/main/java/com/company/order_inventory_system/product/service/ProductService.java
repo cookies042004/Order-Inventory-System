@@ -10,6 +10,7 @@ import java.util.List;
 // Defines product business operations
 public interface ProductService {
 
+    //method
     // Creates new product
     ProductResponse createProduct(ProductRequest productRequest);
 
