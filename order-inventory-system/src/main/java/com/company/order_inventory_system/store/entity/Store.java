@@ -163,4 +163,18 @@ public class Store {
 
     public Store() {
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Store)) return false;
+        Store other = (Store) o;
+        return this.storeName != null && this.storeName.equals(other.getStoreName());
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(this.storeName);
+    }
+
 }
