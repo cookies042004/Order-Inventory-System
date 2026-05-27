@@ -80,12 +80,11 @@ public class Inventory {
         if (!(o instanceof Inventory)) return false;
         Inventory other = (Inventory) o;
         return this.store != null && this.store.equals(other.getStore()) &&
-                this.product != null && this.product.equals(other.getProduct());
+               this.product != null && this.product.equals(other.getProduct());
     }
 
     @Override
     public int hashCode() {
         return java.util.Objects.hash(this.store, this.product);
     }
-
 }

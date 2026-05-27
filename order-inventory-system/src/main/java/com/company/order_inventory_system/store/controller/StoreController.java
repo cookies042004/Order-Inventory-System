@@ -11,6 +11,7 @@
     import jakarta.validation.Valid;
     import jakarta.validation.constraints.Positive;
     import org.springframework.http.HttpStatus;
+    import org.springframework.http.MediaType;
     import org.springframework.http.ResponseEntity;
     import org.springframework.validation.annotation.Validated;
     import org.springframework.web.bind.annotation.*;
@@ -116,7 +117,7 @@
 
         // POST /api/stores/{storeId}/logo
         @Operation(summary = "Upload store logo")
-        @PostMapping("/{storeId}/logo")
+        @PostMapping(value = "/{storeId}/logo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
         public ResponseEntity<StoreResponseDTO> uploadStoreLogo(
                 @PathVariable @Positive(message = "Store ID must be positive") Integer storeId,
                 @RequestParam("file") org.springframework.web.multipart.MultipartFile file) throws java.io.IOException {

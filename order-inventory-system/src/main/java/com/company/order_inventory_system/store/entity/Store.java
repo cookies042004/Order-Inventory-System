@@ -3,7 +3,6 @@ package com.company.order_inventory_system.store.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -146,8 +145,8 @@ public class Store {
     }
 
     public Store(Integer storeId, String storeName, String webAddress, String physicalAddress,
-                 BigDecimal latitude, BigDecimal longitude, byte[] logo, String logoMimeType,
-                 String logoFilename, String logoCharset, LocalDate logoLastUpdated) {
+            BigDecimal latitude, BigDecimal longitude, byte[] logo, String logoMimeType,
+            String logoFilename, String logoCharset, LocalDate logoLastUpdated) {
         this.storeId = storeId;
         this.storeName = storeName;
         this.webAddress = webAddress;
@@ -176,5 +175,4 @@ public class Store {
     public int hashCode() {
         return java.util.Objects.hash(this.storeName);
     }
-
 }
