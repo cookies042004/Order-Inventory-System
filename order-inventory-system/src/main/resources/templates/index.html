@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Order Inventory System</title>
+
+    <!-- GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          th:href="@{/css/common/common.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/common/navbar.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/pages/home.css}">
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" th:href="@{/images/logo.png}">
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<!-- FULL-WIDTH INTERACTIVE HERO BANNER -->
+<div class="hero-banner-wrapper" id="about-section">
+    <div class="hero-banner-grid-overlay"></div>
+    <div class="hero-banner-glow-1"></div>
+    <div class="hero-banner-glow-2"></div>
+    
+    <div class="hero-banner-container">
+        <!-- Floating Tech Stack Capsule -->
+        <div class="tech-badge">
+            <span class="tech-badge-dot"></span>
+            <span class="tech-badge-text">SPRING BOOT • MYSQL • SPRING SECURITY • THYMELEAF • HIBERNATE • VAULT • SWAGGER</span>
+        </div>
+
+        <!-- Headline -->
+        <h1 th:text="${projectTitle}">Order Inventory System</h1>
+
+        <!-- Subtitle/Description -->
+        <div class="hero-desc" th:utext="${projectDescription}">
+            The <strong>Order Inventory System (OIS)</strong> is a high-performance management platform designed to streamline retail operations. It provides end-to-end automation for store management, real-time inventory tracking, customer profiling, order lifecycle processing, and shipment logistics, supported by role-based security and business intelligence reporting.
+        </div>
+
+        <!-- Glassmorphic Stats Grid -->
+        <div class="hero-stats-panel">
+            <div class="stat-segment">
+                <div class="stat-segment-icon text-indigo">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </div>
+                <div class="stat-segment-info">
+                    <span class="stat-segment-val">4</span>
+                    <span class="stat-segment-lbl">Dev Members</span>
+                </div>
+            </div>
+            
+            <div class="stat-divider"></div>
+            
+            <div class="stat-segment">
+                <div class="stat-segment-icon text-cyan">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                </div>
+                <div class="stat-segment-info">
+                    <span class="stat-segment-val">7</span>
+                    <span class="stat-segment-lbl">Core Domains</span>
+                </div>
+            </div>
+            
+            <div class="stat-divider"></div>
+            
+            <div class="stat-segment">
+                <div class="stat-segment-icon text-orange">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                </div>
+                <div class="stat-segment-info">
+                    <span class="stat-segment-val">22+</span>
+                    <span class="stat-segment-lbl">API Endpoints</span>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container">
+
+    <!-- TEAM SECTION HEADER -->
+    <div class="team-header-container" id="team-section">
+        <div class="team-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span>Our Team</span>
+        </div>
+        <h2>Meet the Dev Leadership Team</h2>
+        <p>Select an assigned business domain below to access respective real-time management dashboards</p>
+    </div>
+
+    <!-- REDESIGNED TEAM GRID -->
+    <div class="team-grid">
+
+        <div class="member-card"
+             th:each="member : ${teamMembers}">
+
+            <!-- Premium Floating Domain Count -->
+            <div class="member-modules-count">
+                <span th:text="${#lists.size(member.modules)}">3</span> Modules
+            </div>
+
+            <!-- Avatar Squircle Wrapper -->
+            <div class="member-avatar-wrapper">
+                <div class="member-avatar-ring"></div>
+                <img th:src="@{${member.image}}"
+                     alt="Profile Image">
+            </div>
+
+            <!-- Name -->
+            <h3 class="member-name" th:text="${member.name}">Kumar Aditya Pratap</h3>
+
+            <!-- Actionable Domain Dashboard Tags -->
+            <div class="member-domains-container">
+                <div class="member-domains-title">Assigned Domain Dashboards</div>
+                <div class="member-domains-grid">
+                    <a class="domain-badge"
+                       th:each="module : ${member.modules}"
+                       th:text="${module.moduleName}"
+                       th:href="@{${module.moduleUrl}}">
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

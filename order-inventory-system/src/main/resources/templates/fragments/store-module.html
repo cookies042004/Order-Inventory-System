@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Store Module</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/common/common.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/common/navbar.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/common/endpoint.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/modules/store-module.css}">
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<div th:replace="~{fragments/navbar :: navbar}">
+</div>
+
+<!-- PAGE CONTAINER -->
+
+<div class="module-page-container">
+
+    <!-- MODULE HEADER -->
+    <div class="module-page-header">
+        <div>
+            <h1>Store Module</h1>
+            <p>Manage store operations and endpoints</p>
+        </div>
+        <a th:href="@{/store-module/stores}" class="btn-primary">
+            Launch MVC CRUD
+        </a>
+    </div>
+
+    <!-- ENDPOINT SECTION -->
+
+    <div class="endpoint-section">
+
+        <!-- HEADER -->
+
+        <div class="module-header">
+
+            <h2>Endpoints</h2>
+
+            <span class="endpoint-count">
+
+                10 Endpoints
+
+            </span>
+
+        </div>
+
+        <!-- ENDPOINT CARDS -->
+
+        <!-- GET ALL STORES -->
+
+        <a th:href="@{/store-module/endpoints/get-all-stores}"
+
+           class="endpoint-card-link">
+
+            <div class="endpoint-card">
+
+                <span class="method get">
+
+                    GET
+
+                </span>
+
+                <div class="endpoint-content">
+
+                    <h3>/api/stores</h3>
+
+                    <p>Get all stores</p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+        <!-- GET STORE BY ID -->
+
+        <a th:href="@{/store-module/endpoints/get-store-by-id}"
+
+           class="endpoint-card-link">
+
+            <div class="endpoint-card">
+
+                <span class="method get">
+
+                    GET
+
+                </span>
+
+                <div class="endpoint-content">
+
+                    <h3>/api/stores/{storeId}</h3>
+
+                    <p>Get store by ID</p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+        <!-- CREATE STORE -->
+
+        <a th:href="@{/store-module/endpoints/create-store}"
+
+           class="endpoint-card-link">
+
+            <div class="endpoint-card">
+
+                <span class="method post">
+
+                    POST
+
+                </span>
+
+                <div class="endpoint-content">
+
+                    <h3>/api/stores</h3>
+
+                    <p>Create store</p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+        <!-- UPDATE STORE -->
+
+        <a th:href="@{/store-module/endpoints/update-store}"
+
+           class="endpoint-card-link">
+
+            <div class="endpoint-card">
+
+                <span class="method put">
+
+                    PUT
+
+                </span>
+
+                <div class="endpoint-content">
+
+                    <h3>/api/stores/{storeId}</h3>
+
+                    <p>Update store</p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+        <!-- DELETE STORE -->
+
+        <a th:href="@{/store-module/endpoints/delete-store}"
+
+           class="endpoint-card-link">
+
+            <div class="endpoint-card">
+
+                <span class="method delete">
+
+                    DELETE
+
+                </span>
+
+                <div class="endpoint-content">
+
+                    <h3>/api/stores/{storeId}</h3>
+
+                    <p>Delete store</p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+        <!-- GET STORE SHIPMENTS -->
+
+        <a th:href="@{/store-module/endpoints/store-shipments}"
+
+           class="endpoint-card-link">
+
+            <div class="endpoint-card">
+
+        <span class="method get">
+
+            GET
+
+        </span>
+
+                <div class="endpoint-content">
+
+                    <h3>/api/stores/{storeId}/shipments</h3>
+
+                    <p>Get shipments by store ID</p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+
+        <!-- GET STORE ORDERS -->
+
+        <a th:href="@{/store-module/endpoints/store-orders}"
+
+           class="endpoint-card-link">
+
+            <div class="endpoint-card">
+
+        <span class="method get">
+
+            GET
+
+        </span>
+
+                <div class="endpoint-content">
+
+                    <h3>/api/stores/{storeId}/orders</h3>
+
+                    <p>Get orders by store ID</p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+
+        <!-- GET STORE INVENTORY -->
+
+        <a th:href="@{/store-module/endpoints/store-inventory}"
+
+           class="endpoint-card-link">
+
+            <div class="endpoint-card">
+
+        <span class="method get">
+
+            GET
+
+        </span>
+
+                <div class="endpoint-content">
+
+                    <h3>/api/stores/{storeId}/inventory</h3>
+
+                    <p>Get inventory by store ID</p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+        <!-- GET STORE LOGO -->
+
+        <a th:href="@{/store-module/endpoints/get-store-logo}"
+
+           class="endpoint-card-link">
+
+            <div class="endpoint-card">
+
+        <span class="method get">
+
+            GET
+
+        </span>
+
+                <div class="endpoint-content">
+
+                    <h3>/api/stores/{storeId}/logo</h3>
+
+                    <p>Get store logo image</p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+        <!-- UPLOAD STORE LOGO -->
+
+        <a th:href="@{/store-module/endpoints/upload-store-logo}"
+
+           class="endpoint-card-link">
+
+            <div class="endpoint-card">
+
+        <span class="method post">
+
+            POST
+
+        </span>
+
+                <div class="endpoint-content">
+
+                    <h3>/api/stores/{storeId}/logo</h3>
+
+                    <p>Upload store logo image</p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

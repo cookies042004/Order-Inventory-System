@@ -1,0 +1,264 @@
+package com.company.order_inventory_system.order.service;
+
+import com.company.order_inventory_system.common.exception.InvalidDateRangeException;
+import com.company.order_inventory_system.common.exception.ResourceNotFoundException;
+import com.company.order_inventory_system.customer.exception.CustomerNotFoundException;
+import com.company.order_inventory_system.customer.repository.CustomerRepository;
+import com.company.order_inventory_system.order.dto.OrderRequest;
+import com.company.order_inventory_system.order.dto.OrderResponse;
+import com.company.order_inventory_system.order.entity.Order;
+import com.company.order_inventory_system.order.enums.OrderStatus;
+import com.company.order_inventory_system.order.exception.OrderNotFoundException;
+import com.company.order_inventory_system.order.repository.OrderRepository;
+
+
+import com.company.order_inventory_system.store.repository.StoreRepository;
+
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+
+public class OrderServiceImpl
+        implements OrderService {
+
+    private final OrderRepository orderRepository;
+    private final CustomerRepository customerRepository;
+    private final StoreRepository storeRepository;
+
+    public OrderServiceImpl(
+            OrderRepository orderRepository,
+            CustomerRepository customerRepository,
+            StoreRepository storeRepository) {
+
+        this.orderRepository = orderRepository;
+        this.customerRepository = customerRepository;
+        this.storeRepository = storeRepository;
+    }
+
+    @Override
+    public OrderResponse createOrder(
+            OrderRequest request) {
+
+        if (request.getCustomerId() == null || !customerRepository.existsById(request.getCustomerId())) {
+            throw new CustomerNotFoundException("Customer not found with ID: " + request.getCustomerId());
+        }
+
+        if (request.getStoreId() == null || !storeRepository.existsById(request.getStoreId())) {
+            throw new ResourceNotFoundException("Store not found with id: " + request.getStoreId());
+        }
+
+        Order order = mapToEntity(request);
+
+        Order savedOrder =
+                orderRepository.save(order);
+
+        return mapToResponse(savedOrder);
+    }
+
+    @Override
+    public List<OrderResponse> getAllOrders() {
+
+        return orderRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Override
+    public Page<OrderResponse> getAllOrders(Pageable pageable) {
+        return orderRepository.findAll(pageable)
+                .map(this::mapToResponse);
+    }
+
+    @Override
+    public OrderResponse getOrderById(
+            Integer orderId) {
+
+        Order order =
+                orderRepository.findById(orderId)
+                        .orElseThrow(() ->
+                                new OrderNotFoundException(
+                                        "Order not found with ID: "
+                                                + orderId));
+
+        return mapToResponse(order);
+    }
+
+    @Override
+    public OrderResponse updateOrder(
+            Integer orderId,
+            OrderRequest request) {
+
+        Order existingOrder =
+                orderRepository.findById(orderId)
+                        .orElseThrow(() ->
+                                new OrderNotFoundException(
+                                        "Order not found with ID: "
+                                                + orderId));
+
+        if (request.getCustomerId() == null || !customerRepository.existsById(request.getCustomerId())) {
+            throw new CustomerNotFoundException("Customer not found with ID: " + request.getCustomerId());
+        }
+
+        if (request.getStoreId() == null || !storeRepository.existsById(request.getStoreId())) {
+            throw new ResourceNotFoundException("Store not found with id: " + request.getStoreId());
+        }
+
+        existingOrder.setOrderTms(
+                request.getOrderTms());
+
+        existingOrder.setCustomerId(
+                request.getCustomerId());
+
+        existingOrder.setOrderStatus(
+                request.getOrderStatus());
+
+        existingOrder.setStoreId(
+                request.getStoreId());
+
+        Order updatedOrder =
+                orderRepository.save(existingOrder);
+
+        return mapToResponse(updatedOrder);
+    }
+
+    @Override
+    public OrderResponse deleteOrder(
+            Integer orderId) {
+
+        Order existingOrder =
+                orderRepository.findById(orderId)
+                        .orElseThrow(() ->
+                                new OrderNotFoundException(
+                                        "Order not found with ID: "
+                                                + orderId));
+
+        OrderResponse response =
+                mapToResponse(existingOrder);
+
+        orderRepository.delete(existingOrder);
+
+        return response;
+    }
+
+    @Override
+    public List<OrderResponse> getOrdersByCustomerId(
+            Integer customerId) {
+
+        if (!customerRepository.existsById(customerId)) {
+            throw new CustomerNotFoundException("Customer not found with ID: " + customerId);
+        }
+
+        return orderRepository.findByCustomerId(customerId)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Override
+    public List<OrderResponse> getOrdersByStoreId(
+            Integer storeId) {
+
+        if (!storeRepository.existsById(storeId)) {
+            throw new ResourceNotFoundException("Store not found with id: " + storeId);
+        }
+
+        return orderRepository.findByStoreId(storeId)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Override
+    public List<OrderResponse> getOrdersByStatus(
+            OrderStatus orderStatus) {
+
+        return orderRepository.findByOrderStatus(orderStatus)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Override
+    public List<OrderResponse>
+    getOrdersByDateRange(
+            LocalDateTime start,
+            LocalDateTime end) {
+
+        if (start == null || end == null) {
+
+            throw new InvalidDateRangeException(
+                    "Start date-time and end date-time are required.");
+        }
+
+        if (start.isAfter(end)) {
+
+            throw new InvalidDateRangeException(
+                    "Start date-time cannot be after end date-time.");
+        }
+
+        if (start.equals(end)) {
+
+            throw new InvalidDateRangeException(
+                    "Start date-time and end date-time cannot be identical.");
+        }
+
+        return orderRepository
+                .findByOrderTmsBetween(start, end)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    private Order mapToEntity(OrderRequest request) {
+
+        Order order = new Order();
+
+        order.setOrderTms(request.getOrderTms());
+        order.setCustomerId(request.getCustomerId());
+        order.setOrderStatus(request.getOrderStatus());
+        order.setStoreId(request.getStoreId());
+
+        return order;
+    }
+
+    private OrderResponse mapToResponse(
+            Order order) {
+
+        OrderResponse response =
+                new OrderResponse();
+
+        response.setOrderId(order.getOrderId());
+        response.setOrderTms(order.getOrderTms());
+        response.setCustomerId(order.getCustomerId());
+        response.setOrderStatus(order.getOrderStatus());
+        response.setStoreId(order.getStoreId());
+
+        return response;
+    }
+    @Override
+    public OrderResponse updateOrderStatus(
+            Integer orderId,
+            OrderStatus status) {
+
+        Order existingOrder =
+                orderRepository.findById(orderId)
+                        .orElseThrow(() ->
+                                new OrderNotFoundException(
+                                        "Order not found with ID: "
+                                                + orderId));
+
+        existingOrder.setOrderStatus(status);
+
+        Order updatedOrder =
+                orderRepository.save(existingOrder);
+
+        return mapToResponse(updatedOrder);
+    }
+}

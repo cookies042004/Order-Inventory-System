@@ -1,0 +1,414 @@
+/* ==========================================================================
+   CRUD PAGE LAYOUT FRAME
+   ========================================================================== */
+.crud-page {
+    width: 100%;
+    max-width: 1340px;
+    margin: 30px auto 60px;
+    padding: 0 24px;
+}
+
+.crud-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.crud-header h1 {
+    font-size: 32px;
+    color: var(--text-main);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+}
+
+.crud-header p {
+    color: var(--text-muted);
+    margin-top: 5px;
+    font-size: 14.5px;
+    font-weight: 450;
+}
+
+/* ==========================================================================
+   BUTTONS & ACTION BADGES
+   ========================================================================== */
+.action-btn {
+    padding: 9px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 750;
+    text-decoration: none;
+    transition: var(--transition-smooth);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+}
+
+.action-btn.edit {
+    background-color: var(--primary-light);
+    color: var(--primary);
+    border: 1.5px solid rgba(79, 70, 229, 0.15);
+}
+
+[data-theme="dark"] .action-btn.edit {
+    background-color: rgba(99, 102, 241, 0.08);
+    color: #a5b4fc;
+    border-color: rgba(99, 102, 241, 0.25);
+}
+
+.action-btn.edit:hover {
+    background-color: var(--primary);
+    color: #ffffff !important;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--primary-ring);
+}
+
+.action-btn.delete {
+    background-color: var(--danger-light);
+    color: var(--danger-text);
+    border: 1.5px solid rgba(239, 68, 68, 0.15);
+}
+
+[data-theme="dark"] .action-btn.delete {
+    background-color: rgba(239, 68, 68, 0.08);
+    color: #fca5a5;
+    border-color: rgba(239, 68, 68, 0.25);
+}
+
+.action-btn.delete:hover {
+    background-color: var(--danger);
+    color: #ffffff !important;
+    border-color: var(--danger);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+}
+
+/* ==========================================================================
+   CARDS WITH HARD-BORDERED PANELS
+   ========================================================================== */
+.crud-card {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 34px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    margin-bottom: 30px;
+}
+
+[data-theme="dark"] .crud-card {
+    background-color: rgba(11, 15, 25, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+/* SCROLLABLE TABLE CONTAINERS */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 22px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-card);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .table-responsive {
+    background-color: rgba(11, 15, 25, 0.2);
+}
+
+/* ==========================================================================
+   PREMIUM MODERN TABLES
+   ========================================================================== */
+.crud-table {
+    width: 100%;
+    min-width: 1000px;
+    border-collapse: collapse;
+}
+
+.crud-table th {
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    font-weight: 800;
+    text-align: left;
+    padding: 18px 24px;
+    border-bottom: 2px solid var(--border-color);
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+[data-theme="dark"] .crud-table th {
+    background-color: rgba(255, 255, 255, 0.015);
+}
+
+.crud-table td {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-medium);
+    font-size: 14.5px;
+    font-weight: 500;
+    transition: var(--transition-smooth);
+}
+
+.crud-table tr:last-child td {
+    border-bottom: none;
+}
+
+.crud-table tr:hover td {
+    background-color: var(--bg-hover);
+}
+
+[data-theme="dark"] .crud-table tr:hover td {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* ==========================================================================
+   PAGINATION SYSTEM
+   ========================================================================== */
+.pagination-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+    padding-top: 24px;
+    padding-bottom: 10px;
+    border-top: 1px solid var(--border-color);
+}
+
+.pagination-info {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 40px;
+}
+
+.pagination-links {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.pagination-links a, .pagination-links span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-card);
+    color: var(--text-medium);
+    text-decoration: none;
+    font-weight: 800;
+    transition: var(--transition-fast);
+    font-size: 13.5px;
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .pagination-links a, [data-theme="dark"] .pagination-links span {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.pagination-links a:hover:not(.disabled):not(.active) {
+    border-color: var(--primary);
+    color: var(--primary);
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.pagination-links a.active {
+    background-color: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+    box-shadow: 0 4px 14px var(--primary-ring);
+}
+
+.pagination-links a.disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    background-color: var(--bg-page);
+    box-shadow: none;
+    border-color: var(--border-color);
+}
+
+/* ==========================================================================
+   FORM CONTAINER & ELEMENTS
+   ========================================================================== */
+.form-container {
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.01em;
+}
+
+.form-control {
+    padding: 13px 18px;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--text-main);
+    background-color: var(--bg-card);
+    transition: var(--transition-smooth);
+    width: 100%;
+}
+
+[data-theme="dark"] .form-control {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-ring), 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 14px;
+    margin-top: 34px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 24px;
+}
+
+/* ==========================================================================
+   ALERTS & VALIDATION BANNERS
+   ========================================================================== */
+.alert {
+    padding: 16px 24px;
+    border-radius: var(--radius-md);
+    margin-bottom: 28px;
+    font-weight: 650;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14.5px;
+    box-shadow: var(--shadow-sm);
+    animation: alert-slide-fade 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes alert-slide-fade {
+    0% { opacity: 0; transform: translateY(-8px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.alert-success {
+    background-color: var(--success-light);
+    color: var(--success-text);
+    border: 1px solid var(--success-border);
+}
+
+.alert-error {
+    background-color: var(--danger-light);
+    color: var(--danger-text);
+    border: 1px solid var(--danger-border);
+}
+
+.field-error {
+    font-size: 12.5px;
+    color: var(--danger-text);
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+.form-control.is-invalid {
+    border-color: var(--danger);
+}
+
+.form-control.is-invalid:focus {
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+}
+
+/* ==========================================================================
+   RESPONSIVENESS
+   ========================================================================== */
+@media (max-width: 768px) {
+    .crud-page {
+        margin: 15px auto;
+        padding: 0 16px;
+    }
+    
+    .crud-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        padding-bottom: 18px;
+    }
+    
+    .crud-header h1 {
+        font-size: 26px;
+    }
+    
+    .crud-header .header-actions {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .crud-card {
+        padding: 24px 20px;
+    }
+    
+    .pagination-wrapper {
+        flex-direction: column;
+        gap: 18px;
+        align-items: center;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .form-actions .btn-primary,
+    .form-actions .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+.crud-header .header-actions {
+    display: flex;
+    gap: 14px;
+}
+
+@media (max-width: 480px) {
+    .crud-header .header-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .crud-header .header-actions .btn-primary,
+    .crud-header .header-actions .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+}

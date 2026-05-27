@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
+<body>
+
+<nav class="navbar"
+     th:fragment="navbar">
+
+    <!-- Theme Initializer (non-blocking) -->
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <!-- LOGO SECTION -->
+
+    <div class="logo-section" style="cursor: pointer;" onclick="window.location.href='/'">
+
+        <div class="logo-box">
+
+            <img th:src="@{/images/logo.png}" alt="Logo">
+
+        </div>
+
+        <h2>Order Inventory System</h2>
+
+    </div>
+
+    <!-- NAV LINKS -->
+
+    <div class="nav-links">
+
+        <!-- HOME -->
+
+        <a th:href="@{/}">
+            Home
+        </a>
+
+        <!-- ABOUT -->
+
+        <a th:href="@{/#about-section}">
+            About Project
+        </a>
+
+        <!-- TEAM -->
+
+        <a th:href="@{/#team-section}">
+            Team
+        </a>
+
+        <!-- THEME TOGGLE -->
+
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
+            <!-- SUN ICON -->
+            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: none; color: #f59e0b;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.77" x2="5.64" y2="18.35"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <!-- MOON ICON -->
+            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+
+        <!-- LOGIN BUTTON -->
+
+        <a th:href="@{/login}"
+           sec:authorize="isAnonymous()">
+
+            Login
+
+        </a>
+
+        <!-- USER SESSION -->
+        <div class="user-session-badge"
+             sec:authorize="isAuthenticated()">
+
+            <!-- USER AVATAR -->
+
+            <div class="user-avatar"
+
+                 th:text="${#authentication != null ?
+         #strings.substring(#authentication.name,0,1).toUpperCase()
+         : 'G'}">
+
+                U
+
+            </div>
+
+            <!-- USER INFO -->
+
+            <div class="user-info">
+
+                <!-- USERNAME -->
+
+                <span class="user-name"
+                      sec:authentication="name">
+
+            User
+
+        </span>
+
+                <!-- ROLE -->
+
+                <span class="user-role-label"
+
+                      sec:authentication="authorities">
+
+            ROLE
+
+        </span>
+
+            </div>
+
+        </div>
+
+        <!-- LOGOUT -->
+
+        <form th:action="@{/logout}"
+              method="post"
+              sec:authorize="isAuthenticated()">
+
+            <button type="submit"
+                    class="logout-btn">
+
+                Logout
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- Theme Toggle Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleBtn = document.getElementById("theme-toggle");
+            if (!toggleBtn) return;
+            
+            const sunIcon = toggleBtn.querySelector(".sun-icon");
+            const moonIcon = toggleBtn.querySelector(".moon-icon");
+            
+            function updateToggleUI(theme) {
+                if (theme === "dark") {
+                    sunIcon.style.display = "block";
+                    moonIcon.style.display = "none";
+                } else {
+                    sunIcon.style.display = "none";
+                    moonIcon.style.display = "block";
+                }
+            }
+            
+            // Initial Sync
+            const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
+            updateToggleUI(currentTheme);
+            
+            toggleBtn.addEventListener("click", function () {
+                const current = document.documentElement.getAttribute("data-theme") || "light";
+                const target = current === "dark" ? "light" : "dark";
+                
+                document.documentElement.setAttribute("data-theme", target);
+                localStorage.setItem("theme", target);
+                updateToggleUI(target);
+            });
+            // Dynamic High-Legibility Favicon Generation
+            function initFavicon() {
+                const img = new Image();
+                img.src = '/images/logo.png';
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 64;
+                    canvas.height = 64;
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Draw a white circular backing
+                    ctx.fillStyle = '#ffffff';
+                    ctx.beginPath();
+                    ctx.arc(32, 32, 30, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Draw soft border
+                    ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                    
+                    // Draw centered logo
+                    const size = 42;
+                    const offset = (64 - size) / 2;
+                    ctx.drawImage(img, offset, offset, size, size);
+                    
+                    // Set/update the favicon tag
+                    let link = document.querySelector("link[rel*='icon']");
+                    if (!link) {
+                        link = document.createElement('link');
+                        link.rel = 'icon';
+                        link.type = 'image/png';
+                        document.head.appendChild(link);
+                    }
+                    link.href = canvas.toDataURL('image/png');
+                };
+            }
+            initFavicon();
+        });
+    </script>
+
+</nav>
+
+</body>
+
+</html>

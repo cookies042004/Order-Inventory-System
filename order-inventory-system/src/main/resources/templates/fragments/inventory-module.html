@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Inventory Module</title>
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/common/endpoint.css}">
+    <link rel="stylesheet" th:href="@{/css/modules/store-module.css}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<!-- PAGE CONTAINER -->
+<div class="module-page-container">
+
+    <!-- MODULE HEADER -->
+    <div class="module-page-header">
+        <div>
+            <h1>Inventory Module</h1>
+            <p>Manage product stock levels, register new inventory, update quantities, and check stock by store or product</p>
+        </div>
+        <a th:href="@{/inventory-module/inventory}" class="btn-primary">
+            Launch MVC CRUD
+        </a>
+    </div>
+
+    <!-- ENDPOINT SECTION -->
+    <div class="endpoint-section">
+
+        <div class="module-header">
+            <h2>Endpoints</h2>
+            <span class="endpoint-count">7 Endpoints</span>
+        </div>
+
+        <!-- GET ALL INVENTORY -->
+        <a th:href="@{/inventory-module/endpoints/get-all-inventory}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/inventory</h3>
+                    <p>Get all inventory records</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET INVENTORY BY ID -->
+        <a th:href="@{/inventory-module/endpoints/get-inventory-by-id}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/inventory/{inventoryId}</h3>
+                    <p>Get inventory record by ID</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- CREATE INVENTORY -->
+        <a th:href="@{/inventory-module/endpoints/create-inventory}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method post">POST</span>
+                <div class="endpoint-content">
+                    <h3>/api/inventory</h3>
+                    <p>Create a new product stock level entry</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- UPDATE INVENTORY -->
+        <a th:href="@{/inventory-module/endpoints/update-inventory}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method put">PUT</span>
+                <div class="endpoint-content">
+                    <h3>/api/inventory/{inventoryId}</h3>
+                    <p>Update inventory stock level by ID</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- DELETE INVENTORY -->
+        <a th:href="@{/inventory-module/endpoints/delete-inventory}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method delete">DELETE</span>
+                <div class="endpoint-content">
+                    <h3>/api/inventory/{inventoryId}</h3>
+                    <p>Delete an inventory record by ID</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET INVENTORY BY STORE ID -->
+        <a th:href="@{/inventory-module/endpoints/get-inventory-by-store}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/inventory/store/{storeId}</h3>
+                    <p>Get all inventory stock for a specific store</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET INVENTORY BY PRODUCT ID -->
+        <a th:href="@{/inventory-module/endpoints/get-inventory-by-product}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/inventory/product/{productId}</h3>
+                    <p>Get all inventory stock for a specific product</p>
+                </div>
+            </div>
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>

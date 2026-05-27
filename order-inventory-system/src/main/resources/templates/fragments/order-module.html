@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order Module</title>
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/common/endpoint.css}">
+    <link rel="stylesheet" th:href="@{/css/modules/store-module.css}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<!-- PAGE CONTAINER -->
+<div class="module-page-container">
+
+    <!-- MODULE HEADER -->
+    <div class="module-page-header">
+        <div>
+            <h1>Order Module</h1>
+            <p>Manage customer orders, update order status, search by customer/store, and query by status or date range</p>
+        </div>
+        <a th:href="@{/order-module/orders}" class="btn-primary">
+            Launch MVC CRUD
+        </a>
+    </div>
+
+    <!-- ENDPOINT SECTION -->
+    <div class="endpoint-section">
+
+        <div class="module-header">
+            <h2>Endpoints</h2>
+            <span class="endpoint-count">9 Endpoints</span>
+        </div>
+
+        <!-- GET ALL ORDERS -->
+        <a th:href="@{/order-module/endpoints/get-all-orders}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/orders</h3>
+                    <p>Get all customer orders</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET ORDER BY ID -->
+        <a th:href="@{/order-module/endpoints/get-order-by-id}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/orders/{orderId}</h3>
+                    <p>Get order details by ID</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- CREATE ORDER -->
+        <a th:href="@{/order-module/endpoints/create-order}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method post">POST</span>
+                <div class="endpoint-content">
+                    <h3>/api/orders</h3>
+                    <p>Create a new customer order</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- UPDATE ORDER -->
+        <a th:href="@{/order-module/endpoints/update-order}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method put">PUT</span>
+                <div class="endpoint-content">
+                    <h3>/api/orders/{orderId}</h3>
+                    <p>Update order details by ID</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- DELETE ORDER -->
+        <a th:href="@{/order-module/endpoints/delete-order}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method delete">DELETE</span>
+                <div class="endpoint-content">
+                    <h3>/api/orders/{orderId}</h3>
+                    <p>Delete an order by ID</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET ORDERS BY CUSTOMER -->
+        <a th:href="@{/order-module/endpoints/get-orders-by-customer}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/orders/customer/{customerId}</h3>
+                    <p>Get all orders placed by a customer</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET ORDERS BY STORE -->
+        <a th:href="@{/order-module/endpoints/get-orders-by-store}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/orders/store/{storeId}</h3>
+                    <p>Get all orders placed at a specific store</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET ORDERS BY STATUS -->
+        <a th:href="@{/order-module/endpoints/get-orders-by-status}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/orders/status/{status}</h3>
+                    <p>Filter orders by status (e.g. PAID, SHIPPED)</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET ORDERS BY DATE RANGE -->
+        <a th:href="@{/order-module/endpoints/get-orders-by-date-range}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/orders/daterange</h3>
+                    <p>Get orders placed within a specific date and time range</p>
+                </div>
+            </div>
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>

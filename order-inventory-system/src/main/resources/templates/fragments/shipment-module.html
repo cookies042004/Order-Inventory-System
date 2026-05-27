@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Shipment Module</title>
+    <link rel="stylesheet" th:href="@{/css/common/common.css}">
+    <link rel="stylesheet" th:href="@{/css/common/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/common/endpoint.css}">
+    <link rel="stylesheet" th:href="@{/css/modules/store-module.css}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<!-- PAGE CONTAINER -->
+<div class="module-page-container">
+
+    <!-- MODULE HEADER -->
+    <div class="module-page-header">
+        <div>
+            <h1>Shipment Module</h1>
+            <p>Manage order deliveries, update shipment statuses, and track shipments by customer or store</p>
+        </div>
+        <a th:href="@{/shipment-module/shipments}" class="btn-primary">
+            Launch MVC CRUD
+        </a>
+    </div>
+
+    <!-- ENDPOINT SECTION -->
+    <div class="endpoint-section">
+
+        <div class="module-header">
+            <h2>Endpoints</h2>
+            <span class="endpoint-count">8 Endpoints</span>
+        </div>
+
+        <!-- GET ALL SHIPMENTS -->
+        <a th:href="@{/shipment-module/endpoints/get-all-shipments}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/shipments</h3>
+                    <p>Get all shipment records</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET SHIPMENT BY ID -->
+        <a th:href="@{/shipment-module/endpoints/get-shipment-by-id}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/shipments/{shipmentId}</h3>
+                    <p>Get shipment details by ID</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- CREATE SHIPMENT -->
+        <a th:href="@{/shipment-module/endpoints/create-shipment}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method post">POST</span>
+                <div class="endpoint-content">
+                    <h3>/api/shipments</h3>
+                    <p>Create a new shipment record</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- UPDATE SHIPMENT -->
+        <a th:href="@{/shipment-module/endpoints/update-shipment}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method put">PUT</span>
+                <div class="endpoint-content">
+                    <h3>/api/shipments/{shipmentId}</h3>
+                    <p>Update shipment details by ID</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- DELETE SHIPMENT -->
+        <a th:href="@{/shipment-module/endpoints/delete-shipment}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method delete">DELETE</span>
+                <div class="endpoint-content">
+                    <h3>/api/shipments/{shipmentId}</h3>
+                    <p>Delete a shipment record by ID</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET SHIPMENTS BY CUSTOMER -->
+        <a th:href="@{/shipment-module/endpoints/get-shipments-by-customer}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/shipments/customer/{customerId}</h3>
+                    <p>Get all shipments registered for a customer</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET SHIPMENTS BY STORE -->
+        <a th:href="@{/shipment-module/endpoints/get-shipments-by-store}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/shipments/store/{storeId}</h3>
+                    <p>Get all shipments registered for a specific store</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- GET SHIPMENTS BY STATUS -->
+        <a th:href="@{/shipment-module/endpoints/get-shipments-by-status}" class="endpoint-card-link">
+            <div class="endpoint-card">
+                <span class="method get">GET</span>
+                <div class="endpoint-content">
+                    <h3>/api/shipments/status/{status}</h3>
+                    <p>Filter shipments by status (e.g. IN-TRANSIT, DELIVERED)</p>
+                </div>
+            </div>
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>

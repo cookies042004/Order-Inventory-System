@@ -1,0 +1,316 @@
+:root {
+    /* Color Palette - Vibrant Royal Indigo & Slate */
+    --primary: #4f46e5;            /* Deep Indigo */
+    --primary-hover: #4338ca;
+    --primary-light: #eef2ff;      /* Ultra-soft Indigo backdrop */
+    --primary-ring: rgba(79, 70, 229, 0.12);
+
+    /* Semantic Colors styled for harmony */
+    --success: #10b981;            /* Emerald */
+    --success-light: #f0fdf4;
+    --success-border: #bbf7d0;
+    --success-text: #15803d;
+
+    --warning: #f59e0b;            /* Amber */
+    --warning-light: #fffbeb;
+    --warning-border: #fde68a;
+    --warning-text: #b45309;
+
+    --danger: #ef4444;             /* Rose */
+    --danger-light: #fef2f2;
+    --danger-border: #fecaca;
+    --danger-text: #b91c1c;
+
+    --info: #0ea5e9;               /* Sky */
+    --info-light: #f0f9ff;
+    --info-border: #bae6fd;
+    --info-text: #0369a1;
+
+    /* Surfaces - Clean Slate */
+    --bg-page: #f8fafc;            /* Ice-white Slate 50 */
+    --bg-card: #ffffff;
+    --bg-hover: #f1f5f9;           /* Highlight Slate 100 */
+
+    /* Typography Colors */
+    --text-main: #0f172a;          /* Deep Slate 900 */
+    --text-medium: #334155;        /* Medium Slate 700 */
+    --text-muted: #64748b;         /* Muted Slate 500 */
+    --text-light: #94a3b8;         /* Light Slate 400 */
+
+    /* Borders & Outlines */
+    --border-color: rgba(226, 232, 240, 0.8);  /* Sub-pixel Slate 200 */
+    --border-hover: rgba(203, 213, 225, 0.9);  /* Sub-pixel Slate 300 */
+
+    /* Geometry & Corners */
+    --radius-sm: 12px;             /* Precise items/inputs */
+    --radius-md: 16px;             /* Buttons, smaller cards */
+    --radius-lg: 24px;             /* Major cards & frames */
+    --radius-pill: 9999px;         /* Badges */
+
+    /* Transitions */
+    --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-fast: all 0.2s ease;
+
+    /* Multi-layered soft drop shadows (premium aesthetic) */
+    --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.03), 0 1px 2px -1px rgba(15, 23, 42, 0.03);
+    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] {
+    /* Color Palette - Cyberpunk Glowing Violet Indigo */
+    --primary: #6366f1;            /* Electric Indigo */
+    --primary-hover: #4f46e5;
+    --primary-light: rgba(99, 102, 241, 0.08);
+    --primary-ring: rgba(99, 102, 241, 0.25);
+
+    /* Semantic Colors styled for Dark Navy */
+    --success: #10b981;
+    --success-light: rgba(16, 185, 129, 0.06);
+    --success-border: rgba(16, 185, 129, 0.2);
+    --success-text: #34d399;
+
+    --warning: #f59e0b;
+    --warning-light: rgba(245, 158, 11, 0.06);
+    --warning-border: rgba(245, 158, 11, 0.2);
+    --warning-text: #fbbf24;
+
+    --danger: #ef4444;
+    --danger-light: rgba(239, 68, 68, 0.06);
+    --danger-border: rgba(239, 68, 68, 0.2);
+    --danger-text: #fca5a5;
+
+    /* Surfaces - Cosmic Slate-Black */
+    --bg-page: #030712;            /* Deep obsidian dark */
+    --bg-card: #0b0f19;            /* Translucent dark card navy */
+    --bg-hover: #111827;           /* Highlighted card gray */
+
+    /* Typography Colors */
+    --text-main: #f8fafc;          /* High contrast slate/white */
+    --text-medium: #cbd5e1;        /* Light Slate */
+    --text-muted: #94a3b8;         /* Medium Slate */
+    --text-light: #475569;
+
+    /* Borders & Outlines */
+    --border-color: rgba(255, 255, 255, 0.07);  /* Translucent border */
+    --border-hover: rgba(255, 255, 255, 0.15);
+
+    /* Toned Down & Professionalized Dark Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 24px 50px rgba(0, 0, 0, 0.6);
+}
+
+/* Global Custom Thin Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-light);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: var(--border-hover);
+}
+
+/* Premium radial backdrop gradients */
+body {
+    background-color: var(--bg-page);
+    background-image: radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.05) 0%, transparent 60%);
+    background-repeat: no-repeat;
+    background-size: 100% 800px;
+    min-height: 100vh;
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-medium);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+[data-theme="dark"] body {
+    background-image:
+        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.09) 0%, transparent 60%),
+        linear-gradient(rgba(255, 255, 255, 0.005) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.005) 1px, transparent 1px);
+    background-size: 100% 800px, 48px 48px, 48px 48px;
+    background-position: center top;
+}
+
+/* Base Resets & Box-Model Rules */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth Transitions */
+.navbar, .main-container, .module-page-container, .crud-page, .team-card, .endpoint-card, .crud-card, .form-control, .btn-primary, .btn-secondary, a {
+    transition: var(--transition-smooth);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Fluid Main Container */
+.main-container {
+    padding: 0 24px 80px;
+    max-width: 1340px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Fluid Page Hero Section */
+.hero-section {
+    text-align: left;
+    margin-bottom: 48px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.hero-section h1 {
+    font-size: 38px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 8px;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+}
+
+.hero-section p {
+    font-size: 16px;
+    color: var(--text-muted);
+    font-weight: 400;
+    max-width: 700px;
+}
+
+/* Responsive Overrides */
+@media (max-width: 1024px) {
+    .main-container {
+        padding: 0 24px 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        padding: 0 16px 40px;
+    }
+
+    .hero-section {
+        margin-bottom: 30px;
+        padding-bottom: 16px;
+    }
+
+    .hero-section h1 {
+        font-size: 28px;
+    }
+
+    .hero-section p {
+        font-size: 14px;
+    }
+}
+
+/* Universal typography rules */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    color: var(--text-main);
+    letter-spacing: -0.02em;
+}
+
+/* Buttons */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--primary);
+    color: #ffffff !important;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    border: 1px solid var(--primary);
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.15);
+    white-space: nowrap;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.25);
+}
+
+[data-theme="dark"] .btn-primary {
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.2);
+}
+
+[data-theme="dark"] .btn-primary:hover {
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+}
+
+.btn-primary:active, .btn-secondary:active, .action-btn:active, button:active, input[type="submit"]:active {
+    transform: translateY(0.5px) scale(0.98);
+}
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--bg-card);
+    color: var(--text-medium) !important;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-main) !important;
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Dynamic Calendar Indicator Colors */
+::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    padding: 6px;
+    filter: invert(0);
+    transition: var(--transition-fast);
+}
+
+[data-theme="dark"] ::-webkit-calendar-picker-indicator {
+    filter: invert(1) brightness(1.2);
+}
+
+::-webkit-calendar-picker-indicator:hover {
+    background-color: var(--bg-hover);
+}
+
+[data-theme="dark"] select option {
+    background-color: #0b0f19;
+    color: #f8fafc;
+}
